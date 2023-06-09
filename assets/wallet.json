@@ -1,0 +1,222 @@
+[
+  {
+    "id": "clear-field",
+    "name": "<Clear Field>",
+    "wallet_type":"clear",
+    "blockchains": "*",
+    "link": "",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "trust-wallet",
+    "name": "Trust Wallet",
+    "wallet_type":"multi",
+    "blockchains": "*",
+    "link": "https://trustwallet.com",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "metamask",
+    "name": "Metamask",
+    "wallet_type":"multi",
+    "blockchains": "ethereum,bsc",
+    "link": "https://metamask.io",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "ledger",
+    "name": "Ledger",
+    "wallet_type":"multi",
+    "blockchains": "*",
+    "link": "https://www.ledger.com",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "trezor",
+    "name": "Trezor",
+    "wallet_type":"multi",
+    "blockchains": "*",
+    "link": "https://trezor.io",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "typhon",
+    "name": "Typhon",
+    "wallet_type":"single",
+    "blockchains": "cardano",
+    "link": "https://typhonwallet.io",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "yoroi",
+    "name": "Yoroi",
+    "wallet_type":"multi",
+    "blockchains": "cardano,ergo",
+    "link": "https://yoroi-wallet.com",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "mobie",
+    "name": "Mobie",
+    "wallet_type":"multi",
+    "blockchains": "link,tether,usdc,mbx.doge",
+    "link": "https://wallet.mobiepay.io",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "nami",
+    "name": "Nami",
+    "wallet_type":"single",
+    "blockchains": "cardano",
+    "link": "https://namiwallet.io",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "binance",
+    "name": "Binance",
+    "wallet_type":"exchange",
+    "blockchains": "*",
+    "link": "https://www.binance.com",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "okx",
+    "name": "OKX",
+    "wallet_type":"exchange",
+    "blockchains": "*",
+    "link": "https://www.okx.com/",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "coinbase",
+    "name": "Coinbase",
+    "wallet_type":"exchange",
+    "blockchains": "*",
+    "link": "https://www.coinbase.com",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "crypto-com",
+    "name": "Crypto.com",
+    "wallet_type":"exchange",
+    "blockchains": "*",
+    "link": "https://crypto.com",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "kucoin",
+    "name": "KuCoin",
+    "wallet_type":"exchange",
+    "blockchains": "*",
+    "link": "https://www.kucoin.com",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "ftx",
+    "name": "FTX",
+    "wallet_type":"exchange",
+    "blockchains": "*",
+    "link": "",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "huobi",
+    "name": "Huobi",
+    "wallet_type":"exchange",
+    "blockchains": "*",
+    "link": "",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "gate-io",
+    "name": "Gate.io",
+    "wallet_type":"exchange",
+    "blockchains": "*",
+    "link": "",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "kraken",
+    "name": "Kraken",
+    "wallet_type":"exchange",
+    "blockchains": "*",
+    "link": "https://www.kraken.com",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "mexc",
+    "name": "MEXC",
+    "wallet_type":"exchange",
+    "blockchains": "*",
+    "link": "https://www.mexc.com",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "currency-com",
+    "name": "Currency.com",
+    "wallet_type":"exchange",
+    "blockchains": "*",
+    "link": "https://currency.com",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "cex-io",
+    "name": "CEX.IO",
+    "wallet_type":"exchange",
+    "blockchains": "*",
+    "link": "https://cex.io",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  },
+  {
+    "id": "crex24",
+    "name": "CREX24",
+    "wallet_type":"exchange",
+    "blockchains": "*",
+    "link": "https://crex24.com",
+    "droid":"",
+    "ios":"",
+    "sort": ""
+  }
+]
