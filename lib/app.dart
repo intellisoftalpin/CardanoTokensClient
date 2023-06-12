@@ -85,7 +85,7 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
   List<SharedMediaFile> _sharedFiles = [];
   List<SharedMediaFile> _sharedFilesLifeCycle = [];
   MethodChannel _channel =
-      const MethodChannel('org.cardanotokens.app/import_zip');
+      const MethodChannel('com.intellisoftalpin.ctokens/import_zip');
 
   NavigatorState get _navigator => _navigatorKey.currentState!;
 

@@ -1,4 +1,4 @@
-package org.cardanotokens.app
+package com.intellisoftalpin.ctokens
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.plugins.GeneratedPluginRegistrant
