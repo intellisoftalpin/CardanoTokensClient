@@ -544,7 +544,8 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
       time = dateTime.last;
       lastActiveStr = transactionList.last.lastActiveTime.split(', ').last;
       DateTime dt = DateTime.parse('$lastActiveStr');
-      lastActive = DateFormat('dd MMMM yyyy').format(dt);
+      Locale myLocale = Localizations.localeOf(context);
+      lastActive = DateFormat('dd MMMM yyyy', myLocale.languageCode).format(dt);
     }
     print("date= $date, time= $time, dateTime= $dateTime");
     walletCoin =
@@ -731,7 +732,6 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
             ],
           ));
     }
-
     return Padding(
       padding:
           const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
