@@ -16,7 +16,7 @@ import 'package:crypto_offline/view/CreateProfilePage/CreateProfilePage.dart'
     as globals;
 import 'package:crypto_offline/bloc/CreateProfile/CreateProfileBloc.dart'
     as global;
-import 'package:crypto_offline/view/ProfilePage/ProfilePage.dart' as profile;
+import 'package:crypto_offline/view/ProfilePage/ProfilePage.dart' as prof;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 
@@ -134,20 +134,36 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         //profile = await _hiveProfileRepository.showProfile();
         if (transactions.isNotEmpty) {
-          if (lastDateCache.isNotEmpty) {
-            wallet = (await getWallet(transactions))!;
-            print('!!!!!wallet:::: $wallet');
-            walletAda = (await getWalletAda(transactions))!;
-            print('!!!!!walletAda:::: $walletAda');
+          List<Tokens> cardanoList = [];
+          if (internet) {
+            Response responseCardano =
+                await _apiRepository.getCardanoTokensList();
+            try {
+              int statusCardano = responseCardano.statusCode;
+              if (statusCardano == HttpStatus.ok) {
+                Map data = jsonDecode(responseCardano.body);
+                prof.adaExchangeGlobal = data["usd"] as double;
+                cardanoList = (data["tokens"] as List)
+                    .map((e) => Tokens.fromJson(e))
+                    .cast<Tokens>()
+                    .toList();
+              } else {
+                print('http error');
+              }
+            } on Exception catch (e) {
+              print('Exception::: $e');
+            }
+            wallet =
+                await getWalletApi(transactions, responseCardano, cardanoList);
+            walletAda = await getWalletAdaApi(
+                transactions, responseCardano, cardanoList);
             cache = true;
           } else {
-            if (internet) {
-              wallet = await getWalletApi(transactions);
-              walletAda = await getWalletAdaApi(transactions);
-              cache = false;
-            }
+            wallet = (await getWallet(transactions))!;
+            walletAda = (await getWalletAda(transactions))!;
+            cache = false;
           }
-          listCoin = await getListCoin(cache, internet);
+          listCoin = await getListCoin(cache, internet, cardanoList);
           print('!!!!!!!listCoin::::: $listCoin');
         } else {
           print('10');
@@ -156,7 +172,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           } else {
             cache = false;
           }
-          listCoin = await getListCoin(cache, internet);
+          listCoin = await getListCoin(cache, internet, []);
           print('11');
         }
         // yield state.copyWith(ProfileStatus.loaded, wallet, profile, listCoin);
@@ -241,33 +257,25 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     return walletedAda;
   }
 
-  Future<List<double>> getWalletApi(
-      List<TransactionEntity> transactions) async {
+  Future<List<double>> getWalletApi(List<TransactionEntity> transactions,
+      Response responseCardano, List<Tokens> cardanoList) async {
     double walletInOut = 0;
     List<double> walleted = [];
     num priseUsd = 0;
-    Response responseCardano = await _apiRepository.getCardanoTokensList();
     for (var element in transactions) {
+      if (element.coinId.isNotEmpty) {
+        priseUsd = (await _dbRepository.getCoin(element.coinId)).currentPrice;
+      }
       if (responseCardano.statusCode == HttpStatus.ok) {
-        Map data = jsonDecode(responseCardano.body);
-        profile.adaExchangeGlobal = data["usd"] as double;
-        var cardanoList = (data["tokens"] as List)
-            .map((e) => Tokens.fromJson(e))
-            .cast<Tokens>()
-            .toList();
+        print('responseCardano.statusCode');
         for (var cardano in cardanoList) {
           if (cardano.tokenId == element.coinId) {
+            print('cardano.tokenId == element.coinId');
             priseUsd = cardano.priceUsd!;
-          } else if (element.coinId.isNotEmpty) {
-            priseUsd =
-                (await _dbRepository.getCoin(element.coinId)).currentPrice;
           }
         }
-      } else {
-        if (element.coinId.isNotEmpty) {
-          priseUsd = (await _dbRepository.getCoin(element.coinId)).currentPrice;
-        }
       }
+      print('wait cost');
       var cost = element.qty;
       print("cost = $cost");
       if (element.type == 'In') {
@@ -283,31 +291,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     return walleted;
   }
 
-  Future<List<double>> getWalletAdaApi(
-      List<TransactionEntity> transactions) async {
+  Future<List<double>> getWalletAdaApi(List<TransactionEntity> transactions,
+      Response responseCardano, List<Tokens> cardanoList) async {
     double walletAdaInOut = 0;
     List<double> walletedAda = [];
     double priseAda = 0;
-    Response responseCardano = await _apiRepository.getCardanoTokensList();
     for (var element in transactions) {
+      if (element.coinId.isNotEmpty) {
+        priseAda = (await _dbRepository.getCoin(element.coinId)).adaPrice!;
+      }
       if (responseCardano.statusCode == HttpStatus.ok) {
-        Map data = jsonDecode(responseCardano.body);
-        profile.adaExchangeGlobal = data["usd"] as double;
-        var cardanoList = (data["tokens"] as List)
-            .map((e) => Tokens.fromJson(e))
-            .cast<Tokens>()
-            .toList();
         for (var cardano in cardanoList) {
           if (cardano.tokenId == element.coinId) {
             priseAda = cardano.priceAda!;
-          } else if (element.coinId.isNotEmpty) {
-            priseAda = (await _dbRepository.getCoin(element.coinId)).adaPrice!;
           }
-        }
-      } else {
-        if (element.coinId.isNotEmpty) {
-          print('element.coinId.isNotEmpty');
-          priseAda = (await _dbRepository.getCoin(element.coinId)).adaPrice!;
         }
       }
       var cost = element.qty;
@@ -325,7 +322,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     return walletedAda;
   }
 
-  Future<List<ListCoin>> getListCoin(bool cache, var internet) async {
+  Future<List<ListCoin>> getListCoin(
+      bool cache, var internet, List<Tokens> cardanoList) async {
     double walletInOut = 0;
     double costInOut = 0;
     num priseUsd = 0;
@@ -345,7 +343,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     List<ListCoin> listCoin = [];
     List<CoinEntity> coinsList = [];
     int statusCardano = 0;
-    List<Tokens> cardanoList = await getCardanoList(internet);
     if (cardanoList.isNotEmpty && internet) {
       statusCardano = HttpStatus.ok;
     }
@@ -494,28 +491,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     return listCoin;
   }
 
-  Future<List<Tokens>> getCardanoList(var internet) async {
-    List<Tokens> cardanoList = [];
-    if (internet) {
-      try {
-        Response responseCardano = await _apiRepository.getCardanoTokensList();
-        int statusCardano = responseCardano.statusCode;
-        if (statusCardano == HttpStatus.ok) {
-          Map data = jsonDecode(responseCardano.body);
-          cardanoList = (data["tokens"] as List)
-              .map((e) => Tokens.fromJson(e))
-              .cast<Tokens>()
-              .toList();
-        } else {
-          print('http error');
-        }
-      } on Exception catch (e) {
-        print('Exception::: $e');
-      }
-    }
-    return cardanoList;
-  }
-
   Future<int> checkRelevantCardanotoken(String id, var cardanoList) async {
     int isRelevant = 1;
     for (var cardano in cardanoList) {
@@ -552,7 +527,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       for (var coinElem in coinsId) {
         if (responseCardano.statusCode == HttpStatus.ok) {
           Map data = jsonDecode(responseCardano.body);
-          profile.adaExchangeGlobal = data["usd"] as double;
+          prof.adaExchangeGlobal = data["usd"] as double;
           var cardanoList = (data["tokens"] as List)
               .map((e) => Tokens.fromJson(e))
               .cast<Tokens>()
