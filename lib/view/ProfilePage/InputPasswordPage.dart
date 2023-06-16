@@ -16,6 +16,7 @@ import 'package:crypto_offline/bloc/CreateProfile/CreateProfileBloc.dart'
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../utils/check_create_profile_time.dart';
 import 'ProfilePage.dart';
 
@@ -190,6 +191,10 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                 onPressed: () async {
                                   final isAuthenticated =
                                       await LocalAuthApi.authenticate();
+                                  if (await LocalAuthApi.availableBiometric() == false) {
+                                    Fluttertoast.showToast(
+                                        msg: LocaleKeys.noBiometrics.tr());
+                                  }
                                   if (isAuthenticated) {
                                     globals.nameProfile = _name;
                                     global.idProfile = _nameId;
@@ -234,6 +239,10 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                     ),
                     onTap: () async {
                       final isAuthenticated = await LocalAuthApi.authenticate();
+                      if (await LocalAuthApi.availableBiometric() == false) {
+                        Fluttertoast.showToast(
+                            msg: LocaleKeys.noBiometrics.tr());
+                      }
                       if (isAuthenticated) {
                         isAuthenticate = true;
                         globals.nameProfile = _name;
@@ -897,6 +906,10 @@ class InputPasswordPageState extends State<InputPasswordPage> {
       } else if (!createTimeCheck(profileCreateDate!, profileEnterDate!)) {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           final isAuthenticated = await LocalAuthApi.authenticate();
+          if (await LocalAuthApi.availableBiometric()  == false) {
+            Fluttertoast.showToast(
+                msg: LocaleKeys.noBiometrics.tr());
+          }
           if (isAuthenticated) {
             globals.nameProfile = _name;
             global.idProfile = _nameId;
@@ -922,6 +935,10 @@ class InputPasswordPageState extends State<InputPasswordPage> {
     } else if (prefGlob == 2) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         final isAuthenticated = await LocalAuthApi.authenticate();
+        if (await LocalAuthApi.availableBiometric() == false) {
+          Fluttertoast.showToast(
+              msg: LocaleKeys.noBiometrics.tr());
+        }
         if (isAuthenticated) {
           globals.nameProfile = _name;
           global.idProfile = _nameId;
