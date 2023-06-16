@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../generated/locale_keys.g.dart';
 import '../view/AppAuth/LocalAuthApi.dart';
@@ -46,6 +47,10 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                             final isAuthenticated =
                                 await LocalAuthApi.authenticate();
                             print(" ::: isAuthenticated::: $isAuthenticated");
+                            if (await LocalAuthApi.availableBiometric() == false) {
+                              Fluttertoast.showToast(
+                                  msg: LocaleKeys.noBiometrics.tr());
+                            }
                             if (isAuthenticated) {
                               print('BOOL authRestoreAlert havePass::::: 0');
                               Navigator.of(context).pushAndRemoveUntil(
@@ -72,6 +77,10 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                               .addPostFrameCallback((_) async {
                             final isAuthenticated =
                                 await LocalAuthApi.authenticate();
+                            if (await LocalAuthApi.availableBiometric() == false) {
+                              Fluttertoast.showToast(
+                                  msg: LocaleKeys.noBiometrics.tr());
+                            }
                             print(" ::: isAuthenticated::: $isAuthenticated");
                             if (isAuthenticated) {
                               print('BOOL authRestoreAlert havePass::::: 1');

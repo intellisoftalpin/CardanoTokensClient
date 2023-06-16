@@ -203,4 +203,5 @@ abstract class  LocaleKeys {
   static const gotInAda = 'gotInAda';
   static const sentInUsd = 'sentInUsd';
   static const sentInAda = 'sentInAda';
+  static const noBiometrics = 'noBiometrics';
 }

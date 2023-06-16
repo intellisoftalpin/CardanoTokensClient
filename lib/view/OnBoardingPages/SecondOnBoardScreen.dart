@@ -8,6 +8,7 @@ import 'package:crypto_offline/view/ProfilePage/ProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../utils/onBoardAlert.dart';
 
@@ -232,33 +233,39 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                                   .addPostFrameCallback((_) async {
                                 final isAuthenticated =
                                     await LocalAuthApi.authenticate();
+                                if (await LocalAuthApi.availableBiometric() == false) {
+                                  Fluttertoast.showToast(
+                                      msg: LocaleKeys.noBiometrics.tr());
+                                }
                                 print(
                                     " ::: isAuthenticated::: $isAuthenticated");
                                 if (isAuthenticated) {
                                   isAuthenticateState = true;
-                                  Future.delayed(const Duration(milliseconds: 500), () {
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CreateProfilePage(
-                                                welcome: Text(
-                                                  LocaleKeys.welcome.tr(),
-                                                  textAlign: TextAlign.center,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline6!
-                                                      .copyWith(
-                                                          fontSize: textSize45,
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .secondaryHeaderColor),
-                                                ),
-                                                passPrefer: 0,
-                                                passwordRemind: true,
-                                                confirmPasswordField: true,
-                                                passwordField: true,
-                                              )),
-                                      (Route<dynamic> route) => true);
+                                  Future.delayed(
+                                      const Duration(milliseconds: 500), () {
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CreateProfilePage(
+                                                  welcome: Text(
+                                                    LocaleKeys.welcome.tr(),
+                                                    textAlign: TextAlign.center,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline6!
+                                                        .copyWith(
+                                                            fontSize:
+                                                                textSize45,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .secondaryHeaderColor),
+                                                  ),
+                                                  passPrefer: 0,
+                                                  passwordRemind: true,
+                                                  confirmPasswordField: true,
+                                                  passwordField: true,
+                                                )),
+                                        (Route<dynamic> route) => true);
                                   });
                                 }
                               });
@@ -288,6 +295,10 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                                   .addPostFrameCallback((_) async {
                                 final isAuthenticated =
                                     await LocalAuthApi.authenticate();
+                                if (await LocalAuthApi.availableBiometric() == false) {
+                                  Fluttertoast.showToast(
+                                      msg: LocaleKeys.noBiometrics.tr());
+                                }
                                 if (isAuthenticated) {
                                   isAuthenticateState = true;
                                   Navigator.of(context).pushAndRemoveUntil(
