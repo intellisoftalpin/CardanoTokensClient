@@ -179,6 +179,9 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
       print("id TB = $id");
       priceEntity = await getPriceEntity(formattedDate, id);
+      print('???priceEntity = $priceEntity');
+      print('???priseUsd = ${priceEntity.first.usdPrice!}');
+      print('???priseAda = ${priceEntity.first.adaPrice!}');
       priseUsd = priceEntity.first.usdPrice!;
       priseAda = priceEntity.first.adaPrice!;
       coinPrice = [
@@ -245,6 +248,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     List<PriceEntity> priceEntity = [];
     var internet = await _apiRepository.check();
     print("intenet = $internet");
+    print("FileManager.readCoinById(id) = ${await FileManager.readCoinById(id)}");
     if (await FileManager.readCoinById(id) != null) {
       CoinEntity coinById =
           CoinEntity.fromDatabaseJson(await FileManager.readCoinById(id));

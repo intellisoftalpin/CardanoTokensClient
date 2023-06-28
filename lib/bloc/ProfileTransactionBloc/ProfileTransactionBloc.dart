@@ -143,7 +143,10 @@ class ProfileTransactionBloc
       String formattedDate, String id) async {
     List<PriceEntity> priceEntity = [];
     var internet = await _apiRepository.check();
+    print('getPriceEntity ID=== $id');
+    print('getPriceEntity FileManager.readList()=== ${await FileManager.readList()}');
     if (await FileManager.readCoinById(id) != null) {
+      print('getPriceEntity FileManager.readCoinById(id) != null');
       CoinEntity coinById =
           CoinEntity.fromDatabaseJson(await FileManager.readCoinById(id));
       print("intenet = $internet, coinById getPriceEntity = $coinById");
@@ -158,6 +161,7 @@ class ProfileTransactionBloc
       ];
       print("priceEntity = $priceEntity");
     } else {
+      print('ELSE getPriceEntity FileManager.readCoinById(id) != null');
       if (internet) {
         try {
           Response responseCardano =

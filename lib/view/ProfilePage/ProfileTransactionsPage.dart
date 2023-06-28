@@ -118,6 +118,8 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
             }
             walletCoin = state.walletCoin!;
             walletAda = state.walletAda!;
+            print('walletCoin!!!!!::: $walletCoin');
+            print('walletAda!!!!!::: $walletAda');
           }
           return WillPopScope(
             onWillPop: () async {
