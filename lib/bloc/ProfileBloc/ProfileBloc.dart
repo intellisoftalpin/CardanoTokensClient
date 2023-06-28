@@ -366,41 +366,22 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         liquidAda = coin.liquidAda!;
         isRelevant = 0;
         if (cache && internet) {
-          if (await FileManager.readCoinById(id) == null) {
-            for (var cardano in cardanoList) {
-              if (cardano.tokenId == id) {
-                id = coin.coinId;
-                symbol = coin.symbol;
-                name = coin.name;
-                image = coin.image;
-                priseUsd = coin.price!;
-                adaPrise = coin.adaPrice!;
-                marketCap = coin.marketCap;
-                percentChange24h = coin.percentChange24h;
-                percentChange7d = coin.percentChange7d;
-                rank = coin.rank;
-                liquidAda = coin.liquidAda!;
-                isRelevant = 1;
-                print("!!!__ 1 !!!");
-              }
+          for (var cardano in cardanoList) {
+            if (cardano.tokenId == id) {
+              id = coin.coinId;
+              symbol = coin.symbol;
+              name = coin.name;
+              image = coin.image;
+              priseUsd = coin.price!;
+              adaPrise = coin.adaPrice!;
+              marketCap = coin.marketCap;
+              percentChange24h = coin.percentChange24h;
+              percentChange7d = coin.percentChange7d;
+              rank = coin.rank;
+              liquidAda = coin.liquidAda!;
+              isRelevant = 1;
+              print("!!!__ 1 !!!");
             }
-          } else {
-            CoinEntity coinById =
-                CoinEntity.fromDatabaseJson(await FileManager.readCoinById(id));
-            print("!!!!coinsModel!!!! = $coinById");
-            id = id;
-            symbol = coinById.symbol;
-            name = coinById.name;
-            image = coinById.image;
-            priseUsd = coinById.price!;
-            adaPrise = coinById.adaPrice!;
-            marketCap = coinById.marketCap;
-            percentChange24h = coinById.percentChange24h;
-            percentChange7d = coinById.percentChange7d;
-            rank = coinById.rank;
-            isRelevant = coinById.isRelevant;
-            liquidAda = coinById.liquidAda!;
-            print("!!!__ 3 !!!");
           }
         } else {
           if (statusCardano == HttpStatus.ok) {
@@ -519,11 +500,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     //// String formattedDateCache = formatterCache.format(now);
     var coinsId = await _hiveProfileRepository.getCoinId();
     print("coinsId ProfBloc = $coinsId");
-
     if (coinsId.isNotEmpty) {
       await FileManager.saveDateCache(formattedDateCache);
       print("getDateCache = ${FileManager.readDateCache().toString()}");
       Response responseCardano = await _apiRepository.getCardanoTokensList();
+      print('coinsId.length== ${coinsId.length}');
       for (var coinElem in coinsId) {
         if (responseCardano.statusCode == HttpStatus.ok) {
           Map data = jsonDecode(responseCardano.body);
@@ -533,8 +514,24 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               .cast<Tokens>()
               .toList();
           for (var cardano in cardanoList) {
+            CoinEntity coin;
+            var coinIdDB = await _dbRepository.getCoin(coinElem.id);
+            coin = CoinEntity(
+                coinId: coinElem.id,
+                name: coinIdDB.name,
+                symbol: coinIdDB.symbol,
+                image: coinIdDB.image,
+                currentPrice: coinIdDB.currentPrice,
+                marketCap: coinIdDB.marketCap,
+                percentChange24h: coinIdDB.percentChange24h,
+                percentChange7d: coinIdDB.percentChange7d,
+                rank: coinIdDB.rank,
+                price: coinIdDB.price,
+                adaPrice: coinIdDB.adaPrice,
+                liquidAda: coinIdDB.liquidAda,
+                isRelevant: 0);
             if (coinElem.id == cardano.tokenId) {
-              var coin = CoinEntity(
+              coin = CoinEntity(
                   coinId: cardano.tokenId!,
                   name: cardano.name!,
                   symbol: cardano.assetName!,
@@ -549,10 +546,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
                   adaPrice: cardano.priceAda,
                   liquidAda: cardano.liquidAda,
                   isRelevant: 1);
-              await FileManager.saveCoinById(
-                  coinElem.id, (coin.toDatabaseJson()));
-              await _dbRepository.updateCoinIsRelevant(coin);
             }
+            await FileManager.saveCoinById(
+                coinElem.id, (coin.toDatabaseJson()));
+            print('saveCoinById=== ${coinElem.id} SAVED');
+            print('');
+            await _dbRepository.updateCoinIsRelevant(coin);
           }
         } else {
           var coinIdDB = await _dbRepository.getCoin(coinElem.id);
@@ -571,6 +570,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               liquidAda: coinIdDB.liquidAda,
               isRelevant: 0);
           await FileManager.saveCoinById(coinElem.id, (coin.toDatabaseJson()));
+          print('saveCoinById=== ${coinElem.id} SAVED');
+          print('');
           await _dbRepository.updateCoinIsRelevant(coin);
         }
       }

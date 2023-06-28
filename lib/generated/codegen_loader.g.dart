@@ -228,7 +228,7 @@ class CodegenLoader extends AssetLoader {
     "gotInAda": "Got in ADA",
     "sentInUsd": "Sent in USD",
     "sentInAda": "Sent in ADA",
-    "noBiometrics": "Your device does not have a suitable stored biometric data."
+    "noBiometrics": "No suitable stored biometric data."
   };
   static const Map<String, dynamic> ru = {
     "forgot_password": "Забыли пароль?",
@@ -450,7 +450,7 @@ class CodegenLoader extends AssetLoader {
     "gotInAda": "Входящее в ADA",
     "sentInUsd": "Исходящее в USD",
     "sentInAda": "Исходящее в ADA",
-    "noBiometrics": "На вашем устройстве нет подходящих сохраненных биометрических данных."
+    "noBiometrics": "Нет подходящих сохраненных биометрических данных."
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "en": en,
