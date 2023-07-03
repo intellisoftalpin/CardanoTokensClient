@@ -46,7 +46,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
         
-      - name: Copy keystore.jks
+      - name: Copy keystore.jks 
         run: (echo ${{ secrets.KEYSTORE_JKS_BASE64 }} | base64 --decode) > $KEYSTORE_JKS
         env:
           KEYSTORE_JKS: ./android/app/cardanotokensclient.jks
