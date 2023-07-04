@@ -64,6 +64,7 @@ jobs:
           cat $GITHUB_ENV
           echo "app_version_number=$VERSION_NUMBER" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
+          mask-version_number: 'no'
           
       - name: App Build Version Bump
         id: build_version_bump
@@ -76,7 +77,7 @@ jobs:
           BUILD_NUMBER: ${{ secrets.BUILD_NUMBER }}
           
       - name: App Build Secret Update
-        uses: gliech/create-github-secret-action@v1.4.10
+        uses: gliech/create-github-secret-action@1
         with:
           pa_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           name: BUILD_NUMBER
