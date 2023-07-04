@@ -325,6 +325,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                           ),
                           onPressed: () => {
                             setState(() {
+                              widget.error = '';
                               globals.passChosen = false;
                               backArrow = SizedBox.shrink();
                             })
