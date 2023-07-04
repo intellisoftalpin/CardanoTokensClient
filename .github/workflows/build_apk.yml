@@ -64,8 +64,7 @@ jobs:
           cat $GITHUB_ENV
           echo "app_version_number=$VERSION_NUMBER" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
-          mask-version_number: 'no'
-          
+                
       - name: App Build Version Bump
         id: build_version_bump
         run: |
