@@ -96,7 +96,7 @@ jobs:
           
       - name: Flutter build apk
         run: |
-          flutter build apk ./lib/main.dart --release --build-number=${{ env.APP_BUILD_NUMBER_INCREMENTED }} --build-name=${{ env.APP_VERSION_NUMBER }}.${{ env.APP_BUILD_NUMBER_INCREMENTED }}
+          flutter build apk ./lib/main.dart --release --build-number=${{ needs.build.outputs.incremented_build_number }} --build-name=${{ needs.build.outputs.version_number }}.${{ needs.build.outputs.incremented_build_number }}
           cp $APK_FILE_PATH $ARTIFACTS_APK_PATH
         env:
           APK_FILE_PATH: ./build/app/outputs/apk/release/app-release.apk
@@ -161,7 +161,7 @@ jobs:
           
       - name: Flutter build aab
         run: |
-          flutter build aab ./lib/main.dart --release --build-number=${{ env.APP_BUILD_NUMBER_INCREMENTED }} --build-name=${{ env.APP_VERSION_NUMBER }}.${{ env.APP_BUILD_NUMBER_INCREMENTED }}
+          flutter build aab ./lib/main.dart --release --build-number=${{ needs.build.outputs.incremented_build_number }} --build-name=${{ needs.build.outputs.version_number }}.${{ needs.build.outputs.incremented_build_number }}
           cp $AAB_FILE_PATH $ARTIFACTS_AAB_PATH
         env:
           AAB_FILE_PATH: ./build/app/outputs/bundle/release/app-release.aab
