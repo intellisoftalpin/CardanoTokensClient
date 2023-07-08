@@ -40,7 +40,7 @@ android {
         targetSdkVersion 32
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        signingConfig signingConfigs.debug
+        signingConfig signingConfigs.release
 
         ndk {
             // Filter for architectures supported by Flutter.
