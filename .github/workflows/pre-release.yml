@@ -161,7 +161,7 @@ jobs:
           
       - name: Flutter build aab
         run: |
-          flutter build aab ./lib/main.dart --release --build-number=${{ needs.prepare_build.outputs.incremented_build_number }} --build-name=${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}
+          flutter build appbundle ./lib/main.dart --release --build-number=${{ needs.prepare_build.outputs.incremented_build_number }} --build-name=${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}
           cp $AAB_FILE_PATH $ARTIFACTS_AAB_PATH
         env:
           AAB_FILE_PATH: ./build/app/outputs/bundle/release/app-release.aab
