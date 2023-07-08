@@ -9,6 +9,7 @@ env:
 jobs:
   prepare_build:
     runs-on: ubuntu-latest
+    environment: github-actions-release
     outputs:
       incremented_build_number: ${{ steps.build_version_bump.outputs.app_build_number }}
       version_number: ${{ steps.version_number_get.outputs.app_version_number }}
