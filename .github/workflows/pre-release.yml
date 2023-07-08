@@ -96,7 +96,7 @@ jobs:
           
       - name: Flutter build apk
         run: |
-          flutter build apk ./lib/main.dart --release --build-number=${{ needs.build.outputs.incremented_build_number }} --build-name=${{ needs.build.outputs.version_number }}.${{ needs.build.outputs.incremented_build_number }}
+          flutter build apk ./lib/main.dart --release --build-number=${{ needs.prepare_build.outputs.incremented_build_number }} --build-name=${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}
           cp $APK_FILE_PATH $ARTIFACTS_APK_PATH
         env:
           APK_FILE_PATH: ./build/app/outputs/apk/release/app-release.apk
@@ -161,7 +161,7 @@ jobs:
           
       - name: Flutter build aab
         run: |
-          flutter build aab ./lib/main.dart --release --build-number=${{ needs.build.outputs.incremented_build_number }} --build-name=${{ needs.build.outputs.version_number }}.${{ needs.build.outputs.incremented_build_number }}
+          flutter build aab ./lib/main.dart --release --build-number=${{ needs.prepare_build.outputs.incremented_build_number }} --build-name=${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}
           cp $AAB_FILE_PATH $ARTIFACTS_AAB_PATH
         env:
           AAB_FILE_PATH: ./build/app/outputs/bundle/release/app-release.aab
@@ -187,13 +187,13 @@ jobs:
       - name: Create zip for apk
         run: |
           mkdir ./apk
-          cp $APK_FILE_PATH ./apk/cardanotokensclient.${{ needs.build.outputs.version_number }}.${{ needs.build.outputs.incremented_build_number }}.apk
-          zip -j ./apk/cardanotokensclient.${{ needs.build.outputs.version_number }}.${{ needs.build.outputs.incremented_build_number }}.zip ./apk/cardanotokensclient.${{ needs.build.outputs.version_number }}.${{ needs.build.outputs.incremented_build_number }}.apk
+          cp $APK_FILE_PATH ./apk/cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
+          zip -j ./apk/cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.zip ./apk/cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
         env:
           APK_FILE_PATH: ./app-release.apk
         
       - name: APK send to Telegram chat
-        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F document=@./apk/cardanotokensclient.${{ needs.build.outputs.version_number }}.${{ needs.build.outputs.incremented_build_number }}.zip -F "caption=CardanoTokensClient build is ready!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument --http1.1
+        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F document=@./apk/cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.zip -F "caption=CardanoTokensClient build is ready!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument --http1.1
       
   deploy_google_play:
       runs-on: ubuntu-latest
@@ -215,5 +215,5 @@ jobs:
 #           status: completed
         
       - name: Message send to Telegram chat after deployed to Google Play Deploy
-        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F "caption=Build ${{ needs.build.outputs.version_number }} (${{ needs.build.outputs.incremented_build_number }}) has been sent to Google Play!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage --http1.1
+        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F "caption=Build ${{ needs.prepare_build.outputs.version_number }} (${{ needs.prepare_build.outputs.incremented_build_number }}) has been sent to Google Play!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage --http1.1
     
