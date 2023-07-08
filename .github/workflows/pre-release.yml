@@ -45,6 +45,7 @@ jobs:
  
   build_apk:
     runs-on: ubuntu-latest
+    environment: github-actions-release
     needs: prepare_build    
     steps:
       - run: ls
@@ -109,6 +110,7 @@ jobs:
           
   build_aab:
     runs-on: ubuntu-latest
+    environment: github-actions-release
     needs: prepare_build    
     steps:
       - run: ls
