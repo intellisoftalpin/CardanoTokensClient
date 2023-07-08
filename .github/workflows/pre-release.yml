@@ -176,7 +176,7 @@ jobs:
           
   deploy_android_apk:
     runs-on: ubuntu-latest
-    needs: build_apk
+    needs: [ prepare_build, build_apk ]
     
     steps:
       - name: Artifacts Download
@@ -197,7 +197,7 @@ jobs:
       
   deploy_google_play:
       runs-on: ubuntu-latest
-      needs: build_aab
+      needs: [ prepare_build, build_aab ]
       steps:
       - name: Artifacts Download
         uses: actions/download-artifact@v3.0.1
