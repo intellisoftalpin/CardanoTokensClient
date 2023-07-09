@@ -185,14 +185,14 @@ jobs:
     steps:
       - name: Artifacts Download
         uses: actions/download-artifact@v3.0.2
-        
+                        
       - name: Create zip for apk
         run: |
-              ls
-                     
-      - name: Create zip for apk
-        run: zip -j cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip ./cardanotokensclient.*.apk
-        
+          ls $APK_FILE_PATH
+          zip -j cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip $APK_FILE_PATH
+        env:
+          APK_FILE_PATH: ./*.apk
+       
       - name: APK send to Telegram chat
         run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F document=@./cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip -F "caption=CardanoTokensClient build is ready!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument --http1.1
       
@@ -213,7 +213,7 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_API_JSON_PLAIN }}
           packageName: com.intellisoftalpin.ctokens
-          releaseFiles: ./cardanotokensclient.*.aab
+          releaseFiles: cardanotokensclient.*.aab
           track: internal
           status: draft
 #           status: completed
