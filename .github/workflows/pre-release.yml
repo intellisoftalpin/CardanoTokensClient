@@ -189,6 +189,7 @@ jobs:
       - name: Create zip for apk
         run: |
           mkdir ./apk
+          ls
           cp $APK_FILE_PATH ./apk/cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.apk
           zip -j ./apk/cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip ./apk/*.apk
         env:
