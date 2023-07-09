@@ -103,13 +103,13 @@ jobs:
           cp $APK_FILE_PATH $ARTIFACTS_APK_DIRECTORY_PATH
         env:
           APK_FILE_PATH: ./build/app/outputs/apk/release/app-release.apk
-          ARTIFACTS_APK_DIRECTORY_PATH: ${{ env.ARTIFACTS_DIRECTORY }}/cardanoTokensClient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
+          ARTIFACTS_APK_DIRECTORY_PATH: ${{ env.ARTIFACTS_DIRECTORY }}/cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
          
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: cardanoTokensClient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
-          path: ${{ env.ARTIFACTS_DIRECTORY }}/cardanoTokensClient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
+          name: cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
+          path: ${{ env.ARTIFACTS_DIRECTORY }}/cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
           
   build_aab:
     runs-on: ubuntu-latest
@@ -170,13 +170,13 @@ jobs:
           cp $AAB_FILE_PATH $ARTIFACTS_AAB_DIRECTORY_PATH
         env:
           AAB_FILE_PATH: ./build/app/outputs/bundle/release/app-release.aab
-          ARTIFACTS_AAB_DIRECTORY_PATH: ${{ env.ARTIFACTS_DIRECTORY }}/cardanoTokensClient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.aab
+          ARTIFACTS_AAB_DIRECTORY_PATH: ${{ env.ARTIFACTS_DIRECTORY }}/cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.aab
          
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: cardanoTokensClient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.aab
-          path: ${{ env.ARTIFACTS_DIRECTORY }}/cardanoTokensClient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.aab
+          name: cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.aab
+          path: ${{ env.ARTIFACTS_DIRECTORY }}/cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.aab
           
   deploy_android_apk:
     runs-on: ubuntu-latest
@@ -190,7 +190,7 @@ jobs:
         run: |
           mkdir ./apk
           cp $APK_FILE_PATH ./apk/cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.apk
-          zip -j ./apk/cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip ./apk/cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.apk
+          zip -j ./apk/cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip ./apk/*.apk
         env:
           APK_FILE_PATH: ./*.apk
         
@@ -216,5 +216,5 @@ jobs:
 #           status: completed
         
       - name: Message send to Telegram chat after deployed to Google Play Deploy
-        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F "caption=Build ${{ needs.build_aab.outputs.version_number }} (${{ needs.build_aab.outputs.incremented_build_number }}) has been sent to Google Play!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage --http1.1
+        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F "caption=CardanoTokensClient build ${{ needs.build_aab.outputs.version_number }} (${{ needs.build_aab.outputs.incremented_build_number }}) has been sent to Google Play!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage --http1.1
     
