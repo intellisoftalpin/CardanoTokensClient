@@ -205,7 +205,7 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_API_JSON_PLAIN }}
           packageName: com.intellisoftalpin.ctokens
-          releaseFiles: ./*.aab
+          releaseFiles: ./CardanoTokensClient/*.aab
           track: internal
           status: draft
 #           status: completed
