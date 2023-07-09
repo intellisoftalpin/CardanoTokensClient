@@ -187,6 +187,11 @@ jobs:
         uses: actions/download-artifact@v3.0.2
         
       - name: Create zip for apk
+        run: |
+              ls
+              ls ./artifacts
+                     
+      - name: Create zip for apk
         run: zip -j cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip ./*.apk
         
       - name: APK send to Telegram chat
@@ -201,7 +206,9 @@ jobs:
         uses: actions/download-artifact@v3.0.2
         
       - name: Create zip for apk
-        run: ls
+        run: |
+              ls
+              ls ./artifacts
                         
       - name: Google Play Deploy
         uses: r0adkll/upload-google-play@v1.0.19
