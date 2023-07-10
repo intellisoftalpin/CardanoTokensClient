@@ -262,7 +262,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                           : LocaleKeys.add_transaction.tr(),
                       maxLines: 2,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                      style: TextStyle(
                             fontSize: textSize23,
                             color: Theme.of(context).focusColor,
                             fontWeight: FontWeight.w400,
@@ -438,7 +438,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     contentPadding: EdgeInsets.fromLTRB(28.0, 0.0, 0.0, 0.0),
                     errorStyle:
                         TextStyle(fontSize: textSize14, color: kErrorColor)),
-                style: Theme.of(context).textTheme.headline6!.copyWith(
+                style: TextStyle(
                     fontFamily: 'MyriadPro',
                     color: Theme.of(context).primaryColorLight,
                     fontSize: textSize24),
@@ -468,7 +468,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 maxLines: 1,
                 softWrap: false,
                 overflow: TextOverflow.fade,
-                style: Theme.of(context).textTheme.headline6!.copyWith(
+                style: TextStyle(
                     fontSize: textSize20,
                     color: Theme.of(context).indicatorColor),
               ),
@@ -521,7 +521,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   maxLines: 1,
                   softWrap: false,
                   overflow: TextOverflow.fade,
-                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                  style: TextStyle(
                       fontSize: textSize20,
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).indicatorColor)),
@@ -539,10 +539,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             maxLines: 1,
                             softWrap: false,
                             overflow: TextOverflow.fade,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(
+                            style: TextStyle(
                                     fontSize: textSize18,
                                     color: Theme.of(context).indicatorColor))),
                     Container(
@@ -652,10 +649,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             maxLines: 1,
                             softWrap: false,
                             overflow: TextOverflow.fade,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(
+                            style: TextStyle(
                                     fontSize: textSize18,
                                     color: Theme.of(context).indicatorColor))),
                   ),
@@ -687,10 +681,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             maxLines: 1,
                             softWrap: false,
                             overflow: TextOverflow.fade,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(
+                            style: TextStyle(
                                     fontSize: textSize18,
                                     color: Theme.of(context).indicatorColor))),
                   ),
@@ -719,10 +710,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                 maxLines: 1,
                                 softWrap: false,
                                 overflow: TextOverflow.fade,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
+                                style: TextStyle(
                                         fontSize: textSize18,
                                         color:
                                             Theme.of(context).indicatorColor)),
@@ -772,10 +760,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             SizedBox(
                               child: Text(
                                 LocaleKeys.advanced.tr(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
+                                style: TextStyle(
                                         fontSize: textSize18,
                                         color:
                                             Theme.of(context).indicatorColor),
@@ -823,7 +808,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     errorStyle:
                         TextStyle(fontSize: textSize14, color: kErrorColor)),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
-                style: Theme.of(context).textTheme.headline6!.copyWith(
+                style: TextStyle(
                     fontFamily: 'MyriadPro',
                     color: Theme.of(context).primaryColorLight,
                     fontSize: textSize24),
@@ -913,7 +898,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   contentPadding: EdgeInsets.fromLTRB(28.0, 0.0, 0.0, 0.0),
                   errorStyle:
                       TextStyle(fontSize: textSize14, color: kErrorColor)),
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: TextStyle(
                   fontFamily: 'MyriadPro',
                   color: Theme.of(context).primaryColorLight,
                   fontSize: textSize24),
@@ -984,7 +969,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   contentPadding: EdgeInsets.fromLTRB(28.0, 0.0, 0.0, 0.0),
                   errorStyle:
                       TextStyle(fontSize: textSize14, color: kErrorColor)),
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: TextStyle(
                   fontFamily: 'MyriadPro',
                   color: Theme.of(context).primaryColorLight,
                   fontSize: textSize24),
@@ -1061,7 +1046,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   fillColor: Theme.of(context).cardColor,
                   hintText: LocaleKeys.wallet_exchange.tr(),
                 ),
-                style: Theme.of(context).textTheme.headline6!.copyWith(
+                style: TextStyle(
                     fontFamily: 'MyriadPro',
                     color: Theme.of(context).primaryColorLight,
                     fontSize: textSize24),
@@ -1086,10 +1071,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                       child: ListTile(
                         title: Text(
                           item.name,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(
+                          style: TextStyle(
                                   color: Theme.of(context).shadowColor,
                                   fontFamily: 'MyriadPro',
                                   fontSize: textSize24),
@@ -1144,7 +1126,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             padding: const EdgeInsets.fromLTRB(16.0, 8.0, 8.0, 8.0),
             child: Text(
               'Advanced',
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: TextStyle(
                   fontSize: textSize20,
                   color: Theme.of(context).indicatorColor),
             ),
@@ -1219,7 +1201,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     child: Text(
                       LocaleKeys.cancel.tr(),
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                      style: TextStyle(
                           color: Theme.of(context).shadowColor,
                           fontFamily: 'MyriadPro',
                           fontSize: textSize18),
@@ -1338,7 +1320,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     child: Text(
                       LocaleKeys.save.tr(),
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                      style: TextStyle(
                           color: Theme.of(context).shadowColor,
                           fontFamily: 'MyriadPro',
                           fontSize: textSize18),

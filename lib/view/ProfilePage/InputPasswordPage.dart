@@ -282,6 +282,8 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                       ),
                                       onPressed: () => {
                                         setState(() {
+                                          widget.error = '';
+                                          errorTxt = '';
                                           globals.passChosen = false;
                                           backArrow = SizedBox.shrink();
                                         })
@@ -326,6 +328,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                           onPressed: () => {
                             setState(() {
                               widget.error = '';
+                              errorTxt = '';
                               globals.passChosen = false;
                               backArrow = SizedBox.shrink();
                             })
@@ -459,6 +462,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
         onPressed: () => {
           setState(() {
             widget.error = '';
+            errorTxt = '';
             globals.passChosen = false;
             backArrow = SizedBox.shrink();
           })
@@ -508,10 +512,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                   widget.teamName = value;
                                   widget.error = '';
                                 },
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
+                                style: TextStyle(
                                         color: Theme.of(context).disabledColor,
                                         fontFamily: 'MyriadPro',
                                         fontSize: textSize20),
@@ -530,10 +531,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                 ? ''
                                 : errorTxt,
                             textAlign: TextAlign.start,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(
+                            style: TextStyle(
                                     fontSize: textSize14,
                                     color: Theme.of(context).errorColor)),
                       ),
@@ -583,10 +581,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                         child: Text(
                           LocaleKeys.ok.tr(),
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(
+                          style: TextStyle(
                                   color: Theme.of(context).shadowColor,
                                   fontFamily: 'MyriadPro',
                                   fontSize: textSize20),
@@ -636,10 +631,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                     widget.teamName = value;
                                     widget.error = '';
                                   },
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6!
-                                      .copyWith(
+                                  style: TextStyle(
                                           color:
                                               Theme.of(context).disabledColor,
                                           fontFamily: 'MyriadPro',
@@ -659,10 +651,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                               ? ''
                               : errorTxt,
                           textAlign: TextAlign.start,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(
+                          style: TextStyle(
                                   fontSize: textSize14,
                                   color: Theme.of(context).errorColor)),
                     ),
@@ -707,10 +696,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                   LocaleKeys.portfolio.tr(),
                                   // + ' ' + _name,
                                   textAlign: TextAlign.center,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6!
-                                      .copyWith(
+                                  style: TextStyle(
                                           fontSize: textSize17,
                                           color: Theme.of(context).focusColor),
                                   key: UniqueKey(),
@@ -726,10 +712,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                         textAlign: TextAlign.center,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6!
-                                            .copyWith(
+                                        style: TextStyle(
                                                 fontSize: textSize22,
                                                 color: Theme.of(context)
                                                     .focusColor,
@@ -752,10 +735,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                               child: ListTile(
                                                 title: Text(
                                                   item.nameProfile,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline6!
-                                                      .copyWith(
+                                                  style: TextStyle(
                                                           color:
                                                               Theme.of(context)
                                                                   .focusColor,
@@ -856,10 +836,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                             child: Text(
                               LocaleKeys.ok.tr(),
                               textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .copyWith(
+                              style: TextStyle(
                                       color: Theme.of(context).shadowColor,
                                       fontFamily: 'MyriadPro',
                                       fontSize: textSize20),

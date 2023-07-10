@@ -123,10 +123,7 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                           top: 10.0, left: 10.0, right: 10.0, bottom: 5.0),
                       child: Text(LocaleKeys.onboard_second_text.tr(),
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(
+                          style: TextStyle(
                                   color: Theme.of(context).focusColor,
                                   fontFamily: 'MyriadPro',
                                   fontSize: textSize14))),
@@ -145,10 +142,7 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                           top: 10.0, left: 10.0, right: 10.0, bottom: 5.0),
                       child: Text(LocaleKeys.security_measure.tr(),
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(
+                          style: TextStyle(
                                   color: Theme.of(context).focusColor,
                                   fontFamily: 'MyriadPro',
                                   fontWeight: FontWeight.bold,
@@ -250,10 +244,7 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                                                   welcome: Text(
                                                     LocaleKeys.welcome.tr(),
                                                     textAlign: TextAlign.center,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline6!
-                                                        .copyWith(
+                                                    style: TextStyle(
                                                             fontSize:
                                                                 textSize45,
                                                             color: Theme.of(
@@ -276,10 +267,7 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                                             welcome: Text(
                                               LocaleKeys.conf_pass.tr(),
                                               textAlign: TextAlign.center,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headline6!
-                                                  .copyWith(
+                                              style: TextStyle(
                                                       fontSize: textSize18,
                                                       color: Theme.of(context)
                                                           .secondaryHeaderColor),
@@ -308,10 +296,7 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                                                 welcome: Text(
                                                   LocaleKeys.welcome.tr(),
                                                   textAlign: TextAlign.center,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline6!
-                                                      .copyWith(
+                                                  style: TextStyle(
                                                           fontSize: textSize45,
                                                           color: Theme.of(
                                                                   context)
@@ -332,10 +317,7 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                           child: Text(
                             LocaleKeys.next.tr(),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(
+                            style: TextStyle(
                                     color: Theme.of(context).shadowColor,
                                     fontFamily: 'MyriadPro',
                                     fontSize: textSize20),

@@ -293,10 +293,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
                                     LocaleKeys.press_add_transaction.tr(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline4!
-                                        .copyWith(
+                                    style: TextStyle(
                                             fontSize: textSize18,
                                             color: Theme.of(context).hintColor),
                                   ),
@@ -340,10 +337,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                                           .tr(),
                                                       textAlign:
                                                           TextAlign.center,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline6!
-                                                          .copyWith(
+                                                      style: TextStyle(
                                                               color: Theme.of(
                                                                       context)
                                                                   .hoverColor,
@@ -384,7 +378,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                                                     textAlign:
                                                                         TextAlign
                                                                             .center,
-                                                                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                                                                    style: TextStyle(
                                                                         color:
                                                                             kInIconColor,
                                                                         fontWeight:
@@ -415,7 +409,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                                                     textAlign:
                                                                         TextAlign
                                                                             .center,
-                                                                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                                                                    style: TextStyle(
                                                                         color:
                                                                             kErrorColorLight,
                                                                         fontWeight:
@@ -812,10 +806,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                 maxLines: 1,
                                 overflow: TextOverflow.fade,
                                 softWrap: false,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
+                                style: TextStyle(
                                         fontSize: textSize22,
                                         color: Theme.of(context).shadowColor),
                               ),
@@ -835,10 +826,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                   overflow: TextOverflow.fade,
                                   softWrap: false,
                                   textAlign: TextAlign.start,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6!
-                                      .copyWith(
+                                  style: TextStyle(
                                           fontSize: textSize16,
                                           color: isRelevant == 1
                                               ? transactionHeaderTextColor
@@ -1142,10 +1130,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                             maxLines: 1,
                             softWrap: false,
                             overflow: TextOverflow.fade,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(fontSize: textSize22),
+                            style: TextStyle(fontSize: textSize22),
                           )),
                       SizedBox(height: 5.0),
                       SizedBox(
@@ -1161,10 +1146,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                     maxLines: 1,
                                     softWrap: false,
                                     overflow: TextOverflow.clip,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .copyWith(
+                                    style: TextStyle(
                                             fontSize: ProfileCoinSmallText,
                                             color: isRelevant == 1
                                                 ? transactionHeaderTextColor
@@ -1183,10 +1165,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                     children: [
                                       Text(
                                         "Wallet: ",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline5!
-                                            .copyWith(
+                                        style: TextStyle(
                                                 fontSize: ProfileCoinSmallText,
                                                 color:
                                                     transactionHeaderTextColor),
@@ -1197,10 +1176,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           //state.coinsList![index].name,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline5!
-                                              .copyWith(
+                                          style: TextStyle(
                                                   fontSize:
                                                       ProfileCoinSmallText,
                                                   color:

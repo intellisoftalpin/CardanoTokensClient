@@ -43,7 +43,7 @@ class ThirdRestoreScreen extends StatefulWidget {
               welcome: Text(
                 LocaleKeys.conf_pass.tr(),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline6!.copyWith(
+                style: TextStyle(
                     fontSize: textSize18,
                     color: Theme.of(context).secondaryHeaderColor),
               ),
@@ -200,7 +200,7 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
                 child: Text(
                   LocaleKeys.pass_remind.tr(),
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                  style: TextStyle(
                       fontSize: textSize14,
                       color: Theme.of(context).focusColor),
                 ),
@@ -238,7 +238,7 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
               decoration: kFieldNameCreateProfileDecoration(context).copyWith(
                   hintText: LocaleKeys.my_portfolio.tr(),
                   errorStyle: TextStyle(color: kErrorColor)),
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: TextStyle(
                   color: Theme.of(context).disabledColor,
                   fontSize: textSize20),
               onChanged: (value) => setState(() {
@@ -254,7 +254,7 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
                 visible: errorText,
                 child: Text(LocaleKeys.enter_name.tr(),
                     textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                    style: TextStyle(
                         fontSize: textSize14,
                         color: Theme.of(context).errorColor))),
           )
@@ -296,7 +296,7 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
                   child: Text(
                     LocaleKeys.create.tr(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                    style: TextStyle(
                         color: Theme.of(context).shadowColor,
                         fontFamily: 'MyriadPro',
                         fontSize: textSize20),

@@ -48,7 +48,7 @@ Future<void> authRestoreAlertReplace(
                 top: 10.0, right: 10.0, left: 10.0, bottom: 5.0),
             child: Text(LocaleKeys.replace_recovery_alert.tr(),
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: TextStyle(
                   color: Theme.of(context).hoverColor,
                   fontFamily: 'MyriadPro',
                   fontSize: textSize14),
@@ -183,10 +183,7 @@ Future<void> authRestoreAlertReplace(
                           child: Text(
                             LocaleKeys.yes.tr(),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(
+                            style: TextStyle(
                                     color: kInIconColor,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'MyriadPro',
@@ -206,10 +203,7 @@ Future<void> authRestoreAlertReplace(
                           child: Text(
                             LocaleKeys.no.tr(),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(
+                            style: TextStyle(
                                     color: kErrorColorLight,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'MyriadPro',

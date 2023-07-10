@@ -20,7 +20,7 @@ Future<void> showOnBoardAlert(BuildContext context) async {
             child: Text(
               LocaleKeys.pass_alert_text.tr(),
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: TextStyle(
                   color: Theme.of(context).hoverColor,
                   fontFamily: 'MyriadPro',
                   fontSize: textSize14),
@@ -43,10 +43,7 @@ Future<void> showOnBoardAlert(BuildContext context) async {
                                   welcome: Text(
                                     LocaleKeys.welcome.tr(),
                                     textAlign: TextAlign.center,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .copyWith(
+                                    style: TextStyle(
                                         fontSize: textSize45,
                                         color: Theme.of(context)
                                             .secondaryHeaderColor),
@@ -64,7 +61,7 @@ Future<void> showOnBoardAlert(BuildContext context) async {
                           child: Text(
                             LocaleKeys.yes.tr(),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headline6!.copyWith(
+                            style: TextStyle(
                                 color: kInIconColor,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'MyriadPro',
@@ -84,7 +81,7 @@ Future<void> showOnBoardAlert(BuildContext context) async {
                           child: Text(
                             LocaleKeys.no.tr(),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headline6!.copyWith(
+                            style: TextStyle(
                                 color: kErrorColorLight,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'MyriadPro',

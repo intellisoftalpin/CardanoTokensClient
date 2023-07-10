@@ -122,10 +122,7 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
+                                style: TextStyle(
                                         fontSize: textSize24,
                                         color: Theme.of(context)
                                             .secondaryHeaderColor),
@@ -164,10 +161,7 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
                                             onChanged: (value) {
                                               widget.teamPass = value;
                                             },
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6!
-                                                .copyWith(
+                                            style: TextStyle(
                                                     color: Theme.of(context)
                                                         .disabledColor,
                                                     fontFamily: 'MyriadPro',
@@ -217,10 +211,7 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
                                   child: Text(
                                     LocaleKeys.cancel.tr(),
                                     textAlign: TextAlign.center,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .copyWith(
+                                    style: TextStyle(
                                             color:
                                                 Theme.of(context).shadowColor,
                                             fontFamily: 'MyriadPro',
@@ -251,10 +242,7 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
                                   child: Text(
                                     LocaleKeys.ok.tr(),
                                     textAlign: TextAlign.center,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .copyWith(
+                                    style: TextStyle(
                                             color:
                                                 Theme.of(context).shadowColor,
                                             fontFamily: 'MyriadPro',
