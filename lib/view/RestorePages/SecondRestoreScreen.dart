@@ -99,10 +99,7 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                                       topRight: const Radius.circular(20.0),
                                     )),
                                 child: Text(LocaleKeys.recovery.tr(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .copyWith(
+                                    style: TextStyle(
                                             color: Theme.of(context).focusColor,
                                             fontFamily: 'MyriadPro',
                                             fontWeight: FontWeight.bold,
@@ -114,10 +111,7 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                             margin: EdgeInsets.only(left: 15.0, right: 15.0),
                             child: Text(LocaleKeys.enter_pass_recovery.tr(),
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
+                                style: TextStyle(
                                         color: Theme.of(context).focusColor,
                                         fontFamily: 'MyriadPro',
                                         fontSize: textSize17))),
@@ -140,10 +134,7 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                                               hintText: (widget.error == '')
                                                   ? LocaleKeys.password.tr()
                                                   : ''),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6!
-                                      .copyWith(
+                                  style: TextStyle(
                                           color:
                                               Theme.of(context).disabledColor,
                                           fontFamily: 'MyriadPro',
@@ -160,10 +151,7 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                             padding: const EdgeInsets.only(left: 32.0),
                             child: Text(widget.error,
                                 textAlign: TextAlign.start,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
+                                style: TextStyle(
                                         fontSize: textSize14,
                                         color: Theme.of(context).errorColor)),
                           ),
@@ -210,10 +198,7 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                                 child: Text(
                                   LocaleKeys.ok.tr(),
                                   textAlign: TextAlign.center,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6!
-                                      .copyWith(
+                                  style: TextStyle(
                                           color: Theme.of(context).shadowColor,
                                           fontFamily: 'MyriadPro',
                                           fontSize: textSize20),
@@ -235,10 +220,7 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                       height: 50.0,
                       child: Text(LocaleKeys.create_port_recovery.tr(),
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(
+                          style: TextStyle(
                                   color: Theme.of(context).focusColor,
                                   fontFamily: 'MyriadPro',
                                   fontSize: textSize19)),
@@ -251,10 +233,7 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                           padding: EdgeInsets.only(left: 10.0, right: 10.0),
                           child: Text(LocaleKeys.choose_port_recovery.tr(),
                               textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .copyWith(
+                              style: TextStyle(
                                       color: Theme.of(context).focusColor,
                                       fontFamily: 'MyriadPro',
                                       fontSize: textSize17))),
@@ -278,8 +257,6 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                                       profile[index].nameProfile,
                                       maxLines: 1,
                                       overflow: TextOverflow.clip,
-                                      style:
-                                          Theme.of(context).textTheme.headline6,
                                     ),
                                     leading: new Icon(Icons.perm_identity,
                                         color: Theme.of(context)
@@ -336,10 +313,7 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                                                 const Radius.circular(20.0),
                                           )),
                                       child: Text(LocaleKeys.recovery.tr(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6!
-                                              .copyWith(
+                                          style: TextStyle(
                                                   color: Theme.of(context)
                                                       .focusColor,
                                                   fontFamily: 'MyriadPro',
@@ -380,10 +354,7 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                                       child: Text(
                                         LocaleKeys.create_new_portfolio.tr(),
                                         textAlign: TextAlign.center,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6!
-                                            .copyWith(
+                                        style: TextStyle(
                                                 color: Theme.of(context)
                                                     .shadowColor,
                                                 fontFamily: 'MyriadPro',

@@ -44,7 +44,7 @@ class CreateProfilePage extends StatefulWidget {
               welcome: Text(
                 LocaleKeys.conf_pass.tr(),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline6!.copyWith(
+                style: TextStyle(
                     fontSize: textSize18,
                     color: Theme.of(context).secondaryHeaderColor),
               ),
@@ -242,7 +242,7 @@ class CreateProfilePageState extends State<CreateProfilePage> {
                 child: Text(
                   LocaleKeys.pass_remind.tr(),
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                  style: TextStyle(
                       fontSize: textSize14,
                       color: Theme.of(context).focusColor),
                 ),
@@ -269,7 +269,7 @@ class CreateProfilePageState extends State<CreateProfilePage> {
               decoration: kFieldNameCreateProfileDecoration(context).copyWith(
                   hintText: LocaleKeys.my_portfolio.tr(),
                   errorStyle: TextStyle(color: kErrorColor)),
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: TextStyle(
                   color: Theme.of(context).disabledColor,
                   fontSize: textSize20),
               validator: (value) {
@@ -294,7 +294,7 @@ class CreateProfilePageState extends State<CreateProfilePage> {
                 decoration: kFieldPassCreateProfileDecoration(context).copyWith(
                     hintText: LocaleKeys.main_pass.tr(),
                     errorStyle: TextStyle(color: kErrorColor)),
-                style: Theme.of(context).textTheme.headline6!.copyWith(
+                style: TextStyle(
                     color: Theme.of(context).disabledColor,
                     fontFamily: 'MyriadPro',
                     fontSize: textSize20),
@@ -320,7 +320,7 @@ class CreateProfilePageState extends State<CreateProfilePage> {
                 decoration: kFieldPassCreateProfileDecoration(context).copyWith(
                     hintText: LocaleKeys.confirm_password.tr(),
                     errorStyle: TextStyle(color: kErrorColor)),
-                style: Theme.of(context).textTheme.headline6!.copyWith(
+                style: TextStyle(
                     color: Theme.of(context).disabledColor,
                     fontFamily: 'MyriadPro',
                     fontSize: textSize20),
@@ -374,7 +374,7 @@ class CreateProfilePageState extends State<CreateProfilePage> {
                   child: Text(
                     LocaleKeys.create.tr(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                    style: TextStyle(
                         color: Theme.of(context).shadowColor,
                         fontFamily: 'MyriadPro',
                         fontSize: textSize20),

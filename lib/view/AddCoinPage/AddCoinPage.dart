@@ -72,7 +72,7 @@ class AddCoinPageState extends State<AddCoinPage> {
       weight = 6;
     }
 
-    if (WidgetsBinding.instance.window.viewInsets.bottom > 0.0) {
+    if (View.of(context).viewInsets.bottom > 0.0) {
       //when keyboard open
       inputFieldTextColor = Theme.of(context).shadowColor;
       inputFieldPadding = EdgeInsets.only(left: 20.0);

@@ -87,11 +87,7 @@ class BackupRestorePageState extends State<BackupRestorePage> {
                       //     .appBarTheme
                       //     .textTheme!
                       //     .headline6,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(
+                      style: TextStyle(
                           color:
                           Theme
                               .of(context)
@@ -175,11 +171,7 @@ class BackupRestorePageState extends State<BackupRestorePage> {
                                         Text(
                                           LocaleKeys.remember_backup.tr(),
                                           textAlign: TextAlign.center,
-                                          style: Theme
-                                              .of(context)
-                                              .textTheme
-                                              .headline6!
-                                              .copyWith(
+                                          style: TextStyle(
                                               color:
                                               Theme
                                                   .of(context)
@@ -250,11 +242,7 @@ class BackupRestorePageState extends State<BackupRestorePage> {
                                                             .tr(),
                                                         textAlign: TextAlign
                                                             .left,
-                                                        style: Theme
-                                                            .of(context)
-                                                            .textTheme
-                                                            .headline6!
-                                                            .copyWith(
+                                                        style: TextStyle(
                                                             color:
                                                             Theme
                                                                 .of(
@@ -325,11 +313,7 @@ class BackupRestorePageState extends State<BackupRestorePage> {
                                                       LocaleKeys.yes.tr(),
                                                       textAlign: TextAlign
                                                           .center,
-                                                      style: Theme
-                                                          .of(context)
-                                                          .textTheme
-                                                          .headline6!
-                                                          .copyWith(
+                                                      style: TextStyle(
                                                           color:
                                                           Theme
                                                               .of(context)
@@ -384,11 +368,7 @@ class BackupRestorePageState extends State<BackupRestorePage> {
                                                       LocaleKeys.no.tr(),
                                                       textAlign: TextAlign
                                                           .center,
-                                                      style: Theme
-                                                          .of(context)
-                                                          .textTheme
-                                                          .headline6!
-                                                          .copyWith(
+                                                      style: TextStyle(
                                                           color:
                                                           Theme
                                                               .of(context)
@@ -449,11 +429,7 @@ class BackupRestorePageState extends State<BackupRestorePage> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               LocaleKeys.backup_restore.tr(),
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .headline6!
-                  .copyWith(
+              style: TextStyle(
                   fontSize: textSize14, color: Theme
                   .of(context)
                   .hintColor),
@@ -463,11 +439,7 @@ class BackupRestorePageState extends State<BackupRestorePage> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               "13.10.2021",
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .headline6!
-                  .copyWith(
+              style: TextStyle(
                   fontSize: textSize20, fontFamily: 'Myriad Pro'),
             ),
           ),
@@ -530,11 +502,7 @@ class BackupRestorePageState extends State<BackupRestorePage> {
                     state.listFiles![index].path
                         .split('/')
                         .last,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headline6!
-                        .copyWith(
+                    style: TextStyle(
                         fontSize: textSize14,
                         color: Theme
                             .of(context)
@@ -556,11 +524,7 @@ class BackupRestorePageState extends State<BackupRestorePage> {
                           child: ListTile(
                             title: Text(
                               item,
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .copyWith(
+                              style: TextStyle(
                                   color: Theme
                                       .of(context)
                                       .focusColor,
@@ -656,11 +620,7 @@ class BackupRestorePageState extends State<BackupRestorePage> {
               child: Text(
                 LocaleKeys.backup.tr(),
                 textAlign: TextAlign.center,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headline6!
-                    .copyWith(
+                style: TextStyle(
                     color: Theme
                         .of(context)
                         .shadowColor,
@@ -730,11 +690,7 @@ class BackupRestorePageState extends State<BackupRestorePage> {
                     child: Text(
                       LocaleKeys.backup.tr(),
                       textAlign: TextAlign.center,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(
+                      style: TextStyle(
                           color: Theme
                               .of(context)
                               .shadowColor,
@@ -768,11 +724,7 @@ class BackupRestorePageState extends State<BackupRestorePage> {
                     child: Text(
                       LocaleKeys.delete_all.tr(),
                       textAlign: TextAlign.center,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(
+                      style: TextStyle(
                           color: Theme
                               .of(context)
                               .shadowColor,

@@ -389,7 +389,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                 }
                 return null;
               },
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: TextStyle(
                   color: Theme.of(context).secondaryHeaderColor,
                   fontFamily: 'Roboto',
                   fontSize: textSize14),
@@ -438,7 +438,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                 }
                 return null;
               },
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: TextStyle(
                   color: Theme.of(context).secondaryHeaderColor,
                   fontFamily: 'Roboto',
                   fontSize: textSize14),
@@ -473,7 +473,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                 }
                 return null;
               },
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: TextStyle(
                   color: Theme.of(context).secondaryHeaderColor,
                   fontFamily: 'Roboto',
                   fontSize: textSize14),
@@ -511,7 +511,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                 }
                 return null;
               },
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: TextStyle(
                   color: Theme.of(context).secondaryHeaderColor,
                   fontFamily: 'Roboto',
                   fontSize: textSize14),
@@ -568,7 +568,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                   child: Text(
                     LocaleKeys.delete_portfolio.tr(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                    style: TextStyle(
                         color: Theme.of(context).shadowColor,
                         fontFamily: 'MyriadPro',
                         fontSize: textSize20),

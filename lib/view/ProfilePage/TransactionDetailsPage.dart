@@ -391,10 +391,7 @@ class _TransactionsDetailsPageState extends State<TransactionsDetailsPage> {
                                     child: Text(
                                       LocaleKeys.delete.tr(),
                                       textAlign: TextAlign.center,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6!
-                                          .copyWith(
+                                      style: TextStyle(
                                               color:
                                                   Theme.of(context).shadowColor,
                                               fontFamily: 'MyriadPro',
@@ -441,10 +438,7 @@ class _TransactionsDetailsPageState extends State<TransactionsDetailsPage> {
                                     child: Text(
                                       LocaleKeys.edit.tr(),
                                       textAlign: TextAlign.center,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6!
-                                          .copyWith(
+                                      style: TextStyle(
                                               color:
                                                   Theme.of(context).shadowColor,
                                               fontFamily: 'MyriadPro',
