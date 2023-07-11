@@ -184,7 +184,7 @@ jobs:
          
       - name: Display structure of Uploaded files
         run: ls -R
-        working-directory: ${{ env.ARTIFACTS_DIRECTORY }}
+        working-directory: ${{ env.ARTIFACTS_DIRECTORY }}/cardanotokensclient.*
          
   deploy_android_apk:
     runs-on: ubuntu-latest
@@ -194,10 +194,10 @@ jobs:
       - name: Artifacts Download
         uses: actions/download-artifact@v3.0.2
         with:
-          path: ${{ env.ARTIFACTS_DIRECTORY }}
+          path: ${{ env.ARTIFACTS_DIRECTORY }}/cardanotokensclient.*
                         
       - name: Create zip for apk
-        run: zip -j ./cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip ./cardanotokensclient.*.apk/*apk
+        run: zip -j ./cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip ./cardanotokensclient.*.apk/*
        
       - name: APK send to Telegram chat
         run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F document=@./cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip -F "caption=CardanoTokensClient build is ready!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument --http1.1
@@ -210,7 +210,7 @@ jobs:
       - name: Artifacts Download
         uses: actions/download-artifact@v3.0.2
         with:
-          path: ${{ env.ARTIFACTS_DIRECTORY }}
+          path: ${{ env.ARTIFACTS_DIRECTORY }}//cardanotokensclient.*
         
       - name: Display structure of Uploaded files
         run: ls -R
@@ -221,7 +221,7 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_API_JSON_PLAIN }}
           packageName: com.intellisoftalpin.ctokens
-          releaseFiles: ./cardanotokensclient.*.aab/*aab
+          releaseFiles: ./cardanotokensclient.*.aab/*
           track: internal
           status: draft
 #           status: completed
