@@ -188,6 +188,7 @@ jobs:
                         
       - name: Create zip for apk
         run: |
+          pwd
           ls $APK_FILE_PATH
           mkdir ./apk
           cp $APK_FILE_PATH ./apk
@@ -210,15 +211,13 @@ jobs:
       - name: Create zip for apk
         run: |
             ls
-            mkdir ./releaseFiles
-            
-                        
+              
       - name: Google Play Deploy
         uses: r0adkll/upload-google-play@v1.0.19
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_API_JSON_PLAIN }}
           packageName: com.intellisoftalpin.ctokens
-          releaseFiles: cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.aab
+          releaseFiles: cardanotokensclient.${{ needs.build_aab.outputs.version_number }}.${{ needs.build_aab.outputs.incremented_build_number }}.aab
           track: internal
           status: draft
 #           status: completed
