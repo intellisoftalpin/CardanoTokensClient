@@ -24,23 +24,6 @@ ThemeData basicTheme() =>
       toggleableActiveColor: konBoardBGColor,
       splashColor: kAboutPageAppBarColor,
       scaffoldBackgroundColor: kBackgroundDetailsProfile,
-      textTheme: TextTheme(
-        headline6: TextStyle(
-          fontFamily: 'Roboto',
-          //fontSize: MediumTex,
-          color: kAccentColor,
-        ),
-        headline5: TextStyle(
-          fontFamily: 'Roboto',
-          //fontSize: MediumTex,
-          color: kTextSecondaryColor,
-        ),
-        headline4: TextStyle(
-          fontFamily: 'Roboto',
-          //fontSize: MediumTex,
-          color: kButtonTextColor,
-        ),
-      ),
       iconTheme: IconThemeData(
         color: kSecondaryColor,
         size: 25.0,
@@ -76,23 +59,6 @@ ThemeData lightTheme() =>
       toggleableActiveColor: lonBoardBGColor,
       splashColor: lAboutPageAppBarColor,
       scaffoldBackgroundColor: lBackgroundDetailsProfile,
-      textTheme: TextTheme(
-        headline6: TextStyle(
-          fontFamily: 'Roboto',
-          //fontSize: MediumTex,
-          color: lAccentColor,
-        ),
-        headline5: TextStyle(
-          fontFamily: 'Roboto',
-          //fontSize: MediumTex,
-          color: lTextSecondaryColor,
-        ),
-        headline4: TextStyle(
-          fontFamily: 'Roboto',
-          //fontSize: MediumTex,
-          color: lButtonTextColor,
-        ),
-      ),
       iconTheme: IconThemeData(
         color: lSecondaryColor,
         size: 25.0,

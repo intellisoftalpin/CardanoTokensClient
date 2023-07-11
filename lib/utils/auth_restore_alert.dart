@@ -24,7 +24,7 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
             child: Text(
               LocaleKeys.bio_recovery_alert.tr(),
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: TextStyle(
                   color: Theme.of(context).hoverColor,
                   fontFamily: 'MyriadPro',
                   fontSize: textSize14),
@@ -59,10 +59,7 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                                             welcome: Text(
                                               LocaleKeys.welcome.tr(),
                                               textAlign: TextAlign.center,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headline6!
-                                                  .copyWith(
+                                              style: TextStyle(
                                                       fontSize: textSize45,
                                                       color: Theme.of(context)
                                                           .secondaryHeaderColor),
@@ -90,10 +87,7 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                                             welcome: Text(
                                               LocaleKeys.welcome.tr(),
                                               textAlign: TextAlign.center,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headline6!
-                                                  .copyWith(
+                                              style: TextStyle(
                                                       fontSize: textSize45,
                                                       color: Theme.of(context)
                                                           .secondaryHeaderColor),
@@ -111,10 +105,7 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                           child: Text(
                             LocaleKeys.yes.tr(),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(
+                            style: TextStyle(
                                     color: kInIconColor,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'MyriadPro',
@@ -134,10 +125,7 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                                         welcome: Text(
                                           LocaleKeys.welcome.tr(),
                                           textAlign: TextAlign.center,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6!
-                                              .copyWith(
+                                          style: TextStyle(
                                                   fontSize: textSize45,
                                                   color: Theme.of(context)
                                                       .secondaryHeaderColor),
@@ -153,10 +141,7 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                                         welcome: Text(
                                           LocaleKeys.welcome.tr(),
                                           textAlign: TextAlign.center,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6!
-                                              .copyWith(
+                                          style: TextStyle(
                                                   fontSize: textSize45,
                                                   color: Theme.of(context)
                                                       .secondaryHeaderColor),
@@ -172,10 +157,7 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                           child: Text(
                             LocaleKeys.no.tr(),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(
+                            style: TextStyle(
                                     color: kErrorColorLight,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'MyriadPro',

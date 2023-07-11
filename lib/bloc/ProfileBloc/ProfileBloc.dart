@@ -16,7 +16,6 @@ import 'package:crypto_offline/view/CreateProfilePage/CreateProfilePage.dart'
     as globals;
 import 'package:crypto_offline/bloc/CreateProfile/CreateProfileBloc.dart'
     as global;
-import 'package:crypto_offline/view/ProfilePage/ProfilePage.dart' as prof;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 
@@ -28,6 +27,8 @@ part 'ProfileEvent.dart';
 part 'ProfileState.dart';
 
 String? coinIdToDelete;
+double exchangeGlobal = 0.0;
+String exchangeTimeGlobal = '';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc(this._dbRepository, this._prefProfileRepository,
@@ -60,7 +61,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     var formatterCache = new DateFormat('yyyy-MM-dd hh:mm');
     String formattedDate = formatter.format(now);
     String formattedDateCache = formatterCache.format(now);
-    bool cache = false;
     bool isSame = false;
     bool isErrorEmpty = false;
     var pass = globals.pass.trim();
@@ -142,7 +142,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               int statusCardano = responseCardano.statusCode;
               if (statusCardano == HttpStatus.ok) {
                 Map data = jsonDecode(responseCardano.body);
-                prof.adaExchangeGlobal = data["usd"] as double;
+                exchangeTimeGlobal = convertTime(data["updated"] as String);
+                exchangeGlobal = (data["usd"] as double);
                 cardanoList = (data["tokens"] as List)
                     .map((e) => Tokens.fromJson(e))
                     .cast<Tokens>()
@@ -157,23 +158,38 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
                 await getWalletApi(transactions, responseCardano, cardanoList);
             walletAda = await getWalletAdaApi(
                 transactions, responseCardano, cardanoList);
-            cache = true;
           } else {
             wallet = (await getWallet(transactions))!;
             walletAda = (await getWalletAda(transactions))!;
-            cache = false;
           }
-          listCoin = await getListCoin(cache, internet, cardanoList);
+          listCoin = await getListCoin(internet, cardanoList);
           print('!!!!!!!listCoin::::: $listCoin');
         } else {
-          print('10');
-          if (lastDateCache.isNotEmpty) {
-            cache = true;
+          List<Tokens> cardanoList = [];
+          if (internet) {
+            Response responseCardano =
+                await _apiRepository.getCardanoTokensList();
+            try {
+              int statusCardano = responseCardano.statusCode;
+              if (statusCardano == HttpStatus.ok) {
+                Map data = jsonDecode(responseCardano.body);
+                exchangeTimeGlobal = convertTime(data["updated"] as String);
+                exchangeGlobal = (data["usd"] as double);
+                cardanoList = (data["tokens"] as List)
+                    .map((e) => Tokens.fromJson(e))
+                    .cast<Tokens>()
+                    .toList();
+              } else {
+                print('http error');
+              }
+            } on Exception catch (e) {
+              print('Exception::: $e');
+            }
+            listCoin = await getListCoin(internet, cardanoList);
           } else {
-            cache = false;
+            listCoin = await getListCoin(internet, cardanoList);
           }
-          listCoin = await getListCoin(cache, internet, []);
-          print('11');
+          print('10');
         }
         // yield state.copyWith(ProfileStatus.loaded, wallet, profile, listCoin);
 
@@ -263,9 +279,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     List<double> walleted = [];
     num priseUsd = 0;
     for (var element in transactions) {
-      if (element.coinId.isNotEmpty) {
-        priseUsd = (await _dbRepository.getCoin(element.coinId)).currentPrice;
-      }
       if (responseCardano.statusCode == HttpStatus.ok) {
         print('responseCardano.statusCode');
         for (var cardano in cardanoList) {
@@ -273,6 +286,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             print('cardano.tokenId == element.coinId');
             priseUsd = cardano.priceUsd!;
           }
+        }
+      } else {
+        if (element.coinId.isNotEmpty) {
+          priseUsd = (await _dbRepository.getCoin(element.coinId)).currentPrice;
         }
       }
       print('wait cost');
@@ -297,14 +314,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     List<double> walletedAda = [];
     double priseAda = 0;
     for (var element in transactions) {
-      if (element.coinId.isNotEmpty) {
-        priseAda = (await _dbRepository.getCoin(element.coinId)).adaPrice!;
-      }
       if (responseCardano.statusCode == HttpStatus.ok) {
         for (var cardano in cardanoList) {
           if (cardano.tokenId == element.coinId) {
             priseAda = cardano.priceAda!;
           }
+        }
+      } else {
+        if (element.coinId.isNotEmpty) {
+          priseAda = (await _dbRepository.getCoin(element.coinId)).adaPrice!;
         }
       }
       var cost = element.qty;
@@ -323,7 +341,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Future<List<ListCoin>> getListCoin(
-      bool cache, var internet, List<Tokens> cardanoList) async {
+      var internet, List<Tokens> cardanoList) async {
     double walletInOut = 0;
     double costInOut = 0;
     num priseUsd = 0;
@@ -365,7 +383,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         rank = coin.rank;
         liquidAda = coin.liquidAda!;
         isRelevant = 0;
-        if (cache && internet) {
+        if (internet) {
           for (var cardano in cardanoList) {
             if (cardano.tokenId == id) {
               id = coin.coinId;
@@ -524,7 +542,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             isRelevant: 0);
         if (responseCardano.statusCode == HttpStatus.ok) {
           Map data = jsonDecode(responseCardano.body);
-          prof.adaExchangeGlobal = data["usd"] as double;
           var cardanoList = (data["tokens"] as List)
               .map((e) => Tokens.fromJson(e))
               .cast<Tokens>()
@@ -570,6 +587,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         await _dbRepository.updateCoinIsRelevant(coin);
       }
     }
+  }
+
+  String convertTime(String apiTime) {
+    String time = apiTime.substring(0, apiTime.length - 1);
+    int gmt = DateTime.now().timeZoneOffset.inHours;
+    List<String> times = time.split('T');
+    DateTime dateFalse = DateTime.parse('${times.first} ${times.last}');
+    DateTime dateTrue = dateFalse.add(Duration(hours: gmt));
+    String timeToSave = DateFormat('dd.MM.yyyy, kk:mm:ss').format(dateTrue);
+    return timeToSave;
   }
 
   updatedRank(List<ListCoin> listCoin) async {

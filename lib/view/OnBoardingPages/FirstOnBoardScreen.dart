@@ -83,10 +83,7 @@ class _FirstOnBoardScreenState extends State<FirstOnBoardScreen> {
                       width: MediaQuery.of(context).size.width,
                       child: Text(LocaleKeys.onboard_first_text.tr(),
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(
+                          style: TextStyle(
                                   color: Theme.of(context).focusColor,
                                   fontFamily: 'MyriadPro',
                                   fontSize: textSize17))),
@@ -140,10 +137,7 @@ class _FirstOnBoardScreenState extends State<FirstOnBoardScreen> {
                                 child: Text(
                                   LocaleKeys.next.tr(),
                                   textAlign: TextAlign.center,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6!
-                                      .copyWith(
+                                  style: TextStyle(
                                           color: Theme.of(context).shadowColor,
                                           fontFamily: 'MyriadPro',
                                           fontSize: textSize20),

@@ -206,7 +206,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   child: Text(
                     LocaleKeys.add.tr(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                    style: TextStyle(
                         color: Theme.of(context).shadowColor,
                         fontFamily: 'MyriadPro',
                         fontSize: textSize20),
@@ -232,7 +232,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   child: Text(
                     LocaleKeys.cancel.tr(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                    style: TextStyle(
                         color: Theme.of(context).shadowColor,
                         fontFamily: 'MyriadPro',
                         fontSize: textSize20),

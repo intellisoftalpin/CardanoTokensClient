@@ -47,10 +47,7 @@ class InputPasswordDialog extends StatelessWidget {
                           welcome: Text(
                             LocaleKeys.conf_pass.tr(),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(
+                            style: TextStyle(
                                     fontSize: textSize18,
                                     color:
                                         Theme.of(context).secondaryHeaderColor),

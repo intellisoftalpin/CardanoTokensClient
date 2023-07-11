@@ -419,10 +419,7 @@ class _CardanoDescriptionPageState extends State<CardanoDescriptionPage> {
                               child: Text(
                                 LocaleKeys.add.tr(),
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
+                                style: TextStyle(
                                         color: Theme.of(context).shadowColor,
                                         fontFamily: 'MyriadPro',
                                         fontSize: textSize20),

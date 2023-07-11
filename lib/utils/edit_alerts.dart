@@ -49,11 +49,7 @@ Future<void> showAlertChangeName(BuildContext context) async {
                       .of(context)
                       .shadowColor),
                   errorStyle: TextStyle(color: lErrorColorLight)),
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .headline6!
-                  .copyWith(
+              style: TextStyle(
                   color: Theme
                       .of(context)
                       .shadowColor,
@@ -122,11 +118,7 @@ Future<void> showAlertChangeName(BuildContext context) async {
                     child: Text(
                       LocaleKeys.yes.tr(),
                       textAlign: TextAlign.center,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(
+                      style: TextStyle(
                           color: Theme
                               .of(context)
                               .shadowColor,
@@ -170,11 +162,7 @@ Future<void> showAlertChangePass(BuildContext context) async {
                       .of(context)
                       .shadowColor),
                   errorStyle: TextStyle(color: lErrorColorLight)),
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .headline6!
-                  .copyWith(
+              style: TextStyle(
                   color: Theme
                       .of(context)
                       .shadowColor,
@@ -226,11 +214,7 @@ Future<void> showAlertChangePass(BuildContext context) async {
                     child: Text(
                       LocaleKeys.yes.tr(),
                       textAlign: TextAlign.center,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(
+                      style: TextStyle(
                           color: Theme
                               .of(context)
                               .shadowColor,
@@ -289,11 +273,7 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
                                 .of(context)
                                 .shadowColor),
                             errorStyle: TextStyle(color: lErrorColorLight)),
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline6!
-                            .copyWith(
+                        style: TextStyle(
                             color: Theme
                                 .of(context)
                                 .shadowColor,
@@ -322,11 +302,7 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
                                     .of(context)
                                     .shadowColor),
                             errorStyle: TextStyle(color: lErrorColorLight)),
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline6!
-                            .copyWith(
+                        style: TextStyle(
                             color: Theme
                                 .of(context)
                                 .shadowColor,
@@ -479,11 +455,7 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
                     child: Text(
                       LocaleKeys.yes.tr(),
                       textAlign: TextAlign.center,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(
+                      style: TextStyle(
                           color: Theme
                               .of(context)
                               .shadowColor,
@@ -579,11 +551,7 @@ Future<void> showAlertDelete(BuildContext context) async {
                   child: Text(
                     LocaleKeys.yes.tr(),
                     textAlign: TextAlign.center,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headline6!
-                        .copyWith(
+                    style: TextStyle(
                         color: Theme
                             .of(context)
                             .shadowColor,
@@ -618,11 +586,7 @@ Future<void> showAlertDelete(BuildContext context) async {
                   child: Text(
                     LocaleKeys.no.tr(),
                     textAlign: TextAlign.center,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headline6!
-                        .copyWith(
+                    style: TextStyle(
                         color: Theme
                             .of(context)
                             .shadowColor,

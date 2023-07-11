@@ -13,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
-import 'dart:ui' as ui;
 
 import '../../data/repository/SharedPreferences/SharedPreferencesRepository.dart';
 import 'package:crypto_offline/bloc/CreateProfile/CreateProfileBloc.dart'
@@ -121,7 +120,7 @@ class _SettingsPageState extends State<SettingsPage> {
     if (_stringLocaleShPref == 'Системный(Русский)' ||
         _stringLocaleShPref == 'System(English)' ||
         _stringLocaleShPref == 'language') {
-      if (ui.window.locale.toString().contains('ru')) {
+      if (View.of(context).platformDispatcher.locale.languageCode.contains('ru')) {
         _stringLocaleShPref = 'Системный(Русский)';
       } else {
         _stringLocaleShPref = 'System(English)';

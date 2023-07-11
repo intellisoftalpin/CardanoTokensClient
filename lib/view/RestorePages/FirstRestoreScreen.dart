@@ -57,7 +57,7 @@ class _FirstRestoreScreenState extends State<FirstRestoreScreen> {
               padding: EdgeInsets.only(left: 10.0, right: 10.0),
               child: Text('${LocaleKeys.recovery_good.tr()}\n\n$fileName',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                  style: TextStyle(
                       color: Theme.of(context).focusColor,
                       fontFamily: 'MyriadPro',
                       fontSize: textSize17))),
@@ -87,10 +87,7 @@ class _FirstRestoreScreenState extends State<FirstRestoreScreen> {
                         child: Text(
                           LocaleKeys.no.tr(),
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(
+                          style: TextStyle(
                                   color: Theme.of(context).shadowColor,
                                   fontFamily: 'MyriadPro',
                                   fontSize: textSize20),
@@ -161,10 +158,7 @@ class _FirstRestoreScreenState extends State<FirstRestoreScreen> {
                         child: Text(
                           LocaleKeys.yes.tr(),
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(
+                          style: TextStyle(
                                   color: Theme.of(context).shadowColor,
                                   fontFamily: 'MyriadPro',
                                   fontSize: textSize20),
@@ -196,7 +190,7 @@ class _FirstRestoreScreenState extends State<FirstRestoreScreen> {
               padding: EdgeInsets.only(left: 10.0, right: 10.0),
               child: Text(errorText,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                  style: TextStyle(
                       color: Theme.of(context).focusColor,
                       fontFamily: 'MyriadPro',
                       fontSize: textSize17))),
@@ -221,7 +215,7 @@ class _FirstRestoreScreenState extends State<FirstRestoreScreen> {
                   child: Text(
                     LocaleKeys.ok.tr(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                    style: TextStyle(
                         color: Theme.of(context).shadowColor,
                         fontFamily: 'MyriadPro',
                         fontSize: textSize20),
@@ -355,10 +349,7 @@ class _FirstRestoreScreenState extends State<FirstRestoreScreen> {
                             topRight: const Radius.circular(20.0),
                           )),
                       child: Text(LocaleKeys.recovery.tr(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(
+                          style: TextStyle(
                                   color: Theme.of(context).focusColor,
                                   fontFamily: 'MyriadPro',
                                   fontWeight: FontWeight.bold,

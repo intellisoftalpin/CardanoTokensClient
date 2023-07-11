@@ -29,12 +29,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io' show Platform;
-import 'dart:ui' as ui;
 import '../../bloc/AuthenticateProfile/AuthProfileBloc.dart';
 import '../../bloc/AuthenticateProfile/AuthProfileEvent.dart';
 import '../../bloc/CloseDbBloc/CloseDbBloc.dart';
 import '../../data/model/CardanoModel.dart';
-import '../../data/repository/ApiRepository/ADAExchangeApi.dart';
 import '../../data/repository/ApiRepository/CardanoTokensApi.dart';
 import '../../utils/CaradanoTokenListTile.dart';
 import '../../utils/check_create_profile_time.dart';
@@ -54,7 +52,6 @@ int selectedIndex = 0;
 bool tokensPageLiq = true;
 bool loadTokens = false;
 List<Tokens> cardanoTokensGlobal = [];
-double? adaExchangeGlobal;
 double scrollPosition = 0.0;
 
 class ProfilePage extends StatefulWidget {
@@ -69,7 +66,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
-  final GetADAExchangeApi _getADAExchangeApi = GetADAExchangeApi();
   final CardanoTokensApi _cardanoTokensApi = CardanoTokensApi();
   SharedPreferences? preferences;
   var refreshKey = GlobalKey<RefreshIndicatorState>();
@@ -104,13 +100,14 @@ class ProfilePageState extends State<ProfilePage> {
     buildNumber: 'Unknown',
   );
 
-  static String codes() {
-    final languageFromPhoneSettings = ui.window.locale.toString();
+  static String codes(BuildContext context) {
+    final languageFromPhoneSettings =
+        View.of(context).platformDispatcher.locale;
     var systemAppLanguage = '';
-    if (languageFromPhoneSettings.contains('ru')) {
+    if (languageFromPhoneSettings.languageCode.contains('ru')) {
       print("Russian");
       systemAppLanguage = 'ru';
-    } else if (languageFromPhoneSettings.contains('en')) {
+    } else if (languageFromPhoneSettings.languageCode.contains('en')) {
       print("English");
       systemAppLanguage = 'en';
     } else {
@@ -138,19 +135,6 @@ class ProfilePageState extends State<ProfilePage> {
     pageController.dispose();
     _scrollController.dispose();
     super.dispose();
-  }
-
-  Future<List<dynamic>> _exchangeAda(bool force) async {
-    List<dynamic> exchange = [0.0, ''];
-    if (force == false) {
-      exchange = await _getADAExchangeApi.getADAExchange();
-      print('exchange: $exchange');
-    } else {
-      exchange = await _getADAExchangeApi.getForceADAExchange();
-      print('force_exchange: $exchange');
-    }
-    adaExchangeGlobal = exchange.first;
-    return exchange;
   }
 
   Future<List<Tokens>> _cardanoTokens() async {
@@ -400,27 +384,16 @@ class ProfilePageState extends State<ProfilePage> {
           children: <Widget>[
             Container(
                 margin: EdgeInsets.only(left: 10.0, right: 10.0),
-                child: FutureBuilder(
-                    future: _exchangeAda(false),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<dynamic>> snapshot) {
-                      if (snapshot.hasData) {
-                        return SizedBox(
-                            height: 15.0,
-                            child: Text(
-                              '${LocaleKeys.last_update.tr()} ${snapshot.data![1]}',
-                              textAlign: TextAlign.end,
-                              style: GoogleFonts.inter(
-                                color: Theme.of(context).focusColor,
-                                fontSize: textSize13,
-                              ),
-                            ));
-                      } else {
-                        return SizedBox(
-                          height: 15.0,
-                        );
-                      }
-                    })),
+                child: SizedBox(
+                    height: 15.0,
+                    child: Text(
+                      '${LocaleKeys.last_update.tr()} ${delete.exchangeTimeGlobal}',
+                      textAlign: TextAlign.end,
+                      style: GoogleFonts.inter(
+                        color: Theme.of(context).focusColor,
+                        fontSize: textSize13,
+                      ),
+                    ))),
             getWalletBalanceColumn(context),
             (state.listCoin!.isEmpty)
                 ? Expanded(
@@ -452,12 +425,9 @@ class ProfilePageState extends State<ProfilePage> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             LocaleKeys.press_add_coin.tr(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline4!
-                                .copyWith(
-                                    fontSize: textSize18,
-                                    color: Theme.of(context).hintColor),
+                            style: TextStyle(
+                                fontSize: textSize18,
+                                color: Theme.of(context).hintColor),
                           ),
                         ),
                       ],
@@ -471,7 +441,6 @@ class ProfilePageState extends State<ProfilePage> {
                               context.read<ProfileBloc>().add(CreateProfile());
                               state.listCoin!;
                               scaffoldKey.currentState;
-                              _exchangeAda(true);
                             });
                           });
                         },
@@ -627,7 +596,7 @@ class ProfilePageState extends State<ProfilePage> {
                                           index + 1,
                                           snapshot.data![index],
                                           tokensPageLiq,
-                                          adaExchangeGlobal ?? 0.0),
+                                          delete.exchangeGlobal),
                                       onTap: () async {
                                         Navigator.push(
                                             context,
@@ -636,9 +605,8 @@ class ProfilePageState extends State<ProfilePage> {
                                                     CardanoDescriptionPage(
                                                         token: snapshot
                                                             .data![index],
-                                                        exchangeAda:
-                                                            adaExchangeGlobal ??
-                                                                0.0)));
+                                                        exchangeAda: delete
+                                                            .exchangeGlobal)));
                                       },
                                     );
                                   }));
@@ -731,16 +699,19 @@ class ProfilePageState extends State<ProfilePage> {
                               child: InkWell(
                                   onTap: () {
                                     isCreateNewPortfolio = true;
-                                    BlocProvider.of<CloseDbBloc>(context)
-                                        .add(UpdateProfile(idProfile: global.idProfile));
+                                    BlocProvider.of<CloseDbBloc>(context).add(
+                                        UpdateProfile(
+                                            idProfile: global.idProfile));
                                     Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
-                                            builder: (context) => SecondOnBoardScreen(
-                                                appBarBackArrow: IconButton(
+                                            builder: (context) =>
+                                                SecondOnBoardScreen(
+                                                    appBarBackArrow: IconButton(
                                                   icon: Icon(
                                                     Icons.arrow_back_ios,
                                                     size: 35.0,
-                                                    color: Theme.of(context).focusColor,
+                                                    color: Theme.of(context)
+                                                        .focusColor,
                                                   ),
                                                   onPressed: () => {
                                                     Navigator.push(
@@ -750,8 +721,7 @@ class ProfilePageState extends State<ProfilePage> {
                                                                 ProfilePage()))
                                                   },
                                                 ))),
-                                            (Route<dynamic> route) => true);
-
+                                        (Route<dynamic> route) => true);
                                   },
                                   child: Icon(
                                     Icons.add,
@@ -802,7 +772,7 @@ class ProfilePageState extends State<ProfilePage> {
                                       name, id, '', '', profile)));
                               print(
                                   "profile.elementAt(index) = ${profile[index].nameProfile} "
-                                      " profile.elementAt(index)Id = ${profile[index].id}");
+                                  " profile.elementAt(index)Id = ${profile[index].id}");
                               globals.nameProfile = name;
                               global.idProfile = id;
                               input.passIsEmpty = false;
@@ -923,7 +893,7 @@ class ProfilePageState extends State<ProfilePage> {
                       height: 40.0,
                       child: InkWell(
                         onTap: () {
-                          final systemAppLanguage = codes();
+                          final systemAppLanguage = codes(context);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -1173,13 +1143,10 @@ class ProfilePageState extends State<ProfilePage> {
                             child: Text(
                               LocaleKeys.lock_app_button.tr(),
                               textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .copyWith(
-                                      color: Theme.of(context).shadowColor,
-                                      fontFamily: 'MyriadPro',
-                                      fontSize: textSize20),
+                              style: TextStyle(
+                                  color: Theme.of(context).shadowColor,
+                                  fontFamily: 'MyriadPro',
+                                  fontSize: textSize20),
                             ),
                             /*Image(
                         width: 22.0,
@@ -1378,53 +1345,33 @@ class ProfilePageState extends State<ProfilePage> {
                                 child: Text(
                                   LocaleKeys.wallet_balance.tr(),
                                   maxLines: 1,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6!
-                                      .copyWith(
-                                          fontSize: textSize14,
-                                          color: Theme.of(context).shadowColor),
+                                  style: TextStyle(
+                                      fontSize: textSize14,
+                                      color: Theme.of(context).shadowColor),
                                 ),
                               )),
                           Container(
                               margin:
                                   const EdgeInsets.only(right: 8.0, top: 8.0),
                               alignment: Alignment.topRight,
-                              child: FutureBuilder(
-                                  future: _exchangeAda(false),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<List<dynamic>> snapshot) {
-                                    if (snapshot.hasData) {
-                                      return Container(
-                                          padding: EdgeInsets.all(2.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Theme.of(context)
-                                                    .shadowColor,
-                                                width: 1.0),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(5.0)),
-                                          ),
-                                          child: Text(
-                                            (snapshot.data![0] != 0.0)
-                                                ? '1 ₳ = ${snapshot.data![0].toStringAsFixed(2)}\$'
-                                                : '${LocaleKeys.no_internet.tr()}',
-                                            style: GoogleFonts.inter(
-                                              color:
-                                                  Theme.of(context).shadowColor,
-                                              fontSize: textSize14,
-                                            ),
-                                          ));
-                                    } else {
-                                      return Container(
-                                          width: 15.0,
-                                          height: 15.0,
-                                          margin: EdgeInsets.only(right: 60.0),
-                                          child: Center(
-                                            child: CircularProgressIndicator(),
-                                          ));
-                                    }
-                                  })),
+                              child: Container(
+                                  padding: EdgeInsets.all(2.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Theme.of(context).shadowColor,
+                                        width: 1.0),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5.0)),
+                                  ),
+                                  child: Text(
+                                    (delete.exchangeGlobal != 0.0)
+                                        ? '1 ₳ = ${delete.exchangeGlobal.toStringAsFixed(2)}\$'
+                                        : '${LocaleKeys.no_internet.tr()}',
+                                    style: GoogleFonts.inter(
+                                      color: Theme.of(context).shadowColor,
+                                      fontSize: textSize14,
+                                    ),
+                                  ))),
                         ],
                       ),
                     ),
@@ -1449,12 +1396,9 @@ class ProfilePageState extends State<ProfilePage> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           menuText,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(
-                                  fontSize: textSize18,
-                                  color: Theme.of(context).shadowColor),
+                          style: TextStyle(
+                              fontSize: textSize18,
+                              color: Theme.of(context).shadowColor),
                         ),
                       ),
                       Container(
@@ -1503,12 +1447,9 @@ class ProfilePageState extends State<ProfilePage> {
                           children: <Widget>[
                             Icon(Icons.check, color: check1),
                             Text(LocaleKeys.holdings.tr(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(
-                                        fontSize: textSize18,
-                                        color: Theme.of(context).shadowColor)),
+                                style: TextStyle(
+                                    fontSize: textSize18,
+                                    color: Theme.of(context).shadowColor)),
                           ],
                         ),
                       ),
@@ -1519,12 +1460,9 @@ class ProfilePageState extends State<ProfilePage> {
                           children: <Widget>[
                             Icon(Icons.check, color: check2),
                             Text(LocaleKeys.liquidity.tr(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(
-                                        fontSize: textSize18,
-                                        color: Theme.of(context).shadowColor)),
+                                style: TextStyle(
+                                    fontSize: textSize18,
+                                    color: Theme.of(context).shadowColor)),
                           ],
                         ),
                       ),
@@ -1535,12 +1473,9 @@ class ProfilePageState extends State<ProfilePage> {
                           children: <Widget>[
                             Icon(Icons.check, color: check3),
                             Text(LocaleKeys.trend_up.tr(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(
-                                        fontSize: textSize18,
-                                        color: Theme.of(context).shadowColor)),
+                                style: TextStyle(
+                                    fontSize: textSize18,
+                                    color: Theme.of(context).shadowColor)),
                           ],
                         ),
                       ),
@@ -1551,12 +1486,9 @@ class ProfilePageState extends State<ProfilePage> {
                           children: <Widget>[
                             Icon(Icons.check, color: check4),
                             Text(LocaleKeys.trend_down.tr(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(
-                                        fontSize: textSize18,
-                                        color: Theme.of(context).shadowColor)),
+                                style: TextStyle(
+                                    fontSize: textSize18,
+                                    color: Theme.of(context).shadowColor)),
                           ],
                         ),
                       ),
@@ -1567,12 +1499,9 @@ class ProfilePageState extends State<ProfilePage> {
                           children: <Widget>[
                             Icon(Icons.check, color: check5),
                             Text(LocaleKeys.alphabet_sort.tr(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(
-                                        fontSize: textSize18,
-                                        color: Theme.of(context).shadowColor)),
+                                style: TextStyle(
+                                    fontSize: textSize18,
+                                    color: Theme.of(context).shadowColor)),
                           ],
                         ),
                       ),
@@ -1813,10 +1742,7 @@ class ProfilePageState extends State<ProfilePage> {
                           "${state.listCoin![index].rank}",
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(fontSize: ProfileCoinSmallText),
+                          style: TextStyle(fontSize: ProfileCoinSmallText),
                         ),
                       ],
                     )),
@@ -1836,10 +1762,7 @@ class ProfilePageState extends State<ProfilePage> {
                     margin: EdgeInsets.only(bottom: 2.5, top: 2.5),
                     child: Text(
                       '${state.listCoin![index].name}',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(fontSize: ProfileCoinBigText),
+                      style: TextStyle(fontSize: ProfileCoinBigText),
                       maxLines: 1,
                       overflow: TextOverflow.fade,
                       softWrap: false,
@@ -1858,10 +1781,7 @@ class ProfilePageState extends State<ProfilePage> {
                             maxLines: 1,
                             overflow: TextOverflow.fade,
                             softWrap: false,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(fontSize: textSize18),
+                            style: TextStyle(fontSize: textSize18),
                           ),
                         ),
                       ],
@@ -1872,47 +1792,63 @@ class ProfilePageState extends State<ProfilePage> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 10),
+              margin: EdgeInsets.only(top: 5),
               width: (MediaQuery.of(context).size.width - 30) / 5.6,
               height: 95,
               child: Column(
                 children: [
-                  Text(
-                    "\$${Decimal.dividePrice(Decimal.convertPriceRoundToDouble(state.listCoin![index].price!).toString())}",
-                    //state.coinsList![index].name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5!
-                        .copyWith(fontSize: ProfileCoinSmallText),
-                    maxLines: 1,
-                    overflow: TextOverflow.fade,
-                    softWrap: false,
-                  ),
-                  SizedBox(height: 7.0),
-                  arrowImage == 'assets/image/warning.png'
-                      ? Image.asset(
-                          arrowImage,
-                          // color: arrowColor,
-                          height: 45,
-                          width:
-                              (MediaQuery.of(context).size.width - 30) / 16.5,
-                        )
-                      : Image.asset(
-                          arrowImage,
-                          color: arrowColor,
-                          height: 45,
-                          width:
-                              (MediaQuery.of(context).size.width - 30) / 16.5,
-                        ),
-                  SizedBox(height: 7.0),
-                  Text(
-                    "${state.listCoin![index].percentChange7d!.toStringAsFixed(2)}\% 7d",
-                    //state.coinsList![index].name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5!
-                        .copyWith(fontSize: textSize11),
-                  ),
+                  SizedBox(
+                      height: 13,
+                      child: Text(
+                        "₳${Decimal.dividePrice(Decimal.convertPriceRoundToDouble(state.listCoin![index].adaPrice!).toString())}",
+                        //state.coinsList![index].name,
+                        style: GoogleFonts.inter(
+                            fontSize: textSize11,
+                            color: Theme.of(context).focusColor),
+                        maxLines: 1,
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                      )),
+                  SizedBox(
+                      height: 13,
+                      child: Text(
+                        "\$${Decimal.dividePrice(Decimal.convertPriceRoundToDouble(state.listCoin![index].price!).toString())}",
+                        //state.coinsList![index].name,
+                        style: GoogleFonts.inter(
+                            fontSize: textSize11,
+                            color: Theme.of(context).focusColor),
+                        maxLines: 1,
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                      )),
+                  SizedBox(height: 2.5),
+                  SizedBox(
+                      height: 45,
+                      child: arrowImage == 'assets/image/warning.png'
+                          ? Image.asset(
+                              arrowImage,
+                              // color: arrowColor,
+                              height: 45,
+                              width: (MediaQuery.of(context).size.width - 30) /
+                                  16.5,
+                            )
+                          : Image.asset(
+                              arrowImage,
+                              color: arrowColor,
+                              height: 45,
+                              width: (MediaQuery.of(context).size.width - 30) /
+                                  16.5,
+                            )),
+                  SizedBox(height: 2.5),
+                  SizedBox(
+                      height: 15,
+                      child: Text(
+                        "${state.listCoin![index].percentChange7d!.toStringAsFixed(2)}\% 7d",
+                        //state.coinsList![index].name,
+                        style: TextStyle(
+                            fontSize: textSize11,
+                            color: Theme.of(context).focusColor),
+                      )),
                 ],
               ),
               //IconButton(
@@ -1970,7 +1906,7 @@ class ProfilePageState extends State<ProfilePage> {
               child: Text(
                 LocaleKeys.deleteCoinText.tr(),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline6!.copyWith(
+                style: TextStyle(
                     color: Theme.of(context).hoverColor,
                     fontFamily: 'MyriadPro',
                     fontSize: textSize14),
@@ -2006,14 +1942,11 @@ class ProfilePageState extends State<ProfilePage> {
                             child: Text(
                               LocaleKeys.yes.tr(),
                               textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .copyWith(
-                                      color: kInIconColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'MyriadPro',
-                                      fontSize: textSize18),
+                              style: TextStyle(
+                                  color: kInIconColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'MyriadPro',
+                                  fontSize: textSize18),
                             )),
                       ),
                       SizedBox(
@@ -2029,14 +1962,11 @@ class ProfilePageState extends State<ProfilePage> {
                             child: Text(
                               LocaleKeys.no.tr(),
                               textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .copyWith(
-                                      color: kErrorColorLight,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'MyriadPro',
-                                      fontSize: textSize18),
+                              style: TextStyle(
+                                  color: kErrorColorLight,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'MyriadPro',
+                                  fontSize: textSize18),
                             )),
                       ),
                     ])),
