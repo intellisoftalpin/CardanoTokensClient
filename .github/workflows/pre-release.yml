@@ -189,12 +189,15 @@ jobs:
       - name: Create zip for apk
         run: |
           ls $APK_FILE_PATH
-          zip -j cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip $APK_FILE_PATH
+          mkdir ./apk
+          cp $APK_FILE_PATH ./apk/cardanotokensclient.*.apk
+          ls ./apk
+          zip -j ./apk/cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip ./apk/cardanotokensclient.*.apk
         env:
-          APK_FILE_PATH: ./*.apk
+          APK_FILE_PATH: ./cardanotokensclient.*.apk
        
       - name: APK send to Telegram chat
-        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F document=@./cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip -F "caption=CardanoTokensClient build is ready!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument --http1.1
+        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F document=@./apk/cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip -F "caption=CardanoTokensClient build is ready!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument --http1.1
       
   deploy_google_play:
       runs-on: ubuntu-latest
@@ -206,14 +209,16 @@ jobs:
         
       - name: Create zip for apk
         run: |
-              ls
+            ls
+            mkdir ./releaseFiles
+            
                         
       - name: Google Play Deploy
         uses: r0adkll/upload-google-play@v1.0.19
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_API_JSON_PLAIN }}
           packageName: com.intellisoftalpin.ctokens
-          releaseFiles: cardanotokensclient.*.aab
+          releaseFiles: cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.aab
           track: internal
           status: draft
 #           status: completed
