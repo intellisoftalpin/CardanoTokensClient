@@ -190,7 +190,7 @@ jobs:
         run: |
           ls $APK_FILE_PATH
           mkdir ./apk
-          cp $APK_FILE_PATH ./apk/cardanotokensclient.*.apk
+          cp $APK_FILE_PATH ./apk
           ls ./apk
           zip -j ./apk/cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip ./apk/cardanotokensclient.*.apk
         env:
