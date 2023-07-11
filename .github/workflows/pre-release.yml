@@ -191,11 +191,9 @@ jobs:
           pwd
           ls $APK_FILE_PATH
           mkdir ./apk
-          cp $APK_FILE_PATH ./apk
+          cp ./cardanotokensclient.*.apk ./apk
           ls ./apk
-          zip -j ./apk/cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip ./apk/cardanotokensclient.*.apk
-        env:
-          APK_FILE_PATH: ./cardanotokensclient.*.apk
+          zip -j ./apk/cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip ./apk/*
        
       - name: APK send to Telegram chat
         run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F document=@./apk/cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip -F "caption=CardanoTokensClient build is ready!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument --http1.1
