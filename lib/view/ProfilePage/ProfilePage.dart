@@ -1792,41 +1792,63 @@ class ProfilePageState extends State<ProfilePage> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 10),
+              margin: EdgeInsets.only(top: 5),
               width: (MediaQuery.of(context).size.width - 30) / 5.6,
               height: 95,
               child: Column(
                 children: [
-                  Text(
-                    "\$${Decimal.dividePrice(Decimal.convertPriceRoundToDouble(state.listCoin![index].price!).toString())}",
-                    //state.coinsList![index].name,
-                    style: TextStyle(fontSize: ProfileCoinSmallText),
-                    maxLines: 1,
-                    overflow: TextOverflow.fade,
-                    softWrap: false,
-                  ),
-                  SizedBox(height: 7.0),
-                  arrowImage == 'assets/image/warning.png'
-                      ? Image.asset(
-                          arrowImage,
-                          // color: arrowColor,
-                          height: 45,
-                          width:
-                              (MediaQuery.of(context).size.width - 30) / 16.5,
-                        )
-                      : Image.asset(
-                          arrowImage,
-                          color: arrowColor,
-                          height: 45,
-                          width:
-                              (MediaQuery.of(context).size.width - 30) / 16.5,
-                        ),
-                  SizedBox(height: 7.0),
-                  Text(
-                    "${state.listCoin![index].percentChange7d!.toStringAsFixed(2)}\% 7d",
-                    //state.coinsList![index].name,
-                    style: TextStyle(fontSize: textSize11),
-                  ),
+                  SizedBox(
+                      height: 13,
+                      child: Text(
+                        "₳${Decimal.dividePrice(Decimal.convertPriceRoundToDouble(state.listCoin![index].adaPrice!).toString())}",
+                        //state.coinsList![index].name,
+                        style: GoogleFonts.inter(
+                            fontSize: textSize11,
+                            color: Theme.of(context).focusColor),
+                        maxLines: 1,
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                      )),
+                  SizedBox(
+                      height: 13,
+                      child: Text(
+                        "\$${Decimal.dividePrice(Decimal.convertPriceRoundToDouble(state.listCoin![index].price!).toString())}",
+                        //state.coinsList![index].name,
+                        style: GoogleFonts.inter(
+                            fontSize: textSize11,
+                            color: Theme.of(context).focusColor),
+                        maxLines: 1,
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                      )),
+                  SizedBox(height: 2.5),
+                  SizedBox(
+                      height: 45,
+                      child: arrowImage == 'assets/image/warning.png'
+                          ? Image.asset(
+                              arrowImage,
+                              // color: arrowColor,
+                              height: 45,
+                              width: (MediaQuery.of(context).size.width - 30) /
+                                  16.5,
+                            )
+                          : Image.asset(
+                              arrowImage,
+                              color: arrowColor,
+                              height: 45,
+                              width: (MediaQuery.of(context).size.width - 30) /
+                                  16.5,
+                            )),
+                  SizedBox(height: 2.5),
+                  SizedBox(
+                      height: 15,
+                      child: Text(
+                        "${state.listCoin![index].percentChange7d!.toStringAsFixed(2)}\% 7d",
+                        //state.coinsList![index].name,
+                        style: TextStyle(
+                            fontSize: textSize11,
+                            color: Theme.of(context).focusColor),
+                      )),
                 ],
               ),
               //IconButton(
