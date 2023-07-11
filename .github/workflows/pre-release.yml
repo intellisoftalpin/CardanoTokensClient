@@ -1,4 +1,4 @@
-name: build_apk
+name: pre-release
 
 on: [ workflow_dispatch, push ]
 
@@ -111,6 +111,10 @@ jobs:
           name: cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
           path: ${{ env.ARTIFACTS_DIRECTORY }}/cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
           
+      - name: Display structure of Uploaded files
+        run: ls -R
+        working-directory: ${{ env.ARTIFACTS_DIRECTORY }}   
+          
   build_aab:
     runs-on: ubuntu-latest
     environment: github-actions-release
@@ -177,7 +181,11 @@ jobs:
         with:
           name: cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.aab
           path: ${{ env.ARTIFACTS_DIRECTORY }}/cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.aab
-          
+         
+      - name: Display structure of Uploaded files
+        run: ls -R
+        working-directory: ${{ env.ARTIFACTS_DIRECTORY }}
+         
   deploy_android_apk:
     runs-on: ubuntu-latest
     environment: github-actions-release
@@ -185,18 +193,14 @@ jobs:
     steps:
       - name: Artifacts Download
         uses: actions/download-artifact@v3.0.2
+        with:
+          path: ${{ env.ARTIFACTS_DIRECTORY }}
                         
       - name: Create zip for apk
-        run: |
-          pwd
-          ls $APK_FILE_PATH
-          mkdir ./apk
-          cp ./cardanotokensclient.*.apk ./apk
-          ls ./apk
-          zip -j ./apk/cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip ./apk/*
+        run: zip -j ./cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip ./cardanotokensclient.*.apk/*apk
        
       - name: APK send to Telegram chat
-        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F document=@./apk/cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip -F "caption=CardanoTokensClient build is ready!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument --http1.1
+        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F document=@./cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip -F "caption=CardanoTokensClient build is ready!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument --http1.1
       
   deploy_google_play:
       runs-on: ubuntu-latest
@@ -205,17 +209,19 @@ jobs:
       steps:
       - name: Artifacts Download
         uses: actions/download-artifact@v3.0.2
+        with:
+          path: ${{ env.ARTIFACTS_DIRECTORY }}
         
-      - name: Create zip for apk
-        run: |
-            ls
+      - name: Display structure of Uploaded files
+        run: ls -R
+        working-directory: ${{ env.ARTIFACTS_DIRECTORY }}
               
       - name: Google Play Deploy
         uses: r0adkll/upload-google-play@v1.0.19
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_API_JSON_PLAIN }}
           packageName: com.intellisoftalpin.ctokens
-          releaseFiles: cardanotokensclient.${{ needs.build_aab.outputs.version_number }}.${{ needs.build_aab.outputs.incremented_build_number }}.aab
+          releaseFiles: ./cardanotokensclient.*.aab/*aab
           track: internal
           status: draft
 #           status: completed
