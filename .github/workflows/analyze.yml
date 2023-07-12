@@ -2,6 +2,9 @@ name: analyze
 
 on: [ workflow_dispatch, push ]
 
+env:
+  ARTIFACTS_DIRECTORY: ./artifacts
+
 jobs:
   analyze:
     runs-on: ubuntu-latest
@@ -37,7 +40,28 @@ jobs:
             
       - name: Install dependencies
         run: flutter pub get
+        
+      - name: Artifacts Directory Setup
+        run: mkdir ${{ env.ARTIFACTS_DIRECTORY }}
           
       - name: Flutter Analyze 
-        run: flutter analyze
+        run: |
+          flutter analyze --write ./analysis_result.txt
+          cp $APK_FILE_PATH $ARTIFACTS_APK_PATH
+        env:
+          APK_FILE_PATH: ./analysis_result.txt
+          ARTIFACTS_APK_PATH: ./artifacts/analysis_result.txt
+          
+      - name: Artifacts Analyze
+        uses: actions/upload-artifact@v3.1.1
+        if: failure()
+        with:
+          name: analysis_result.txt
+          path: ${{ env.ARTIFACTS_DIRECTORY }}
+          
+      - name: Display structure of Uploaded files
+        continue-on-error: true
+        run: ls -R
+        working-directory: ${{ env.ARTIFACTS_DIRECTORY }}
+
         
