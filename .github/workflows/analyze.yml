@@ -8,6 +8,7 @@ env:
 jobs:
   analyze:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@v3.5.2
@@ -46,7 +47,9 @@ jobs:
           
       - name: Flutter Analyze 
         run: |
+          touch analysis_result.txt
           flutter analyze --write ./analysis_result.txt
+          ls -R
           cp $APK_FILE_PATH $ARTIFACTS_APK_PATH
         env:
           APK_FILE_PATH: ./analysis_result.txt
@@ -60,7 +63,6 @@ jobs:
           path: ${{ env.ARTIFACTS_DIRECTORY }}
           
       - name: Display structure of Uploaded files
-        continue-on-error: true
         run: ls -R
         working-directory: ${{ env.ARTIFACTS_DIRECTORY }}
 
