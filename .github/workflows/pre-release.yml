@@ -14,8 +14,8 @@ jobs:
       incremented_build_number: ${{ steps.build_version_bump.outputs.app_build_number }}
       version_number: ${{ steps.version_number_get.outputs.app_version_number }}
     steps:
-      - run: ls
-      - uses: actions/checkout@v3.2.0
+      - name: Checkout
+        uses: actions/checkout@v3.5.2
       - run: ls
       
       - name: App Version Number Get
@@ -52,8 +52,8 @@ jobs:
       incremented_build_number: ${{ needs.prepare_build.outputs.incremented_build_number }}
       version_number: ${{ needs.prepare_build.outputs.version_number }}
     steps:
-      - run: ls
-      - uses: actions/checkout@v3.2.0
+      - name: Checkout
+        uses: actions/checkout@v3.5.20
       - run: ls
       
       - name: Install Flutter
@@ -97,19 +97,19 @@ jobs:
       - name: Artifacts Directory Setup
         run: mkdir ${{ env.ARTIFACTS_DIRECTORY }}
           
-      - name: Flutter build apk
+      - name: Flutter Build
         run: |
           flutter build apk ./lib/main.dart --release --build-number=${{ needs.prepare_build.outputs.incremented_build_number }} --build-name=${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}
-          cp $APK_FILE_PATH $ARTIFACTS_APK_DIRECTORY_PATH
+          cp $APK_FILE_PATH $ARTIFACTS_APK_PATH
         env:
           APK_FILE_PATH: ./build/app/outputs/apk/release/app-release.apk
-          ARTIFACTS_APK_DIRECTORY_PATH: ${{ env.ARTIFACTS_DIRECTORY }}/cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
+          ARTIFACTS_APK_PATH: ./artifacts/app-release.apk
          
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v3.1.2
+      - name: Artifacts APK Upload
+        uses: actions/upload-artifact@v3.1.1
         with:
-          name: cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
-          path: ${{ env.ARTIFACTS_DIRECTORY }}/cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
+          name: watchtower.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
+          path: ${{ env.ARTIFACTS_DIRECTORY }}
           
       - name: Display structure of Uploaded files
         run: ls -R
@@ -123,8 +123,8 @@ jobs:
       incremented_build_number: ${{ needs.prepare_build.outputs.incremented_build_number }}
       version_number: ${{ needs.prepare_build.outputs.version_number }}
     steps:
-      - run: ls
-      - uses: actions/checkout@v3.2.0
+      - name: Checkout
+        uses: actions/checkout@v3.5.2
       - run: ls
       
       - name: Install Flutter
@@ -168,23 +168,23 @@ jobs:
       - name: Artifacts Directory Setup
         run: mkdir ${{ env.ARTIFACTS_DIRECTORY }}
           
-      - name: Flutter build aab
+      - name: Flutter Build
         run: |
           flutter build appbundle ./lib/main.dart --release --build-number=${{ needs.prepare_build.outputs.incremented_build_number }} --build-name=${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}
-          cp $AAB_FILE_PATH $ARTIFACTS_AAB_DIRECTORY_PATH
+          cp $AAB_FILE_PATH $ARTIFACTS_AAB_PATH
         env:
           AAB_FILE_PATH: ./build/app/outputs/bundle/release/app-release.aab
-          ARTIFACTS_AAB_DIRECTORY_PATH: ${{ env.ARTIFACTS_DIRECTORY }}/cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.aab
+          ARTIFACTS_AAB_PATH: ./artifacts/app-release.aab
          
-      - name: Upload AAB Artifact
-        uses: actions/upload-artifact@v3.1.2
+      - name: Artifacts AAB Upload
+        uses: actions/upload-artifact@v3.1.1
         with:
-          name: cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.aab
-          path: ${{ env.ARTIFACTS_DIRECTORY }}/cardanotokensclient.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.aab
-         
+          name: watchtower.${{ needs.prepare_build.outputs.version_number }}.${{ needs.prepare_build.outputs.incremented_build_number }}.aab
+          path: ${{ env.ARTIFACTS_DIRECTORY }}
+          
       - name: Display structure of Uploaded files
         run: ls -R
-        working-directory: ${{ env.ARTIFACTS_DIRECTORY }}/cardanotokensclient.*
+        working-directory: ${{ env.ARTIFACTS_DIRECTORY }}
          
   deploy_android_apk:
     runs-on: ubuntu-latest
@@ -192,9 +192,9 @@ jobs:
     needs: build_apk
     steps:
       - name: Artifacts Download
-        uses: actions/download-artifact@v3.0.2
+        uses: actions/download-artifact@v3.0.1
         with:
-          path: ${{ env.ARTIFACTS_DIRECTORY }}/cardanotokensclient.*
+          path: ${{ env.ARTIFACTS_DIRECTORY }}
                         
       - name: Create zip for apk
         run: zip -j ./cardanotokensclient.${{ needs.build_apk.outputs.version_number }}.${{ needs.build_apk.outputs.incremented_build_number }}.zip ${{ env.ARTIFACTS_DIRECTORY }}/*.apk/*
@@ -208,9 +208,9 @@ jobs:
       needs:  build_aab
       steps:
       - name: Artifacts Download
-        uses: actions/download-artifact@v3.0.2
+        uses: actions/download-artifact@v3.0.1
         with:
-          path: ${{ env.ARTIFACTS_DIRECTORY }}//cardanotokensclient.*
+          path: ${{ env.ARTIFACTS_DIRECTORY }}
         
       - name: Display structure of Uploaded files
         run: ls -R
