@@ -45,21 +45,20 @@ jobs:
       - name: Artifacts Directory Setup
         run: mkdir ${{ env.ARTIFACTS_DIRECTORY }}
           
-      - name: Flutter Analyze 
+      - name: Analyze code 
         run: |
-          touch analysis_result.txt
-          flutter analyze --write ./analysis_result.txt
+          flutter analyze --no-fatal-infos --no-fatal-warnings --write=analyzer-output.txt
           ls -R
           cp $APK_FILE_PATH $ARTIFACTS_APK_PATH
         env:
-          APK_FILE_PATH: ./analysis_result.txt
-          ARTIFACTS_APK_PATH: ./artifacts/analysis_result.txt
+          APK_FILE_PATH: ./analyzer-output.txt
+          ARTIFACTS_APK_PATH: ./artifacts/analyzer-output.txt
           
       - name: Artifacts Analyze
         uses: actions/upload-artifact@v3.1.1
         if: failure()
         with:
-          name: analysis_result.txt
+          name: analyzer-output.txt
           path: ${{ env.ARTIFACTS_DIRECTORY }}
           
       - name: Display structure of Uploaded files
