@@ -56,7 +56,7 @@ jobs:
           
       - name: Artifacts Analyze
         uses: actions/upload-artifact@v3.1.1
-        if: failure()
+        if: success() || failure()
         with:
           name: analyzer-output.txt
           path: ${{ env.ARTIFACTS_DIRECTORY }}
