@@ -45,13 +45,9 @@ jobs:
         run: mkdir ${{ env.ARTIFACTS_DIRECTORY }}
           
       - name: Analyze code 
-        run: |
-          flutter analyze --write=analyzer-output.txt
-          ls -R
-          cp $APK_FILE_PATH $ARTIFACTS_APK_PATH
+        run: flutter analyze --write=$ARTIFACTS_ANALYZE_FILE_PATH
         env:
-          APK_FILE_PATH: ./analyzer-output.txt
-          ARTIFACTS_APK_PATH: ./artifacts/analyzer-output.txt
+          ARTIFACTS_ANALYZE_FILE_PATH: ./artifacts/analyzer-output.txt
           
       - name: Artifacts Analyze
         uses: actions/upload-artifact@v3.1.1
