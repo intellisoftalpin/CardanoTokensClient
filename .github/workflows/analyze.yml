@@ -8,7 +8,7 @@ env:
 jobs:
   analyze:
     runs-on: ubuntu-latest
-    continue-on-error: true
+#    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@v3.5.2
@@ -46,7 +46,7 @@ jobs:
           
       - name: Analyze code 
         run: |
-          flutter analyze --no-fatal-infos --no-fatal-warnings --write=analyzer-output.txt
+          flutter analyze --write=analyzer-output.txt
           ls -R
           cp $APK_FILE_PATH $ARTIFACTS_APK_PATH
         env:
