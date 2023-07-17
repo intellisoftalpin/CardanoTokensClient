@@ -103,14 +103,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           print("DateTime.parse(coinsModel)= ${DateTime.parse(lastDateCache)}, "
               "formattedDateCache = $formattedDateCache, diffDays = $diffDays, isSame = $isSame");
         }
-        if (lastDateCache.isEmpty || isSame) {
-          if (internet) {
-            _apiRepository.check().then((internet) async {
-              await FileManager.deleteCache();
-              await savePrices(formattedDateCache);
-            });
-          }
-        }
+        //if (lastDateCache.isEmpty || isSame) {
+        //  if (internet) {
+        //    _apiRepository.check().then((internet) async {
+        //      await FileManager.deleteCache();
+        //    });
+        //  }
+        //}
         if (coinIdToDelete != null) {
           List<TransactionEntity> transactionList =
               await _dbRepository.getAllTransactionByIdCoin(coinIdToDelete!);
@@ -154,6 +153,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             } on Exception catch (e) {
               print('Exception::: $e');
             }
+            await savePrices(responseCardano);
             wallet =
                 await getWalletApi(transactions, responseCardano, cardanoList);
             walletAda = await getWalletAdaApi(
@@ -185,6 +185,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             } on Exception catch (e) {
               print('Exception::: $e');
             }
+            await savePrices(responseCardano);
             listCoin = await getListCoin(internet, cardanoList);
           } else {
             listCoin = await getListCoin(internet, cardanoList);
@@ -280,7 +281,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     num priseUsd = 0;
     for (var element in transactions) {
       if (responseCardano.statusCode == HttpStatus.ok) {
-        print('responseCardano.statusCode');
+        print('!responseCardano.statusCode');
         for (var cardano in cardanoList) {
           if (cardano.tokenId == element.coinId) {
             print('cardano.tokenId == element.coinId');
@@ -290,6 +291,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       } else {
         if (element.coinId.isNotEmpty) {
           priseUsd = (await _dbRepository.getCoin(element.coinId)).currentPrice;
+          print('!element.coinId.isNotEmpty');
         }
       }
       print('wait cost');
@@ -303,7 +305,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       walleted.clear();
       walleted.insert(0, walletInOut);
       walleted.insert(1, walletInOut);
-      print("getWalletApi = $walleted");
+      print("getWalletApi = ${element.coinId} $walleted");
     }
     return walleted;
   }
@@ -386,17 +388,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         if (internet) {
           for (var cardano in cardanoList) {
             if (cardano.tokenId == id) {
-              id = coin.coinId;
-              symbol = coin.symbol;
-              name = coin.name;
-              image = coin.image;
-              priseUsd = coin.price!;
-              adaPrise = coin.adaPrice!;
-              marketCap = coin.marketCap;
-              percentChange24h = coin.percentChange24h;
-              percentChange7d = coin.percentChange7d;
-              rank = coin.rank;
-              liquidAda = coin.liquidAda!;
+              id = cardano.tokenId!;
+              name = cardano.name!;
+              symbol = cardano.assetName!;
+              image = 'https://ctokens.io/api/v1/tokens/images/${cardano.policyId}.${cardano.assetId}.png';
+              priseUsd = cardano.priceUsd!;
+              adaPrise = cardano.priceAda!;
+              marketCap = cardano.capUsd!.toInt();
+              percentChange24h = cardano.priceTrend24h;
+              percentChange7d = cardano.priceTrend7d;
+              rank = cardano.decimals;
+              liquidAda = cardano.liquidAda!;
               isRelevant = 1;
               print("!!!__ 1 !!!");
             }
@@ -409,8 +411,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
                 id = cardano.tokenId!;
                 name = cardano.name!;
                 symbol = cardano.assetName!;
-                image =
-                    'https://ctokens.io/api/v1/tokens/images/${cardano.policyId}.${cardano.assetId}.png';
+                image = 'https://ctokens.io/api/v1/tokens/images/${cardano.policyId}.${cardano.assetId}.png';
                 priseUsd = cardano.priceUsd!;
                 adaPrise = cardano.priceAda!;
                 marketCap = cardano.capUsd!.toInt();
@@ -504,7 +505,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     return isRelevant;
   }
 
-  Future<void> savePrices(String formattedDateCache) async {
+  Future<void> savePrices(Response responseCardano) async {
     //Response response = await _apiRepository.check();
     //if (response.statusCode == HttpStatus.ok) {
     //  var coinList = jsonDecode(response.body);
@@ -519,9 +520,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     var coinsId = await _hiveProfileRepository.getCoinId();
     print("coinsId ProfBloc = $coinsId");
     if (coinsId.isNotEmpty) {
-      await FileManager.saveDateCache(formattedDateCache);
-      print("getDateCache = ${FileManager.readDateCache().toString()}");
-      Response responseCardano = await _apiRepository.getCardanoTokensList();
       print('coinsId.length== ${coinsId.length}');
       for (var coinElem in coinsId) {
         CoinEntity coin;

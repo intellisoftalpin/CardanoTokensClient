@@ -256,7 +256,7 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
                     textAlign: TextAlign.start,
                     style: TextStyle(
                         fontSize: textSize14,
-                        color: Theme.of(context).errorColor))),
+                        color: kErrorColor))),
           )
         ],
       ),
