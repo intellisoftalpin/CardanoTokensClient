@@ -82,6 +82,7 @@ const textSize14 = 14.0;
 const textSize13 = 13.0;
 const textSize12 = 12.0;
 const textSize11 = 11.0;
+const textSize10 = 10.0;
 const textSize8 = 8.0;
 
 const ProfileCoinBigText = 21.0;
