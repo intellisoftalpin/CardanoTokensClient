@@ -61,6 +61,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
   bool? deviceIPAD;
   var hintTxt = '';
   var errorTxt = '';
+  String textError = '';
 
   //bool passChosen = false;
 
@@ -72,6 +73,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
   @override
   void initState() {
     super.initState();
+    textError = widget.error;
     passwordStreamController = StreamController<String>.broadcast();
     passwordController.addListener(() {
       passwordStreamController.sink.add(passwordController.text.trim());
@@ -282,7 +284,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                       ),
                                       onPressed: () => {
                                         setState(() {
-                                          widget.error = '';
+                                          textError = '';
                                           errorTxt = '';
                                           globals.passChosen = false;
                                           backArrow = SizedBox.shrink();
@@ -318,6 +320,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                     ),
                     onTap: () {
                       setState(() {
+                        textError = '';
                         globals.passChosen = true;
                         backArrow = IconButton(
                           icon: Icon(
@@ -327,7 +330,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                           ),
                           onPressed: () => {
                             setState(() {
-                              widget.error = '';
+                              textError = '';
                               errorTxt = '';
                               globals.passChosen = false;
                               backArrow = SizedBox.shrink();
@@ -346,7 +349,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('ERROR::::: ${widget.error.toString()}');
+    print('ERROR::::: ${textError.toString()}');
     print('TIME:::::: $profileCreateDate');
     print('KEY_BOARD OPENED:::::: ${MediaQuery.of(context).viewInsets.bottom}');
     print('SCREEN_HEIGHT:::::: ${MediaQuery.of(context).size.height}');
@@ -390,10 +393,10 @@ class InputPasswordPageState extends State<InputPasswordPage> {
 
     if (globals.pass.isEmpty || globals.pass == '') {
       errorTxt = '';
-      widget.error = '';
+      textError = '';
     }
 
-    if (widget.error.toString().isNotEmpty) {
+    if (textError != '') {
       errorTxt = LocaleKeys.incorrect_password_try_again.tr();
     } else {
       hintTxt = LocaleKeys.password.tr();
@@ -461,7 +464,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
         ),
         onPressed: () => {
           setState(() {
-            widget.error = '';
+            textError = '';
             errorTxt = '';
             globals.passChosen = false;
             backArrow = SizedBox.shrink();
@@ -499,7 +502,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                     passIsEmpty = false;
                                   }
                                   _getPressEnterButton();
-                                  widget.error = '';
+                                  textError = '';
                                 },
                                 textInputAction: TextInputAction.done,
                                 keyboardType: TextInputType.text,
@@ -510,7 +513,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                         .copyWith(hintText: hintTxt),
                                 onChanged: (value) async {
                                   widget.teamName = value;
-                                  widget.error = '';
+                                  textError = '';
                                 },
                                 style: TextStyle(
                                         color: Theme.of(context).disabledColor,
@@ -558,7 +561,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                       child: MaterialButton(
                         minWidth: MediaQuery.of(context).size.width,
                         onPressed: () async {
-                          widget.error = '';
+                          textError = '';
                           globals.passChosen = true;
                           globals.nameProfile = _name;
                           global.idProfile = _nameId;
@@ -618,7 +621,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                       passIsEmpty = false;
                                     }
                                     _getPressEnterButton();
-                                    widget.error = '';
+                                    textError = '';
                                   },
                                   textInputAction: TextInputAction.done,
                                   keyboardType: TextInputType.text,
@@ -629,7 +632,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                           .copyWith(hintText: hintTxt),
                                   onChanged: (value) async {
                                     widget.teamName = value;
-                                    widget.error = '';
+                                    textError = '';
                                   },
                                   style: TextStyle(
                                           color:
@@ -831,7 +834,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                 passIsEmpty = false;
                               }
                               _getPressEnterButton();
-                              widget.error = '';
+                              textError = '';
                             },
                             child: Text(
                               LocaleKeys.ok.tr(),

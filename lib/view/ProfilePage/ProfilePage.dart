@@ -1803,7 +1803,7 @@ class ProfilePageState extends State<ProfilePage> {
             ),
             Container(
               margin: EdgeInsets.only(top: 5),
-              width: (MediaQuery.of(context).size.width - 30) / 5.6,
+              width: (MediaQuery.of(context).size.width - 30) / 5.2,
               height: 95,
               child: Column(
                 children: [
@@ -1813,7 +1813,7 @@ class ProfilePageState extends State<ProfilePage> {
                         priceChangeAda,
                         //state.coinsList![index].name,
                         style: GoogleFonts.inter(
-                            fontSize: textSize11,
+                            fontSize: textSize10,
                             color: Theme.of(context).focusColor),
                         maxLines: 1,
                         overflow: TextOverflow.fade,
@@ -1825,7 +1825,7 @@ class ProfilePageState extends State<ProfilePage> {
                         priceChangeUsd,
                         //state.coinsList![index].name,
                         style: GoogleFonts.inter(
-                            fontSize: textSize11,
+                            fontSize: textSize10,
                             color: Theme.of(context).focusColor),
                         maxLines: 1,
                         overflow: TextOverflow.fade,
