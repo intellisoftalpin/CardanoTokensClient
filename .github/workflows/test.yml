@@ -27,9 +27,6 @@ jobs:
         
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
-
-      - name: Update
-        run: apt-get update 
         
       - name: Cache apt-install
         uses: daaku/gh-action-apt-install@v4
