@@ -223,28 +223,28 @@ jobs:
           name: cardanotokensclient.${{ env.VERSION }}.${{ env.INCREMENTED_BUILD_NUMBER }}.aab
           path: ./aab
 
-      - name: Google Play Deploy
-        id: google_play_deploy
-        continue-on-error: true
-        uses: r0adkll/upload-google-play@v1.0.19
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_API_JSON_PLAIN }}
-          packageName: com.intellisoftalpin.ctokens
-          releaseFiles: ./aab/cardanotokensclient.*.aab
-          track: internal
-          changesNotSentForReview: true
-          status: draft
+#      - name: Google Play Deploy
+#        id: google_play_deploy
+#        continue-on-error: true
+#        uses: r0adkll/upload-google-play@v1.0.19
+#        with:
+#          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_API_JSON_PLAIN }}
+#          packageName: com.intellisoftalpin.ctokens
+#          releaseFiles: ./aab/cardanotokensclient.*.aab
+#          track: internal
+#          changesNotSentForReview: true
+ #         status: draft
 #           status: completed
 
-      - name: Google Play Deploy On Failure
-        uses: r0adkll/upload-google-play@v1.0.19
-        if: always() && steps.google_play_deploy.outcome == 'failure'
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_API_JSON_PLAIN }}
-          packageName: com.intellisoftalpin.ctokens
-          releaseFiles: ./aab/cardanotokensclient.*.aab
-          track: internal
-          status: draft
+ #     - name: Google Play Deploy On Failure
+ #       uses: r0adkll/upload-google-play@v1.0.19
+#        if: always() && steps.google_play_deploy.outcome == 'failure'
+#        with:
+ #         serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_API_JSON_PLAIN }}
+  #        packageName: com.intellisoftalpin.ctokens
+ #         releaseFiles: ./aab/cardanotokensclient.*.aab
+ #         track: internal
+#          status: draft
         
       - name: Send message to Telegram after deployed to Google Play Deploy
         run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F "text=CardanoTokensClient build ${{ env.VERSION }} (${{ env.INCREMENTED_BUILD_NUMBER }}) has been sent to Google Play!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage --http1.1
