@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - feature/CTE-314-github-actions branch
 
 env:
   ARTIFACTS_DIRECTORY: ./artifacts
