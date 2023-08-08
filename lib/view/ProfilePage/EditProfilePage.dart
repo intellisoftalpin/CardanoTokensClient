@@ -88,7 +88,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  backgroundColor: Theme.of(context).backgroundColor,
+                  backgroundColor: Theme.of(context).brightness == Brightness.dark ? kSettingsPageBackground : lSettingsPageBackground,
                   body: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 18.0),
                     child: ListView(

@@ -263,11 +263,11 @@ class _TransactionsPageState extends State<TransactionsPage> {
                       maxLines: 2,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                            fontSize: textSize23,
-                            color: Theme.of(context).focusColor,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'Myriad Pro',
-                          ),
+                        fontSize: textSize23,
+                        color: Theme.of(context).focusColor,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Myriad Pro',
+                      ),
                     ),
                     leading: IconButton(
                         icon: Icon(
@@ -540,8 +540,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             softWrap: false,
                             overflow: TextOverflow.fade,
                             style: TextStyle(
-                                    fontSize: textSize18,
-                                    color: Theme.of(context).indicatorColor))),
+                                fontSize: textSize18,
+                                color: Theme.of(context).indicatorColor))),
                     Container(
                         margin: EdgeInsets.only(left: 10.0),
                         width: 30.0,
@@ -650,8 +650,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             softWrap: false,
                             overflow: TextOverflow.fade,
                             style: TextStyle(
-                                    fontSize: textSize18,
-                                    color: Theme.of(context).indicatorColor))),
+                                fontSize: textSize18,
+                                color: Theme.of(context).indicatorColor))),
                   ),
                   InkWell(
                     onTap: () {
@@ -682,8 +682,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             softWrap: false,
                             overflow: TextOverflow.fade,
                             style: TextStyle(
-                                    fontSize: textSize18,
-                                    color: Theme.of(context).indicatorColor))),
+                                fontSize: textSize18,
+                                color: Theme.of(context).indicatorColor))),
                   ),
                 ],
               ),
@@ -711,9 +711,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                 softWrap: false,
                                 overflow: TextOverflow.fade,
                                 style: TextStyle(
-                                        fontSize: textSize18,
-                                        color:
-                                            Theme.of(context).indicatorColor)),
+                                    fontSize: textSize18,
+                                    color: Theme.of(context).indicatorColor)),
                           ));
                     }))
           ],
@@ -761,9 +760,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
                               child: Text(
                                 LocaleKeys.advanced.tr(),
                                 style: TextStyle(
-                                        fontSize: textSize18,
-                                        color:
-                                            Theme.of(context).indicatorColor),
+                                    fontSize: textSize18,
+                                    color: Theme.of(context).indicatorColor),
                               ),
                             )
                           ],
@@ -860,7 +858,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
               primary: Theme.of(context).primaryColorLight,
               onPrimary: Theme.of(context).splashColor,
               surface: Theme.of(context).primaryColorDark,
-              onSurface: Theme.of(context).selectedRowColor,
+              onSurface: Theme.of(context).brightness == Brightness.dark
+                  ? kPlusIconColor
+                  : lPlusIconColor,
             ),
             dialogBackgroundColor: Theme.of(context).cardColor,
           ),
@@ -1072,9 +1072,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
                         title: Text(
                           item.name,
                           style: TextStyle(
-                                  color: Theme.of(context).shadowColor,
-                                  fontFamily: 'MyriadPro',
-                                  fontSize: textSize24),
+                              color: Theme.of(context).shadowColor,
+                              fontFamily: 'MyriadPro',
+                              fontSize: textSize24),
                         ),
                       ),
                     );

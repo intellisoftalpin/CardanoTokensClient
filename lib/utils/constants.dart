@@ -207,7 +207,9 @@ InputDecoration kTextFieldEditAlert(BuildContext context) {
     fillColor: Theme.of(context).secondaryHeaderColor,
     contentPadding: EdgeInsets.only(bottom: 10.0, left: 10.0),
     hintStyle: TextStyle(
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).brightness == Brightness.dark
+          ? kSettingsPageBackground
+          : lSettingsPageBackground,
     ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -223,7 +225,9 @@ InputDecoration kTextFieldInputDecoration(BuildContext context) {
     fillColor: Theme.of(context).secondaryHeaderColor,
     contentPadding: EdgeInsets.only(bottom: 80.0, left: 20.0),
     hintStyle: TextStyle(
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).brightness == Brightness.dark
+          ? kSettingsPageBackground
+          : lSettingsPageBackground,
     ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -274,14 +278,14 @@ Future<Widget> checkContainImage(String asset) async {
 
 Future<bool> passInputVisible(int pref) async {
   bool visible = true;
-  if(pref == 0){
+  if (pref == 0) {
     visible = true;
-  } else if(pref == 1){
+  } else if (pref == 1) {
     visible = true;
-  } else if(pref == 2){
+  } else if (pref == 2) {
     visible = true;
-  } else if(pref == 3){
+  } else if (pref == 3) {
     visible = false;
   }
- return visible;
+  return visible;
 }

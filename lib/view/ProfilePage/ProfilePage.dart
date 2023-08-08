@@ -1168,7 +1168,9 @@ class ProfilePageState extends State<ProfilePage> {
       icon: Icon(
         Icons.add,
         size: Theme.of(context).iconTheme.copyWith(size: MediumIcon).size,
-        color: Theme.of(context).selectedRowColor,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? kPlusIconColor
+            : lPlusIconColor,
       ),
       onPressed: () {
         Navigator.push(

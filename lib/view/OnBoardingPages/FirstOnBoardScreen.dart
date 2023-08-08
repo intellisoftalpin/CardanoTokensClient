@@ -19,7 +19,6 @@ class FirstOnBoardScreen extends StatefulWidget {
 }
 
 class _FirstOnBoardScreenState extends State<FirstOnBoardScreen> {
-
   @override
   Widget build(BuildContext context) {
     if (Platform.isAndroid) {
@@ -28,11 +27,13 @@ class _FirstOnBoardScreenState extends State<FirstOnBoardScreen> {
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     }
     return Scaffold(
-      backgroundColor: Theme.of(context).toggleableActiveColor,
+      backgroundColor: Theme.of(context).brightness == Brightness.dark
+          ? konBoardBGColor
+          : lonBoardBGColor,
       appBar: null,
       body: Container(
         height: MediaQuery.of(context).size.height,
-            child: Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
@@ -84,9 +85,9 @@ class _FirstOnBoardScreenState extends State<FirstOnBoardScreen> {
                       child: Text(LocaleKeys.onboard_first_text.tr(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                                  color: Theme.of(context).focusColor,
-                                  fontFamily: 'MyriadPro',
-                                  fontSize: textSize17))),
+                              color: Theme.of(context).focusColor,
+                              fontFamily: 'MyriadPro',
+                              fontSize: textSize17))),
                   Container(
                     alignment: Alignment.center,
                     child: Column(
@@ -138,9 +139,9 @@ class _FirstOnBoardScreenState extends State<FirstOnBoardScreen> {
                                   LocaleKeys.next.tr(),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                          color: Theme.of(context).shadowColor,
-                                          fontFamily: 'MyriadPro',
-                                          fontSize: textSize20),
+                                      color: Theme.of(context).shadowColor,
+                                      fontFamily: 'MyriadPro',
+                                      fontSize: textSize20),
                                 ),
                               ),
                             )),
