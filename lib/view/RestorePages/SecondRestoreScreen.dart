@@ -83,11 +83,16 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                           child: SingleChildScrollView(
                               child: Column(children: [
                         Container(
-                          color: Theme.of(context).toggleableActiveColor,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? konBoardBGColor
+                              : lonBoardBGColor,
                           height: 50.0,
                         ),
                         Container(
-                            color: Theme.of(context).toggleableActiveColor,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? konBoardBGColor
+                                    : lonBoardBGColor,
                             child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 alignment: Alignment.center,
@@ -100,10 +105,10 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                                     )),
                                 child: Text(LocaleKeys.recovery.tr(),
                                     style: TextStyle(
-                                            color: Theme.of(context).focusColor,
-                                            fontFamily: 'MyriadPro',
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: textSize22)))),
+                                        color: Theme.of(context).focusColor,
+                                        fontFamily: 'MyriadPro',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: textSize22)))),
                         SizedBox(
                           height: 50.0,
                         ),
@@ -112,9 +117,9 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                             child: Text(LocaleKeys.enter_pass_recovery.tr(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                        color: Theme.of(context).focusColor,
-                                        fontFamily: 'MyriadPro',
-                                        fontSize: textSize17))),
+                                    color: Theme.of(context).focusColor,
+                                    fontFamily: 'MyriadPro',
+                                    fontSize: textSize17))),
                         SizedBox(
                           height: 10.0,
                         ),
@@ -135,10 +140,9 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                                                   ? LocaleKeys.password.tr()
                                                   : ''),
                                   style: TextStyle(
-                                          color:
-                                              Theme.of(context).disabledColor,
-                                          fontFamily: 'MyriadPro',
-                                          fontSize: textSize20),
+                                      color: Theme.of(context).disabledColor,
+                                      fontFamily: 'MyriadPro',
+                                      fontSize: textSize20),
                                 )),
                           ),
                         ),
@@ -152,8 +156,7 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                             child: Text(widget.error,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
-                                        fontSize: textSize14,
-                                        color: kErrorColor)),
+                                    fontSize: textSize14, color: kErrorColor)),
                           ),
                         ),
                         SizedBox(
@@ -183,7 +186,7 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                                                     error: LocaleKeys
                                                         .invalid_alert_pass
                                                         .tr())),
-                                            (Route<dynamic> route) => true);
+                                        (Route<dynamic> route) => true);
                                   } else {
                                     Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
@@ -192,16 +195,16 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                                                     error: LocaleKeys
                                                         .incorrect_password_try_again
                                                         .tr())),
-                                            (Route<dynamic> route) => true);
+                                        (Route<dynamic> route) => true);
                                   }
                                 },
                                 child: Text(
                                   LocaleKeys.ok.tr(),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                          color: Theme.of(context).shadowColor,
-                                          fontFamily: 'MyriadPro',
-                                          fontSize: textSize20),
+                                      color: Theme.of(context).shadowColor,
+                                      fontFamily: 'MyriadPro',
+                                      fontSize: textSize20),
                                 ),
                               ),
                             )),
@@ -221,9 +224,9 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                       child: Text(LocaleKeys.create_port_recovery.tr(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                                  color: Theme.of(context).focusColor,
-                                  fontFamily: 'MyriadPro',
-                                  fontSize: textSize19)),
+                              color: Theme.of(context).focusColor,
+                              fontFamily: 'MyriadPro',
+                              fontSize: textSize19)),
                     );
                   } else if (profile.isNotEmpty) {
                     profiles = Column(children: [
@@ -234,9 +237,9 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                           child: Text(LocaleKeys.choose_port_recovery.tr(),
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                      color: Theme.of(context).focusColor,
-                                      fontFamily: 'MyriadPro',
-                                      fontSize: textSize17))),
+                                  color: Theme.of(context).focusColor,
+                                  fontFamily: 'MyriadPro',
+                                  fontSize: textSize17))),
                       Container(
                         height: MediaQuery.of(context).size.height * 0.4,
                         margin: EdgeInsets.only(left: 10, right: 10),
@@ -293,12 +296,17 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                           child: Column(
                             children: [
                               Container(
-                                color: Theme.of(context).toggleableActiveColor,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? konBoardBGColor
+                                    : lonBoardBGColor,
                                 height: 50.0,
                               ),
                               Container(
-                                  color:
-                                      Theme.of(context).toggleableActiveColor,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? konBoardBGColor
+                                      : lonBoardBGColor,
                                   child: Container(
                                       width: MediaQuery.of(context).size.width,
                                       alignment: Alignment.center,
@@ -314,11 +322,11 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                                           )),
                                       child: Text(LocaleKeys.recovery.tr(),
                                           style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .focusColor,
-                                                  fontFamily: 'MyriadPro',
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: textSize22)))),
+                                              color:
+                                                  Theme.of(context).focusColor,
+                                              fontFamily: 'MyriadPro',
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: textSize22)))),
                               SizedBox(
                                 height: 20.0,
                               ),
@@ -355,10 +363,10 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                                         LocaleKeys.create_new_portfolio.tr(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .shadowColor,
-                                                fontFamily: 'MyriadPro',
-                                                fontSize: textSize20),
+                                            color:
+                                                Theme.of(context).shadowColor,
+                                            fontFamily: 'MyriadPro',
+                                            fontSize: textSize20),
                                       ),
                                     ),
                                   )),

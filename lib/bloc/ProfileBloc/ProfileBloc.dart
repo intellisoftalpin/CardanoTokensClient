@@ -280,6 +280,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     List<double> walleted = [];
     num priseUsd = 0;
     for (var element in transactions) {
+      priseUsd = (await _dbRepository.getCoin(element.coinId)).currentPrice;
       if (responseCardano.statusCode == HttpStatus.ok) {
         print('!responseCardano.statusCode');
         for (var cardano in cardanoList) {
@@ -316,6 +317,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     List<double> walletedAda = [];
     double priseAda = 0;
     for (var element in transactions) {
+      priseAda = (await _dbRepository.getCoin(element.coinId)).adaPrice!;
       if (responseCardano.statusCode == HttpStatus.ok) {
         for (var cardano in cardanoList) {
           if (cardano.tokenId == element.coinId) {

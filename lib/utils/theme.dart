@@ -1,8 +1,7 @@
 import 'package:crypto_offline/utils/constants.dart';
 import 'package:flutter/material.dart';
 
-ThemeData basicTheme() =>
-    ThemeData(
+ThemeData basicTheme() => ThemeData(
       brightness: Brightness.dark,
       primaryColor: kBackgroundColor,
       primaryColorDark: kPrimaryColor,
@@ -11,17 +10,14 @@ ThemeData basicTheme() =>
       highlightColor: kSecondaryLightColor,
       indicatorColor: kAccentColor,
       cardColor: kCardColor,
-      backgroundColor: kSettingsPageBackground,
       hintColor: kTextSecondaryColor,
       canvasColor: kSettingsCardColor,
       dividerColor: kBackgroundCreateProfile,
       hoverColor: kIconColor,
       focusColor: kAppBarIconColor,
-      selectedRowColor: kPlusIconColor,
       disabledColor: kTextFieldIconColor,
       shadowColor: kButtonTextColor,
       unselectedWidgetColor: kInOutTextColor,
-      toggleableActiveColor: konBoardBGColor,
       splashColor: kAboutPageAppBarColor,
       scaffoldBackgroundColor: kBackgroundDetailsProfile,
       iconTheme: IconThemeData(
@@ -36,8 +32,7 @@ ThemeData basicTheme() =>
       ),
     );
 
-ThemeData lightTheme() =>
-    ThemeData(
+ThemeData lightTheme() => ThemeData(
       brightness: Brightness.light,
       primaryColor: lBackgroundColor,
       primaryColorDark: lPrimaryColor,
@@ -46,17 +41,14 @@ ThemeData lightTheme() =>
       highlightColor: lSecondaryLightColor,
       indicatorColor: lAccentColor,
       cardColor: lCardColor,
-      backgroundColor: lSettingsPageBackground,
       hintColor: lTextSecondaryColor,
       canvasColor: lSettingsCardColor,
       dividerColor: lBackgroundCreateProfile,
       hoverColor: lIconColor,
       focusColor: lAppBarIconColor,
-      selectedRowColor: lPlusIconColor,
       disabledColor: lTextFieldIconColor,
       shadowColor: lButtonTextColor,
       unselectedWidgetColor: lInOutTextColor,
-      toggleableActiveColor: lonBoardBGColor,
       splashColor: lAboutPageAppBarColor,
       scaffoldBackgroundColor: lBackgroundDetailsProfile,
       iconTheme: IconThemeData(
