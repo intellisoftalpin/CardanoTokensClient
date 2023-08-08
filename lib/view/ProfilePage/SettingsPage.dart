@@ -172,7 +172,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                   drawer: ProfilePageState.getDrawMenu(context, _packageInfo),
-                  backgroundColor: Theme.of(context).backgroundColor,
+                  backgroundColor: Theme.of(context).brightness == Brightness.dark ? kSettingsPageBackground : lSettingsPageBackground,
                   body: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 18.0),
                     child: ListView(

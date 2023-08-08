@@ -1,13 +1,13 @@
-import 'dart:ui' as ui;
+import 'package:flutter/material.dart';
 
 class Util{
-  static String codes () {
-    final languageFromPhoneSettings = ui.window.locale.toString();
+  static String codes(BuildContext context) {
+    final languageFromPhoneSettings = View.of(context).platformDispatcher.locale;
     var systemAppLanguage = '';
-    if (languageFromPhoneSettings.contains('ru')){
+    if (languageFromPhoneSettings.languageCode.contains('ru')){
       print("Russian");
       systemAppLanguage = 'ru';
-    }else if(languageFromPhoneSettings.contains('en')){
+    }else if(languageFromPhoneSettings.languageCode.contains('en')){
       print("English");
       systemAppLanguage = 'en';
     }else{

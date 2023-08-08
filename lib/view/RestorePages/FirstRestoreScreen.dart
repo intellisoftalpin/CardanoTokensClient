@@ -88,9 +88,9 @@ class _FirstRestoreScreenState extends State<FirstRestoreScreen> {
                           LocaleKeys.no.tr(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                                  color: Theme.of(context).shadowColor,
-                                  fontFamily: 'MyriadPro',
-                                  fontSize: textSize20),
+                              color: Theme.of(context).shadowColor,
+                              fontFamily: 'MyriadPro',
+                              fontSize: textSize20),
                         ),
                       ),
                     )),
@@ -159,9 +159,9 @@ class _FirstRestoreScreenState extends State<FirstRestoreScreen> {
                           LocaleKeys.yes.tr(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                                  color: Theme.of(context).shadowColor,
-                                  fontFamily: 'MyriadPro',
-                                  fontSize: textSize20),
+                              color: Theme.of(context).shadowColor,
+                              fontFamily: 'MyriadPro',
+                              fontSize: textSize20),
                         ),
                       ),
                     )),
@@ -333,11 +333,15 @@ class _FirstRestoreScreenState extends State<FirstRestoreScreen> {
                   child: Column(
             children: [
               Container(
-                color: Theme.of(context).toggleableActiveColor,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? konBoardBGColor
+                    : lonBoardBGColor,
                 height: 50.0,
               ),
               Container(
-                  color: Theme.of(context).toggleableActiveColor,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? konBoardBGColor
+                      : lonBoardBGColor,
                   child: Container(
                       width: MediaQuery.of(context).size.width,
                       alignment: Alignment.center,
@@ -350,10 +354,10 @@ class _FirstRestoreScreenState extends State<FirstRestoreScreen> {
                           )),
                       child: Text(LocaleKeys.recovery.tr(),
                           style: TextStyle(
-                                  color: Theme.of(context).focusColor,
-                                  fontFamily: 'MyriadPro',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: textSize22)))),
+                              color: Theme.of(context).focusColor,
+                              fontFamily: 'MyriadPro',
+                              fontWeight: FontWeight.bold,
+                              fontSize: textSize22)))),
               body
             ],
           ))),

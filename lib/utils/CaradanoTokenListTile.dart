@@ -11,23 +11,15 @@ Widget getCardanoCoinTile(BuildContext context, int index, Tokens token,
   String capLiqUsd = '';
   String capLiqAda = '';
   if (tokensPageLiq) {
-    capLiqUsd = '${Decimal.dividePrice(
-        Decimal.convertPriceRoundToDouble((token.liquidAda ?? 0.0) * adaExchange)
-            .round()
-            .toString())} \$';
-    capLiqAda = '${Decimal.dividePrice(
-        Decimal.convertPriceRoundToDouble(token.liquidAda ?? 0.0)
-            .round()
-            .toString())} ₳';
+    capLiqUsd =
+        '${Decimal.dividePrice(Decimal.convertPriceRoundToDouble((token.liquidAda ?? 0.0) * adaExchange).round().toString())} \$';
+    capLiqAda =
+        '${Decimal.dividePrice(Decimal.convertPriceRoundToDouble(token.liquidAda ?? 0.0).round().toString())} ₳';
   } else {
-    capLiqUsd = '${Decimal.dividePrice(
-        Decimal.convertPriceRoundToDouble(token.capUsd ?? 0.0)
-            .round()
-            .toString())} \$';
-    capLiqAda = '${Decimal.dividePrice(
-        Decimal.convertPriceRoundToDouble(token.capAda ?? 0.0)
-            .round()
-            .toString())} ₳';
+    capLiqUsd =
+        '${Decimal.dividePrice(Decimal.convertPriceRoundToDouble(token.capUsd ?? 0.0).round().toString())} \$';
+    capLiqAda =
+        '${Decimal.dividePrice(Decimal.convertPriceRoundToDouble(token.capAda ?? 0.0).round().toString())} ₳';
   }
   return Card(
     margin: EdgeInsets.only(left: 5, right: 5, bottom: 15),
@@ -36,18 +28,13 @@ Widget getCardanoCoinTile(BuildContext context, int index, Tokens token,
       children: [
         Container(
           alignment: Alignment.center,
-          width: (MediaQuery
-              .of(context)
-              .size
-              .width - 40) * 0.1,
+          width: (MediaQuery.of(context).size.width - 40) * 0.1,
           height: 55.0,
           child: Text(
             index.toString(),
             maxLines: 1,
             style: GoogleFonts.inter(
-              color: Theme
-                  .of(context)
-                  .focusColor,
+              color: Theme.of(context).focusColor,
               fontSize: textSize13,
             ),
           ),
@@ -63,22 +50,19 @@ Widget getCardanoCoinTile(BuildContext context, int index, Tokens token,
               child: CachedNetworkImage(
                 placeholder: (context, url) => CircularProgressIndicator(),
                 imageUrl:
-                'https://ctokens.io/api/v1/tokens/images/${token
-                    .policyId}.${token.assetId}.png',
+                    'https://ctokens.io/api/v1/tokens/images/${token.policyId}.${token.assetId}.png',
                 fit: BoxFit.cover,
-                errorWidget: (context, url, error) =>
-                    FutureBuilder(
-                      future:
+                errorWidget: (context, url, error) => FutureBuilder(
+                  future:
                       checkContainImage('assets/image/${token.policyId}.png'),
-                      builder:
-                          (BuildContext context,
-                          AsyncSnapshot<Widget> snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done)
-                          return snapshot.data!;
-                        else
-                          return Image.asset('assets/image/place_holder.png');
-                      },
-                    ),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done)
+                      return snapshot.data!;
+                    else
+                      return Image.asset('assets/image/place_holder.png');
+                  },
+                ),
               ),
             ),
           ),
@@ -86,28 +70,20 @@ Widget getCardanoCoinTile(BuildContext context, int index, Tokens token,
         Container(
           padding: EdgeInsets.only(left: 3.0),
           alignment: Alignment.center,
-          width: (MediaQuery
-              .of(context)
-              .size
-              .width - 40) * 0.25,
+          width: (MediaQuery.of(context).size.width - 40) * 0.25,
           child: Text(
             '${token.name ?? '-'}',
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.fade,
             style: GoogleFonts.inter(
-              color: Theme
-                  .of(context)
-                  .focusColor,
+              color: Theme.of(context).focusColor,
               fontSize: textSize12,
             ),
           ),
         ),
         Container(
-          width: (MediaQuery
-              .of(context)
-              .size
-              .width - 40) * 0.25,
+          width: (MediaQuery.of(context).size.width - 40) * 0.25,
           height: 55.0,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -115,26 +91,20 @@ Widget getCardanoCoinTile(BuildContext context, int index, Tokens token,
             children: [
               Container(
                 child: Text(
-                  '${Decimal.convertPriceRoundToDouble(
-                      token.priceAda ?? 0.0)} ₳',
+                  '${Decimal.convertPriceRoundToDouble(token.priceAda ?? 0.0)} ₳',
                   maxLines: 1,
                   style: GoogleFonts.inter(
-                    color: Theme
-                        .of(context)
-                        .secondaryHeaderColor,
+                    color: Theme.of(context).secondaryHeaderColor,
                     fontSize: textSize12,
                   ),
                 ),
               ),
               Container(
                 child: Text(
-                  '${Decimal.convertPriceRoundToDouble(
-                      token.priceUsd ?? 0.0)} \$',
+                  '${Decimal.convertPriceRoundToDouble(token.priceUsd ?? 0.0)} \$',
                   maxLines: 1,
                   style: GoogleFonts.inter(
-                    color: Theme
-                        .of(context)
-                        .focusColor,
+                    color: Theme.of(context).focusColor,
                     fontSize: textSize12,
                   ),
                 ),
@@ -143,33 +113,28 @@ Widget getCardanoCoinTile(BuildContext context, int index, Tokens token,
           ),
         ),
         Container(
-          width: (MediaQuery
-              .of(context)
-              .size
-              .width - 40) * 0.4,
+          width: (MediaQuery.of(context).size.width - 40) * 0.4,
           height: 65.0,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                child: Text(capLiqAda,
+                child: Text(
+                  capLiqAda,
                   maxLines: 1,
                   style: GoogleFonts.inter(
-                    color: Theme
-                        .of(context)
-                        .secondaryHeaderColor,
+                    color: Theme.of(context).secondaryHeaderColor,
                     fontSize: textSize12,
                   ),
                 ),
               ),
               Container(
-                child: Text(capLiqUsd,
+                child: Text(
+                  capLiqUsd,
                   maxLines: 1,
                   style: GoogleFonts.inter(
-                    color: Theme
-                        .of(context)
-                        .focusColor,
+                    color: Theme.of(context).focusColor,
                     fontSize: textSize12,
                   ),
                 ),
@@ -190,18 +155,13 @@ Widget getCardanoCoinTileLiq(BuildContext context, int index, Tokens token) {
       children: [
         Container(
           alignment: Alignment.center,
-          width: (MediaQuery
-              .of(context)
-              .size
-              .width - 40) * 0.1,
+          width: (MediaQuery.of(context).size.width - 40) * 0.1,
           height: 55.0,
           child: Text(
             index.toString(),
             maxLines: 1,
             style: GoogleFonts.inter(
-              color: Theme
-                  .of(context)
-                  .focusColor,
+              color: Theme.of(context).focusColor,
               fontSize: textSize13,
             ),
           ),
@@ -217,22 +177,19 @@ Widget getCardanoCoinTileLiq(BuildContext context, int index, Tokens token) {
               child: CachedNetworkImage(
                 placeholder: (context, url) => CircularProgressIndicator(),
                 imageUrl:
-                'https://ctokens.io/api/v1/tokens/images/${token
-                    .policyId}.${token.assetId}.png',
+                    'https://ctokens.io/api/v1/tokens/images/${token.policyId}.${token.assetId}.png',
                 fit: BoxFit.cover,
-                errorWidget: (context, url, error) =>
-                    FutureBuilder(
-                      future:
+                errorWidget: (context, url, error) => FutureBuilder(
+                  future:
                       checkContainImage('assets/image/${token.policyId}.png'),
-                      builder:
-                          (BuildContext context,
-                          AsyncSnapshot<Widget> snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done)
-                          return snapshot.data!;
-                        else
-                          return Image.asset('assets/image/place_holder.png');
-                      },
-                    ),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done)
+                      return snapshot.data!;
+                    else
+                      return Image.asset('assets/image/place_holder.png');
+                  },
+                ),
               ),
             ),
           ),
@@ -240,28 +197,20 @@ Widget getCardanoCoinTileLiq(BuildContext context, int index, Tokens token) {
         Container(
           padding: EdgeInsets.only(left: 3.0),
           alignment: Alignment.center,
-          width: (MediaQuery
-              .of(context)
-              .size
-              .width - 40) * 0.25,
+          width: (MediaQuery.of(context).size.width - 40) * 0.25,
           child: Text(
             '${token.name ?? '-'}',
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.fade,
             style: GoogleFonts.inter(
-              color: Theme
-                  .of(context)
-                  .focusColor,
+              color: Theme.of(context).focusColor,
               fontSize: textSize12,
             ),
           ),
         ),
         Container(
-          width: (MediaQuery
-              .of(context)
-              .size
-              .width - 40) * 0.25,
+          width: (MediaQuery.of(context).size.width - 40) * 0.25,
           height: 55.0,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -269,26 +218,22 @@ Widget getCardanoCoinTileLiq(BuildContext context, int index, Tokens token) {
             children: [
               Container(
                 child: Text(
-                  '${Decimal.convertPriceRoundToDouble(
-                      token.priceAda ?? 0.0)} ₳',
+                  '${Decimal.convertPriceRoundToDouble(token.priceAda ?? 0.0)} ₳',
                   maxLines: 1,
                   style: GoogleFonts.inter(
-                    color: Theme
-                        .of(context)
-                        .selectedRowColor,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? kPlusIconColor
+                        : lPlusIconColor,
                     fontSize: textSize12,
                   ),
                 ),
               ),
               Container(
                 child: Text(
-                  '${Decimal.convertPriceRoundToDouble(
-                      token.priceUsd ?? 0.0)} \$',
+                  '${Decimal.convertPriceRoundToDouble(token.priceUsd ?? 0.0)} \$',
                   maxLines: 1,
                   style: GoogleFonts.inter(
-                    color: Theme
-                        .of(context)
-                        .focusColor,
+                    color: Theme.of(context).focusColor,
                     fontSize: textSize12,
                   ),
                 ),
@@ -297,10 +242,7 @@ Widget getCardanoCoinTileLiq(BuildContext context, int index, Tokens token) {
           ),
         ),
         Container(
-          width: (MediaQuery
-              .of(context)
-              .size
-              .width - 40) * 0.4,
+          width: (MediaQuery.of(context).size.width - 40) * 0.4,
           height: 65.0,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -308,30 +250,22 @@ Widget getCardanoCoinTileLiq(BuildContext context, int index, Tokens token) {
             children: [
               Container(
                 child: Text(
-                  '${Decimal.dividePrice(
-                      Decimal.convertPriceRoundToDouble(token.liquidAda ?? 0.0)
-                          .round()
-                          .toString())} ₳',
+                  '${Decimal.dividePrice(Decimal.convertPriceRoundToDouble(token.liquidAda ?? 0.0).round().toString())} ₳',
                   maxLines: 1,
                   style: GoogleFonts.inter(
-                    color: Theme
-                        .of(context)
-                        .selectedRowColor,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? kPlusIconColor
+                        : lPlusIconColor,
                     fontSize: textSize12,
                   ),
                 ),
               ),
               Container(
                 child: Text(
-                  '${Decimal.dividePrice(
-                      Decimal.convertPriceRoundToDouble(token.liquidAda ?? 0.0)
-                          .round()
-                          .toString())} \$',
+                  '${Decimal.dividePrice(Decimal.convertPriceRoundToDouble(token.liquidAda ?? 0.0).round().toString())} \$',
                   maxLines: 1,
                   style: GoogleFonts.inter(
-                    color: Theme
-                        .of(context)
-                        .focusColor,
+                    color: Theme.of(context).focusColor,
                     fontSize: textSize12,
                   ),
                 ),

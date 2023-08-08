@@ -72,7 +72,9 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
               child: Column(
             children: [
               Container(
-                  color: Theme.of(context).toggleableActiveColor,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? konBoardBGColor
+                      : lonBoardBGColor,
                   height: MediaQuery.of(context).size.height * 0.3,
                   child: Stack(children: [
                     Container(
@@ -94,7 +96,9 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                 child: Column(children: [
                   Stack(children: [
                     Container(
-                      color: Theme.of(context).toggleableActiveColor,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? konBoardBGColor
+                          : lonBoardBGColor,
                       alignment: Alignment.center,
                       width: MediaQuery.of(context).size.width,
                       height: 25.0,
@@ -124,9 +128,9 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                       child: Text(LocaleKeys.onboard_second_text.tr(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                                  color: Theme.of(context).focusColor,
-                                  fontFamily: 'MyriadPro',
-                                  fontSize: textSize14))),
+                              color: Theme.of(context).focusColor,
+                              fontFamily: 'MyriadPro',
+                              fontSize: textSize14))),
                   Container(
                       margin: EdgeInsets.only(top: 1.0, bottom: 1.0),
                       child: Divider(
@@ -143,10 +147,10 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                       child: Text(LocaleKeys.security_measure.tr(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                                  color: Theme.of(context).focusColor,
-                                  fontFamily: 'MyriadPro',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: textSize18))),
+                              color: Theme.of(context).focusColor,
+                              fontFamily: 'MyriadPro',
+                              fontWeight: FontWeight.bold,
+                              fontSize: textSize18))),
                   Container(
                     height: 200.0,
                     child: ListView.builder(
@@ -227,7 +231,8 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                                   .addPostFrameCallback((_) async {
                                 final isAuthenticated =
                                     await LocalAuthApi.authenticate();
-                                if (await LocalAuthApi.availableBiometric() == false) {
+                                if (await LocalAuthApi.availableBiometric() ==
+                                    false) {
                                   Fluttertoast.showToast(
                                       msg: LocaleKeys.noBiometrics.tr());
                                 }
@@ -245,11 +250,9 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                                                     LocaleKeys.welcome.tr(),
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                            fontSize:
-                                                                textSize45,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .secondaryHeaderColor),
+                                                        fontSize: textSize45,
+                                                        color: Theme.of(context)
+                                                            .secondaryHeaderColor),
                                                   ),
                                                   passPrefer: 0,
                                                   passwordRemind: true,
@@ -268,9 +271,9 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                                               LocaleKeys.conf_pass.tr(),
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                      fontSize: textSize18,
-                                                      color: Theme.of(context)
-                                                          .secondaryHeaderColor),
+                                                  fontSize: textSize18,
+                                                  color: Theme.of(context)
+                                                      .secondaryHeaderColor),
                                             ),
                                             passPrefer: 1,
                                             passwordRemind: true,
@@ -283,7 +286,8 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                                   .addPostFrameCallback((_) async {
                                 final isAuthenticated =
                                     await LocalAuthApi.authenticate();
-                                if (await LocalAuthApi.availableBiometric() == false) {
+                                if (await LocalAuthApi.availableBiometric() ==
+                                    false) {
                                   Fluttertoast.showToast(
                                       msg: LocaleKeys.noBiometrics.tr());
                                 }
@@ -297,10 +301,9 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                                                   LocaleKeys.welcome.tr(),
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
-                                                          fontSize: textSize45,
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .secondaryHeaderColor),
+                                                      fontSize: textSize45,
+                                                      color: Theme.of(context)
+                                                          .secondaryHeaderColor),
                                                 ),
                                                 passPrefer: 2,
                                                 passwordRemind: false,
@@ -318,9 +321,9 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                             LocaleKeys.next.tr(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                    color: Theme.of(context).shadowColor,
-                                    fontFamily: 'MyriadPro',
-                                    fontSize: textSize20),
+                                color: Theme.of(context).shadowColor,
+                                fontFamily: 'MyriadPro',
+                                fontSize: textSize20),
                           ),
                         ),
                       )),

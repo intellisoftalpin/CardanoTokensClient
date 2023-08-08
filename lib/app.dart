@@ -368,6 +368,9 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.paused:
         print("PAUSED");
+
+
+
         BlocProvider.of<AuthProfileBloc>(context).add(LoggedOut());
         BlocProvider.of<CloseDbBloc>(this.context)
           ..add(UpdateProfile(idProfile: global.idProfile));
@@ -378,6 +381,9 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
           if (profileExist.isEmpty) profileExist.add(name);
           print('prof = $profileExist');
         }
+
+
+
         if (Platform.isAndroid) {
           ReceiveSharingIntent.getMediaStream().listen(
               (List<SharedMediaFile> value) {
