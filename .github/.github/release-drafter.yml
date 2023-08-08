@@ -1,0 +1,23 @@
+exclude-labels:
+  - 'documentation'
+  - 'failed'
+  - 'github-actions'
+  - 'release'
+categories:
+  - title: 'New Features'
+    label: 'feature'
+  - title: 'Bug Fixes'
+    label: 'bug'
+  - title: 'Other Changes'
+    label: 'update'
+  - title: '🗃️ All platforms'
+    label: 'all-platforms'
+  - title: '📱 Android'
+    label: 'android'
+  - title: '📱 iOS'
+    label: 'ios'
+change-template: '- $TITLE (#$NUMBER)'
+template: |
+  # Changelog
+
+  $CHANGES
