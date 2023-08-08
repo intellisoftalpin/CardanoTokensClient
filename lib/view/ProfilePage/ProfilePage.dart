@@ -1557,12 +1557,22 @@ class ProfilePageState extends State<ProfilePage> {
     String qtyStr = '';
     String sumUsd = '';
     String sumAda = '';
+    String priceChangeUsd = '';
+    String priceChangeAda = '';
     double qty =
         Decimal.convertPriceRoundToDouble(state.listCoin![index].quantity);
     double usd =
         Decimal.convertPriceRoundToDouble(state.listCoin![index].costUsd);
     double ada =
         Decimal.convertPriceRoundToDouble(state.listCoin![index].costAda);
+    double changeUsd =
+        Decimal.convertPriceRoundToDouble(state.listCoin![index].price!);
+    double changeAda =
+        Decimal.convertPriceRoundToDouble(state.listCoin![index].adaPrice!);
+    priceChangeUsd =
+        '\$${(state.listCoin![index].price! > 1.0) ? Decimal.dividePrice(changeUsd.toString()) : changeUsd.toString()}';
+    priceChangeAda =
+        '₳${(state.listCoin![index].adaPrice! > 1.0) ? Decimal.dividePrice(changeAda.toString()) : changeAda.toString()}';
 
     if (qty < 0.0) {
       qtyStr =
@@ -1793,17 +1803,17 @@ class ProfilePageState extends State<ProfilePage> {
             ),
             Container(
               margin: EdgeInsets.only(top: 5),
-              width: (MediaQuery.of(context).size.width - 30) / 5.6,
+              width: (MediaQuery.of(context).size.width - 30) / 5.2,
               height: 95,
               child: Column(
                 children: [
                   SizedBox(
                       height: 13,
                       child: Text(
-                        "₳${Decimal.dividePrice(Decimal.convertPriceRoundToDouble(state.listCoin![index].adaPrice!).toString())}",
+                        priceChangeAda,
                         //state.coinsList![index].name,
                         style: GoogleFonts.inter(
-                            fontSize: textSize11,
+                            fontSize: textSize10,
                             color: Theme.of(context).focusColor),
                         maxLines: 1,
                         overflow: TextOverflow.fade,
@@ -1812,10 +1822,10 @@ class ProfilePageState extends State<ProfilePage> {
                   SizedBox(
                       height: 13,
                       child: Text(
-                        "\$${Decimal.dividePrice(Decimal.convertPriceRoundToDouble(state.listCoin![index].price!).toString())}",
+                        priceChangeUsd,
                         //state.coinsList![index].name,
                         style: GoogleFonts.inter(
-                            fontSize: textSize11,
+                            fontSize: textSize10,
                             color: Theme.of(context).focusColor),
                         maxLines: 1,
                         overflow: TextOverflow.fade,

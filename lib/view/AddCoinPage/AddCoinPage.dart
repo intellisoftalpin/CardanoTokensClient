@@ -357,7 +357,7 @@ class AddCoinPageState extends State<AddCoinPage> {
                 liquidAda: state.listCoin![index].liquidAda,
                 isRelevant: 1);
             print("coinEntity = $coinEntity");
-            FocusManager.instance.primaryFocus?.unfocus();
+            //FocusManager.instance.primaryFocus?.unfocus();
             Navigator.push(
                 context,
                 MaterialPageRoute(

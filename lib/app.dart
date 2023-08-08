@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io' show File, Platform;
-import 'dart:ui' as ui;
 
 import 'package:crypto_offline/bloc/AuthenticateProfile/AuthProfileBloc.dart';
 import 'package:crypto_offline/bloc/CloseDbBloc/CloseDbBloc.dart';
@@ -15,7 +14,6 @@ import 'package:crypto_offline/view/ProfilePage/ProfilePage.dart';
 import 'package:crypto_offline/view/RestorePages/FirstRestoreScreen.dart';
 import 'package:crypto_offline/view/splash/view/splash_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -171,7 +169,7 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
         if (onBoard == null) {
           _navigatorKey.currentState?.pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => FirstOnBoardScreen()),
-                  (Route<dynamic> route) => false);
+              (Route<dynamic> route) => false);
         }
         /*else if (onBoard == 1) {
         _navigatorKey.currentState?.pushReplacement(
@@ -210,12 +208,13 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
             globals.pass = hashPass(hashPassword).toString();
             _navigatorKey.currentState?.pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => ProfilePage()),
-                    (Route<dynamic> route) => false);
+                (Route<dynamic> route) => false);
           } else {
             _navigatorKey.currentState?.pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => InputPasswordPage(
-                    globals.nameProfile, global.idProfile, '', '', profileExist)),
-                    (Route<dynamic> route) => false);
+                MaterialPageRoute(
+                    builder: (context) => InputPasswordPage(globals.nameProfile,
+                        global.idProfile, '', '', profileExist)),
+                (Route<dynamic> route) => false);
           }
         }
       }
@@ -224,13 +223,18 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    print('APP_SYSTEM_LANGUAGE::: ${ui.window.locale.toString()}');
+    print(
+        'APP_SYSTEM_LANGUAGE::: ${View.of(context).platformDispatcher.locale.toString()}');
     String locale = box.read('stringLocaleShPref') ?? 'language';
     print('locale = $locale');
     if (locale == 'Системный(Русский)' ||
         locale == 'System(English)' ||
         locale == 'language') {
-      if (ui.window.locale.toString().contains('ru')) {
+      if (View.of(context)
+          .platformDispatcher
+          .locale
+          .toString()
+          .contains('ru')) {
         context.setLocale(Locale('ru'));
       } else {
         context.setLocale(Locale('en'));
@@ -256,8 +260,7 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
                       : (themeNotifier.isDark == 2)
                           ? lightTheme()
                           : (themeNotifier.isDark == 3 &&
-                                  SchedulerBinding
-                                          .instance.window.platformBrightness ==
+                                  MediaQuery.of(context).platformBrightness ==
                                       Brightness.dark)
                               ? basicTheme()
                               : lightTheme(),
@@ -398,7 +401,11 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
         if (locale == 'Системный(Русский)' ||
             locale == 'System(English)' ||
             locale == 'language') {
-          if (ui.window.locale.toString().contains('ru')) {
+          if (View.of(context)
+              .platformDispatcher
+              .locale
+              .toString()
+              .contains('ru')) {
             context.setLocale(Locale('ru'));
           } else {
             context.setLocale(Locale('en'));
