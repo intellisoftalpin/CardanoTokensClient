@@ -202,7 +202,7 @@ jobs:
         uses: actions/download-artifact@v3.0.1
         with:
           name: cardanotokensclient.${{ env.VERSION }}.${{ env.INCREMENTED_BUILD_NUMBER }}.apk
-          path: ./aab
+          path: ./apk
                         
       - name: Create zip for apk
         run: zip -r cardanotokensclient.${{ env.VERSION }}.${{ env.INCREMENTED_BUILD_NUMBER }}.zip ./apk/*.apk
