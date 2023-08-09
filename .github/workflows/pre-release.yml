@@ -184,6 +184,9 @@ jobs:
           AAB_FILE_PATH: ./build/app/outputs/bundle/release/app-release.aab
           ARTIFACTS_AAB_PATH: ./cardanotokensclient.${{ env.VERSION }}.${{ env.INCREMENTED_BUILD_NUMBER }}.aab
 
+      - name: Check directories
+        run: ls -l
+
       - name: Artifacts AAB Upload
         uses: actions/upload-artifact@v3.1.1
         with:
