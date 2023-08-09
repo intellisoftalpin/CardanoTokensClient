@@ -85,10 +85,10 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
         
-      - name: Cache apt-install
-        uses: daaku/gh-action-apt-install@v4
-        with:
-          packages: ninja-build libgtk-3-dev
+      - name: Check apt
+        run: |
+          sudo apt-get update
+          sudo apt-get install ninja-build libgtk-3-dev
         
       - name: Cache dependencies
         uses: actions/cache@v3.2.2
@@ -151,10 +151,10 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
         
-      - name: Cache apt-install
-        uses: daaku/gh-action-apt-install@v4
-        with:
-          packages: ninja-build libgtk-3-dev
+      - name: Check apt
+        run: |
+          sudo apt-get update
+          sudo apt-get install ninja-build libgtk-3-dev
         
       - name: Cache dependencies
         uses: actions/cache@v3.2.2
