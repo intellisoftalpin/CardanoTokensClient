@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:crypto_offline/generated/locale_keys.g.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:crypto_offline/bloc/CreateProfile/CreateProfileBloc.dart'
     as global;
@@ -18,6 +19,8 @@ import '../../app.dart' as app;
 import 'package:crypto_offline/view/CreateProfilePage/CreateProfilePage.dart'
     as globals;
 import 'package:crypto_offline/view/ProfilePage/ProfilePage.dart' as prof;
+import '../../data/repository/ApiRepository/ApiRepository.dart';
+import '../../data/repository/ApiRepository/IApiRepository.dart';
 
 import '../../app.dart';
 import '../../bloc/CloseDbBloc/CloseDbBloc.dart';
@@ -221,14 +224,20 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(24.0, 8.0, 24.0, 8.0),
             child: TextField(
-              onSubmitted: (value) {
-                if (nameController.text.isNotEmpty) {
-                  prof.selectedIndex = 0;
-                  _buttonEnter();
+              onSubmitted: (value) async {
+                bool connect = await internet();
+                if (connect == true) {
+                  if (nameController.text.isNotEmpty) {
+                    prof.selectedIndex = 0;
+                    _buttonEnter();
+                  } else {
+                    setState(() {
+                      errorText = true;
+                    });
+                  }
                 } else {
-                  setState(() {
-                    errorText = true;
-                  });
+                  Fluttertoast.showToast(
+                      msg: LocaleKeys.no_internet_connection.tr());
                 }
               },
               textInputAction: TextInputAction.done,
@@ -239,8 +248,7 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
                   hintText: LocaleKeys.my_portfolio.tr(),
                   errorStyle: TextStyle(color: kErrorColor)),
               style: TextStyle(
-                  color: Theme.of(context).disabledColor,
-                  fontSize: textSize20),
+                  color: Theme.of(context).disabledColor, fontSize: textSize20),
               onChanged: (value) => setState(() {
                 errorText = false;
               }),
@@ -254,18 +262,21 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
                 visible: errorText,
                 child: Text(LocaleKeys.enter_name.tr(),
                     textAlign: TextAlign.start,
-                    style: TextStyle(
-                        fontSize: textSize14,
-                        color: kErrorColor))),
+                    style:
+                        TextStyle(fontSize: textSize14, color: kErrorColor))),
           )
         ],
       ),
     );
   }
 
+  Future<bool> internet() async {
+    IApiRepository _apiRepository = ApiRepository();
+    bool internet = await _apiRepository.check();
+    return internet;
+  }
+
   Widget createButton() {
-    globals.nameProfile = nameController.text;
-    box.write('temporaryName', nameController.text);
     return Expanded(
       child: Container(
         child: Column(
@@ -283,14 +294,22 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
                 child: MaterialButton(
                   minWidth: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.fromLTRB(50.0, 8.0, 50.0, 8.0),
-                  onPressed: () {
-                    if (nameController.text.isNotEmpty) {
-                      prof.selectedIndex = 0;
-                      _buttonEnter();
+                  onPressed: () async {
+                    bool connect = await internet();
+                    if (connect == true) {
+                      if (nameController.text.isNotEmpty) {
+                        globals.nameProfile = nameController.text;
+                        box.write('temporaryName', nameController.text);
+                        prof.selectedIndex = 0;
+                        _buttonEnter();
+                      } else {
+                        setState(() {
+                          errorText = true;
+                        });
+                      }
                     } else {
-                      setState(() {
-                        errorText = true;
-                      });
+                      Fluttertoast.showToast(
+                          msg: LocaleKeys.no_internet_connection.tr());
                     }
                   },
                   child: Text(

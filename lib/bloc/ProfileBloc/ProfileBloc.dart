@@ -153,12 +153,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             } on Exception catch (e) {
               print('Exception::: $e');
             }
-            await savePrices(responseCardano);
+            await savePricesAPI(responseCardano);
             wallet =
                 await getWalletApi(transactions, responseCardano, cardanoList);
             walletAda = await getWalletAdaApi(
                 transactions, responseCardano, cardanoList);
           } else {
+            await savePrices();
             wallet = (await getWallet(transactions))!;
             walletAda = (await getWalletAda(transactions))!;
           }
@@ -185,9 +186,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             } on Exception catch (e) {
               print('Exception::: $e');
             }
-            await savePrices(responseCardano);
+            await savePricesAPI(responseCardano);
             listCoin = await getListCoin(internet, cardanoList);
           } else {
+            await savePrices();
             listCoin = await getListCoin(internet, cardanoList);
           }
           print('10');
@@ -393,7 +395,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               id = cardano.tokenId!;
               name = cardano.name!;
               symbol = cardano.assetName!;
-              image = 'https://ctokens.io/api/v1/tokens/images/${cardano.policyId}.${cardano.assetId}.png';
+              image =
+                  'https://ctokens.io/api/v1/tokens/images/${cardano.policyId}.${cardano.assetId}.png';
               priseUsd = cardano.priceUsd!;
               adaPrise = cardano.priceAda!;
               marketCap = cardano.capUsd!.toInt();
@@ -413,7 +416,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
                 id = cardano.tokenId!;
                 name = cardano.name!;
                 symbol = cardano.assetName!;
-                image = 'https://ctokens.io/api/v1/tokens/images/${cardano.policyId}.${cardano.assetId}.png';
+                image =
+                    'https://ctokens.io/api/v1/tokens/images/${cardano.policyId}.${cardano.assetId}.png';
                 priseUsd = cardano.priceUsd!;
                 adaPrise = cardano.priceAda!;
                 marketCap = cardano.capUsd!.toInt();
@@ -507,7 +511,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     return isRelevant;
   }
 
-  Future<void> savePrices(Response responseCardano) async {
+  Future<void> savePricesAPI(Response responseCardano) async {
     //Response response = await _apiRepository.check();
     //if (response.statusCode == HttpStatus.ok) {
     //  var coinList = jsonDecode(response.body);
@@ -581,6 +585,36 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               liquidAda: coinIdDB.liquidAda,
               isRelevant: 0);
         }
+        await FileManager.saveCoinById(coinElem.id, (coin.toDatabaseJson()));
+        print('saveCoinById=== ${coinElem.id} SAVED');
+        print('');
+        await _dbRepository.updateCoinIsRelevant(coin);
+      }
+    }
+  }
+
+  Future<void> savePrices() async {
+    var coinsId = await _hiveProfileRepository.getCoinId();
+    print("coinsId ProfBloc = $coinsId");
+    if (coinsId.isNotEmpty) {
+      print('coinsId.length== ${coinsId.length}');
+      for (var coinElem in coinsId) {
+        CoinEntity coin;
+        var coinIdDB = await _dbRepository.getCoin(coinElem.id);
+        coin = CoinEntity(
+            coinId: coinElem.id,
+            name: coinIdDB.name,
+            symbol: coinIdDB.symbol,
+            image: coinIdDB.image,
+            currentPrice: coinIdDB.currentPrice,
+            marketCap: coinIdDB.marketCap,
+            percentChange24h: coinIdDB.percentChange24h,
+            percentChange7d: coinIdDB.percentChange7d,
+            rank: coinIdDB.rank,
+            price: coinIdDB.price,
+            adaPrice: coinIdDB.adaPrice,
+            liquidAda: coinIdDB.liquidAda,
+            isRelevant: 0);
         await FileManager.saveCoinById(coinElem.id, (coin.toDatabaseJson()));
         print('saveCoinById=== ${coinElem.id} SAVED');
         print('');
