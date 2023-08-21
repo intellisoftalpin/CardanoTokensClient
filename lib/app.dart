@@ -28,9 +28,9 @@ import 'data/dbhive/ProfileModel.dart';
 import 'data/model/ThemeModel.dart';
 import 'data/repository/SharedPrefProfile/SharedPrefProfileRepositoryImpl.dart';
 import 'package:crypto_offline/view/CreateProfilePage/CreateProfilePage.dart'
-    as globals;
+as globals;
 import 'package:crypto_offline/bloc/CreateProfile/CreateProfileBloc.dart'
-    as global;
+as global;
 
 import 'generated/codegen_loader.g.dart';
 
@@ -55,8 +55,9 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthProfileBloc>(
-          create: (_) => AuthProfileBloc(SharedPrefProfileRepositoryImpl(),
-              HivePrefProfileRepositoryImpl()),
+          create: (_) =>
+              AuthProfileBloc(SharedPrefProfileRepositoryImpl(),
+                  HivePrefProfileRepositoryImpl()),
         ),
         BlocProvider<CloseDbBloc>(
           create: (context) =>
@@ -83,7 +84,7 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
   List<SharedMediaFile> _sharedFiles = [];
   List<SharedMediaFile> _sharedFilesLifeCycle = [];
   MethodChannel _channel =
-      const MethodChannel('org.cardanotokens.app/import_zip');
+  const MethodChannel('org.cardanotokens.app/import_zip');
 
   NavigatorState get _navigator => _navigatorKey.currentState!;
 
@@ -137,11 +138,14 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
         final args = call.arguments;
         final path = args["url"];
         print('IOS PATH:::$path');
-        recoveryPath = File.fromUri(Uri.parse(path)).path;
+        recoveryPath = File
+            .fromUri(Uri.parse(path))
+            .path;
         return null;
       default:
         print(
-            '_importZipFile: No implemented methods with the name ${call.method}...');
+            '_importZipFile: No implemented methods with the name ${call
+                .method}...');
         break;
     }
   }
@@ -149,27 +153,31 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
   void _showLockScreenDialog() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var name =
-          ProfileModel(nameProfile: globals.nameProfile, id: global.idProfile);
+      ProfileModel(nameProfile: globals.nameProfile, id: global.idProfile);
       if (profileExist.isEmpty) profileExist.add(name);
       int? onBoard = box.read('onBoard');
       print(
-          ':::SecondOnBoardScreenState.isAuthenticateState = ${SecondOnBoardScreenState.isAuthenticateState} onBoard = $onBoard'
-          ' InputPasswordPageState.isAuthenticate = ${InputPasswordPageState.isAuthenticate} '
-          'ProfilePageState.isCreateNewPortfolio = ${ProfilePageState.isCreateNewPortfolio}'
-          ' name = ${globals.nameProfile}, nameId = ${global.idProfile} pass = ${globals.pass}');
+          ':::SecondOnBoardScreenState.isAuthenticateState = ${SecondOnBoardScreenState
+              .isAuthenticateState} onBoard = $onBoard'
+              ' InputPasswordPageState.isAuthenticate = ${InputPasswordPageState
+              .isAuthenticate} '
+              'ProfilePageState.isCreateNewPortfolio = ${ProfilePageState
+              .isCreateNewPortfolio}'
+              ' name = ${globals.nameProfile}, nameId = ${global
+              .idProfile} pass = ${globals.pass}');
       if (recoveryPath != null && recoveryPath != '') {
         if (Platform.isIOS) {
           print('USE IOS BIOMETRIC');
         } else {
           _navigatorKey.currentState?.pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => FirstRestoreScreen()),
-              (Route<dynamic> route) => false);
+                  (Route<dynamic> route) => false);
         }
       } else {
         if (onBoard == null) {
           _navigatorKey.currentState?.pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => FirstOnBoardScreen()),
-              (Route<dynamic> route) => false);
+                  (Route<dynamic> route) => false);
         }
         /*else if (onBoard == 1) {
         _navigatorKey.currentState?.pushReplacement(
@@ -178,9 +186,9 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
         }));
       } */
         else if (onBoard == 2 &&
-                SecondOnBoardScreenState.isAuthenticateState &&
-                !ProfilePageState.isCreateNewPortfolio &&
-                (globals.pass.isEmpty || globals.pass == '') ||
+            SecondOnBoardScreenState.isAuthenticateState &&
+            !ProfilePageState.isCreateNewPortfolio &&
+            (globals.pass.isEmpty || globals.pass == '') ||
             onBoard == 2 && InputPasswordPageState.isAuthenticate ||
             onBoard == 2 &&
                 globals.pass.isEmpty &&
@@ -199,7 +207,8 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
           List<ProfileModel> profiles = globals.profiles;
           print('profileExist.length = ${profileExist.length}');
           print(
-              'box.read(globals.nameProfile +global.idProfile) = ${box.read(globals.nameProfile + global.idProfile)}');
+              'box.read(globals.nameProfile +global.idProfile) = ${box.read(
+                  globals.nameProfile + global.idProfile)}');
           if (profiles.isNotEmpty) {
             profileExist = profiles;
           }
@@ -208,13 +217,14 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
             globals.pass = hashPass(hashPassword).toString();
             _navigatorKey.currentState?.pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => ProfilePage()),
-                (Route<dynamic> route) => false);
+                    (Route<dynamic> route) => false);
           } else {
             _navigatorKey.currentState?.pushAndRemoveUntil(
                 MaterialPageRoute(
-                    builder: (context) => InputPasswordPage(globals.nameProfile,
-                        global.idProfile, '', '', profileExist)),
-                (Route<dynamic> route) => false);
+                    builder: (context) =>
+                        InputPasswordPage(globals.nameProfile,
+                            global.idProfile, '', '', profileExist)),
+                    (Route<dynamic> route) => false);
           }
         }
       }
@@ -224,13 +234,18 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     print(
-        'APP_SYSTEM_LANGUAGE::: ${View.of(context).platformDispatcher.locale.toString()}');
+        'APP_SYSTEM_LANGUAGE::: ${View
+            .of(context)
+            .platformDispatcher
+            .locale
+            .toString()}');
     String locale = box.read('stringLocaleShPref') ?? 'language';
     print('locale = $locale');
     if (locale == 'Системный(Русский)' ||
         locale == 'System(English)' ||
         locale == 'language') {
-      if (View.of(context)
+      if (View
+          .of(context)
           .platformDispatcher
           .locale
           .toString()
@@ -241,110 +256,122 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
       }
     }
     print(
-        'GLOBALS NAME:::::::::::${globals.nameProfile}, GLOBALS IDNAME:::::::::::${global.idProfile}');
+        'GLOBALS NAME:::::::::::${globals
+            .nameProfile}, GLOBALS IDNAME:::::::::::${global.idProfile}');
     return Sizer(builder: (context, orientation, deviceType) {
       return LayoutBuilder(builder: (context, constraints) {
         return ChangeNotifierProvider(
           create: (_) => ThemeModel(),
           child: Consumer<ThemeModel>(
               builder: (context, ThemeModel themeNotifier, child) {
-            return AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle(
-                    systemNavigationBarColor: lSecondaryLightColor),
-                child: MaterialApp(
-                  localizationsDelegates: context.localizationDelegates,
-                  supportedLocales: context.supportedLocales,
-                  locale: context.locale,
-                  theme: (themeNotifier.isDark == 1)
-                      ? basicTheme()
-                      : (themeNotifier.isDark == 2)
+                return AnnotatedRegion<SystemUiOverlayStyle>(
+                    value: SystemUiOverlayStyle(
+                        systemNavigationBarColor: lSecondaryLightColor),
+                    child: MaterialApp(
+                      localizationsDelegates: context.localizationDelegates,
+                      supportedLocales: context.supportedLocales,
+                      locale: context.locale,
+                      theme: (themeNotifier.isDark == 1)
+                          ? basicTheme()
+                          : (themeNotifier.isDark == 2)
                           ? lightTheme()
                           : (themeNotifier.isDark == 3 &&
-                                  MediaQuery.of(context).platformBrightness ==
-                                      Brightness.dark)
-                              ? basicTheme()
-                              : lightTheme(),
-                  navigatorKey: _navigatorKey,
-                  builder: (context, child) {
-                    return MediaQuery(
-                        data: MediaQuery.of(context)
-                            .copyWith(textScaleFactor: 1.0),
-                        child: BlocListener<AuthProfileBloc, AuthProfileState>(
-                          listener: (context, state) {
-                            int? onBoard = box.read('onBoard');
-                            print('RECOVERY_PATH::: $recoveryPath');
-                            if (recoveryPath != null && recoveryPath != '') {
-                              _navigator.pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          FirstRestoreScreen()),
-                                  (Route<dynamic> route) => false);
-                            } else {
-                              if (state.state == AuthProfileStatus.exist) {
-                                context.read<AuthProfileBloc>().add(LoggedIn());
-                                profileExist = state.profileExist;
-                                print('prof = $profileExist');
-                                globals.passChosen = false;
-                                List<ProfileModel> profiles = globals.profiles;
-                                if (profiles.isNotEmpty) {
-                                  profileExist = profiles;
-                                }
-                                if (profiles.isNotEmpty) {
-                                  profileExist = profiles;
-                                }
-                                print(
-                                    'profileExist.length = ${profileExist.length}');
-                                print(
-                                    'box.read(globals.nameProfile +global.idProfile) = ${box.read(globals.nameProfile + global.idProfile)}');
-                                if (profileExist.length == 1 &&
-                                    box.read(globals.nameProfile +
-                                            global.idProfile) ==
-                                        3) {
-                                  globals.pass =
-                                      hashPass(hashPassword).toString();
-                                  _navigatorKey.currentState?.pushReplacement(
+                          MediaQuery
+                              .of(context)
+                              .platformBrightness ==
+                              Brightness.dark)
+                          ? basicTheme()
+                          : lightTheme(),
+                      navigatorKey: _navigatorKey,
+                      builder: (context, child) {
+                        return MediaQuery(
+                            data: MediaQuery.of(context)
+                                .copyWith(textScaleFactor: 1.0),
+                            child: BlocListener<
+                                AuthProfileBloc,
+                                AuthProfileState>(
+                              listener: (context, state) {
+                                int? onBoard = box.read('onBoard');
+                                print('RECOVERY_PATH::: $recoveryPath');
+                                if (recoveryPath != null &&
+                                    recoveryPath != '') {
+                                  _navigator.pushAndRemoveUntil(
                                       MaterialPageRoute(
-                                          builder: (BuildContext context) {
-                                    return ProfilePage();
-                                  }));
+                                          builder: (context) =>
+                                              FirstRestoreScreen()),
+                                          (Route<dynamic> route) => false);
                                 } else {
-                                  _navigator.pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              InputPasswordPage(
-                                                  globals.nameProfile,
-                                                  global.idProfile,
-                                                  '',
-                                                  '',
-                                                  profileExist)),
-                                      (Route<dynamic> route) => false);
-                                }
-                              } else if (state.state ==
-                                  AuthProfileStatus.noexist) {
-                                if (onBoard == null) {
-                                  _navigator.pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              FirstOnBoardScreen()),
-                                      (Route<dynamic> route) => false);
-                                } else if (onBoard == 1) {
-                                  _navigator.pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              SecondOnBoardScreen(
-                                                  appBarBackArrow:
+                                  if (state.state == AuthProfileStatus.exist) {
+                                    context.read<AuthProfileBloc>().add(
+                                        LoggedIn());
+                                    profileExist = state.profileExist;
+                                    print('prof = $profileExist');
+                                    globals.passChosen = false;
+                                    List<ProfileModel> profiles = globals
+                                        .profiles;
+                                    if (profiles.isNotEmpty) {
+                                      profileExist = profiles;
+                                    }
+                                    if (profiles.isNotEmpty) {
+                                      profileExist = profiles;
+                                    }
+                                    print(
+                                        'profileExist.length = ${profileExist
+                                            .length}');
+                                    print(
+                                        'box.read(globals.nameProfile +global.idProfile) = ${box
+                                            .read(globals.nameProfile +
+                                            global.idProfile)}');
+                                    if (profileExist.length == 1 &&
+                                        box.read(globals.nameProfile +
+                                            global.idProfile) ==
+                                            3) {
+                                      globals.pass =
+                                          hashPass(hashPassword).toString();
+                                      _navigatorKey.currentState
+                                          ?.pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) {
+                                                return ProfilePage();
+                                              }));
+                                    } else {
+                                      _navigator.pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  InputPasswordPage(
+                                                      globals.nameProfile,
+                                                      global.idProfile,
+                                                      '',
+                                                      '',
+                                                      profileExist)),
+                                              (Route<dynamic> route) => false);
+                                    }
+                                  } else if (state.state ==
+                                      AuthProfileStatus.noexist) {
+                                    if (onBoard == null) {
+                                      _navigator.pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  FirstOnBoardScreen()),
+                                              (Route<dynamic> route) => false);
+                                    } else if (onBoard == 1) {
+                                      _navigator.pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SecondOnBoardScreen(
+                                                      appBarBackArrow:
                                                       SizedBox.shrink())),
-                                      (Route<dynamic> route) => false);
+                                              (Route<dynamic> route) => false);
+                                    }
+                                  }
                                 }
-                              }
-                            }
-                          },
-                          child: child,
-                        ));
-                  },
-                  onGenerateRoute: (_) => SplashPage.route(),
-                ));
-          }),
+                              },
+                              child: child,
+                            ));
+                      },
+                      onGenerateRoute: (_) => SplashPage.route(),
+                    ));
+              }),
         );
       });
     });
@@ -368,9 +395,6 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.paused:
         print("PAUSED");
-
-
-
         BlocProvider.of<AuthProfileBloc>(context).add(LoggedOut());
         BlocProvider.of<CloseDbBloc>(this.context)
           ..add(UpdateProfile(idProfile: global.idProfile));
@@ -381,18 +405,16 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
           if (profileExist.isEmpty) profileExist.add(name);
           print('prof = $profileExist');
         }
-
-
-
         if (Platform.isAndroid) {
           ReceiveSharingIntent.getMediaStream().listen(
-              (List<SharedMediaFile> value) {
-            print("Shared:" +
-                (_sharedFilesLifeCycle.map((f) => f.path).join(",")));
-            _sharedFilesLifeCycle = value;
-            String path = (_sharedFilesLifeCycle.map((f) => f.path).join(","));
-            recoveryPath = path;
-          }, onError: (err) {
+                  (List<SharedMediaFile> value) {
+                print("Shared:" +
+                    (_sharedFilesLifeCycle.map((f) => f.path).join(",")));
+                _sharedFilesLifeCycle = value;
+                String path = (_sharedFilesLifeCycle.map((f) => f.path).join(
+                    ","));
+                recoveryPath = path;
+              }, onError: (err) {
             print("getIntentDataStream error: $err");
           });
         }
@@ -407,7 +429,8 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
         if (locale == 'Системный(Русский)' ||
             locale == 'System(English)' ||
             locale == 'language') {
-          if (View.of(context)
+          if (View
+              .of(context)
               .platformDispatcher
               .locale
               .toString()

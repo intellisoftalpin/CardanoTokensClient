@@ -142,46 +142,41 @@ class DatabaseProvider implements DbRepository {
     String path = join(documentsDirectory.path, (name + ".db"));
     print('path !!!!!!!!!!!!!$path');
     // var version = await _database?.getVersion();
-    Database newDB = await openDatabase(
-        path, password: password, version: 1, onCreate: initDatabase);
+    Database newDB = await openDatabase(path,
+        password: password, version: 1, onCreate: initDatabase);
     //await openDatabase(path, password: password, version: 1,
     //    onCreate: (Database db, int version) async {
     Batch batch = newDB.batch();
     if (coins.length != 0) {
       coins.forEach(
-              (Map<String, Object?> coin) async =>
-              batch.insert(coinTable, coin,
-                  //where: "coinId = ?", whereArgs: [coins.indexOf(coin)],
-                  nullColumnHack: "coinId = ?",
-                  conflictAlgorithm: ConflictAlgorithm.replace));
+          (Map<String, Object?> coin) async => batch.insert(coinTable, coin,
+              //where: "coinId = ?", whereArgs: [coins.indexOf(coin)],
+              nullColumnHack: "coinId = ?",
+              conflictAlgorithm: ConflictAlgorithm.replace));
     }
     if (currencies.length != 0) {
-      currencies.forEach((Map<String, Object?> currency) async =>
-          batch.insert(
-              currenciesTable, currency,
-              nullColumnHack: "currencyId = ?",
-              conflictAlgorithm: ConflictAlgorithm.replace));
+      currencies.forEach((Map<String, Object?> currency) async => batch.insert(
+          currenciesTable, currency,
+          nullColumnHack: "currencyId = ?",
+          conflictAlgorithm: ConflictAlgorithm.replace));
     }
     if (prices.length != 0) {
-      prices.forEach((Map<String, Object?> price) async =>
-          batch.insert(
-              pricesTable, price,
-              nullColumnHack: "pricesId = ?",
-              conflictAlgorithm: ConflictAlgorithm.replace));
+      prices.forEach((Map<String, Object?> price) async => batch.insert(
+          pricesTable, price,
+          nullColumnHack: "pricesId = ?",
+          conflictAlgorithm: ConflictAlgorithm.replace));
     }
     if (transaction.length != 0) {
-      transaction.forEach((Map<String, Object?> transact) async =>
-          batch.insert(
-              transactionTable, transact,
-              nullColumnHack: "transactionId = ?",
-              conflictAlgorithm: ConflictAlgorithm.replace));
+      transaction.forEach((Map<String, Object?> transact) async => batch.insert(
+          transactionTable, transact,
+          nullColumnHack: "transactionId = ?",
+          conflictAlgorithm: ConflictAlgorithm.replace));
     }
     if (trastWallet.length != 0) {
-      trastWallet.forEach((Map<String, Object?> trast) async =>
-          batch.insert(
-              trastWalletTable, trast,
-              nullColumnHack: "walletId = ?",
-              conflictAlgorithm: ConflictAlgorithm.replace));
+      trastWallet.forEach((Map<String, Object?> trast) async => batch.insert(
+          trastWalletTable, trast,
+          nullColumnHack: "walletId = ?",
+          conflictAlgorithm: ConflictAlgorithm.replace));
     }
     await batch.commit();
     print('!!!!!!!!!!!!!SUCCESS!!!!!!!!!!!!!');
@@ -206,10 +201,10 @@ class DatabaseProvider implements DbRepository {
   }
 
   Future<CoinEntity> getCoin(String id) async {
-    var result = await _database!.query(
-        coinTable, where: "coinId = ?", whereArgs: [id]);
-    CoinEntity? coin = result.isNotEmpty ? CoinEntity.fromDatabaseJson(
-        result.first) : null;
+    var result =
+        await _database!.query(coinTable, where: "coinId = ?", whereArgs: [id]);
+    CoinEntity? coin =
+        result.isNotEmpty ? CoinEntity.fromDatabaseJson(result.first) : null;
     return coin!;
   }
 
@@ -286,8 +281,8 @@ class DatabaseProvider implements DbRepository {
   }
 
   @override
-  updateTransaction(TransactionEntity newTransactionEntity,
-      int transactionId) async {
+  updateTransaction(
+      TransactionEntity newTransactionEntity, int transactionId) async {
     var result = await _database!.update(
         transactionTable, newTransactionEntity.toDatabaseJson(),
         where: "transactionId = ?",
@@ -346,24 +341,28 @@ class DatabaseProvider implements DbRepository {
   @override
   saveTrastWallet(TrastWalletEntity trastWalletEntity) async {
     var result =
-    _database!.insert(trastWalletTable, trastWalletEntity.toDatabaseJson());
+        _database!.insert(trastWalletTable, trastWalletEntity.toDatabaseJson());
     return result;
   }
 
   @override
-  closeDb(String name, String password) async {
+  Future<bool> closeDb(String name, String password) async {
     //await Sqflite.devSetDebugModeOn(true);
+    bool dbClosed = false;
     if (_database != null) {
       await _database!.close();
       password = '';
       // name = '';
       _database = null;
+      dbClosed = true;
     } else {
       await openDb(name, password);
       await _database!.close();
       password = '';
       // name = '';
       _database = null;
+      dbClosed = true;
     }
+    return dbClosed;
   }
 }

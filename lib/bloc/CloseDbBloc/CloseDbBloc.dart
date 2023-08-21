@@ -13,25 +13,25 @@ part 'CloseDbEvent.dart';
 
 class CloseDbBloc extends Bloc<CloseDbEvent, CloseDbState> {
   final DbRepository _dbRepository;
-  String newIdProfile;
-  CloseDbBloc(this._dbRepository, this.newIdProfile)
+  String idProfile;
+  CloseDbBloc(this._dbRepository, this.idProfile)
       : super(CloseDbState(CloseDbStatus.close)) {
-    add(UpdateProfile(idProfile: newIdProfile));
+    add(UpdateProfile(idProfile: idProfile));
   }
 
   @override
   Stream<CloseDbState> mapEventToState(CloseDbEvent event) async* {
     if (event is UpdateProfile) {
-      newIdProfile = event.idProfile;
+      idProfile = event.idProfile;
       yield* _getSwitch(event);
     }
   }
 
   Stream<CloseDbState> _getSwitch(CloseDbEvent event) async* {
-    if(newIdProfile.isNotEmpty && globals.pass.isNotEmpty || newIdProfile != '' && globals.pass != '') {
-      await _dbRepository.closeDb(newIdProfile, globals.pass);
+    if(idProfile.isNotEmpty && globals.pass.isNotEmpty || idProfile != '' && globals.pass != '') {
+      await _dbRepository.closeDb(idProfile, globals.pass);
       // global.idProfile = newIdProfile;
-      print(" ::::::: newIdProfile = $newIdProfile newNameProfile = ${globals.nameProfile} "
+      print(" ::::::: newIdProfile = $idProfile newNameProfile = ${globals.nameProfile} "
           "global.idProfile = ${global.idProfile}");
 
       globals.pass = '';

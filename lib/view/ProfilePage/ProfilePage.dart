@@ -1943,10 +1943,12 @@ class ProfilePageState extends State<ProfilePage> {
                           //  scaffoldKey.currentState;
                           //  _exchangeAda(true);
                           //});
-                          Navigator.push(
+                          Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ProfilePage()));
+                                  builder: (context) =>
+                                      ProfilePage()),
+                                  (Route<dynamic> route) => false);
                         },
                         child: Container(
                             width: 100.0,
