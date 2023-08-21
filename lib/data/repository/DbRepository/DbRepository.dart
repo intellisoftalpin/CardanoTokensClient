@@ -1,10 +1,8 @@
-
 import 'package:crypto_offline/domain/entities/CoinEntity.dart';
 import 'package:crypto_offline/domain/entities/PriceEntity.dart';
 import 'package:crypto_offline/domain/entities/TransactionEntity.dart';
 
 abstract class DbRepository {
-
   saveCoinPrice(PriceEntity priceEntity);
 
   Future<List<PriceEntity>> getCoinPrices(String date);
@@ -41,14 +39,13 @@ abstract class DbRepository {
 
   deleteTransaction(int id);
 
-
   openDb(String name, String pass);
 
-  closeDb(String name, String password);
+  Future<bool> closeDb(String name, String password);
+
   isOpenDb();
 
   Future<List<TrastWalletEntity>> getTrastWallet();
 
   saveTrastWallet(TrastWalletEntity trastWalletEntity);
-
 }
