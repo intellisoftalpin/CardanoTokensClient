@@ -294,8 +294,8 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                   child: Text(
                                     LocaleKeys.press_add_transaction.tr(),
                                     style: TextStyle(
-                                            fontSize: textSize18,
-                                            color: Theme.of(context).hintColor),
+                                        fontSize: textSize18,
+                                        color: Theme.of(context).hintColor),
                                   ),
                                 ),
                               ],
@@ -338,13 +338,12 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
-                                                              color: Theme.of(
-                                                                      context)
+                                                          color:
+                                                              Theme.of(context)
                                                                   .hoverColor,
-                                                              fontFamily:
-                                                                  'MyriadPro',
-                                                              fontSize:
-                                                                  textSize14),
+                                                          fontFamily:
+                                                              'MyriadPro',
+                                                          fontSize: textSize14),
                                                     )),
                                                 actions: <Widget>[
                                                   Center(
@@ -459,7 +458,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                                 transactionId: state
                                                     .transactionList![index]
                                                     .transactionId!));
-                                        setState(() {});
+                                        //setState(() {});
                                       },
                                       background: Container(
                                           color: Theme.of(context)
@@ -807,8 +806,8 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                 overflow: TextOverflow.fade,
                                 softWrap: false,
                                 style: TextStyle(
-                                        fontSize: textSize22,
-                                        color: Theme.of(context).shadowColor),
+                                    fontSize: textSize22,
+                                    color: Theme.of(context).shadowColor),
                               ),
                             ),
                             SizedBox(
@@ -827,10 +826,10 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                   softWrap: false,
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
-                                          fontSize: textSize16,
-                                          color: isRelevant == 1
-                                              ? transactionHeaderTextColor
-                                              : lErrorColorLight),
+                                      fontSize: textSize16,
+                                      color: isRelevant == 1
+                                          ? transactionHeaderTextColor
+                                          : lErrorColorLight),
                                 ),
                               )
                           ],
@@ -1147,10 +1146,10 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                     softWrap: false,
                                     overflow: TextOverflow.clip,
                                     style: TextStyle(
-                                            fontSize: ProfileCoinSmallText,
-                                            color: isRelevant == 1
-                                                ? transactionHeaderTextColor
-                                                : lErrorColorLight),
+                                        fontSize: ProfileCoinSmallText,
+                                        color: isRelevant == 1
+                                            ? transactionHeaderTextColor
+                                            : lErrorColorLight),
                                   )),
                               SizedBox(
                                 width: 10.0,
@@ -1166,9 +1165,8 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                       Text(
                                         "Wallet: ",
                                         style: TextStyle(
-                                                fontSize: ProfileCoinSmallText,
-                                                color:
-                                                    transactionHeaderTextColor),
+                                            fontSize: ProfileCoinSmallText,
+                                            color: transactionHeaderTextColor),
                                       ),
                                       Expanded(
                                         child: Text(
@@ -1177,10 +1175,9 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                           overflow: TextOverflow.ellipsis,
                                           //state.coinsList![index].name,
                                           style: TextStyle(
-                                                  fontSize:
-                                                      ProfileCoinSmallText,
-                                                  color:
-                                                      transactionHeaderTextColor),
+                                              fontSize: ProfileCoinSmallText,
+                                              color:
+                                                  transactionHeaderTextColor),
                                         ),
                                       ),
                                     ],
