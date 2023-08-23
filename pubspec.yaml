@@ -22,7 +22,7 @@ dependencies:
 
   webview_flutter: ^3.0.0
   url_launcher: ^6.0.18
-  local_auth: ^2.1.0
+  local_auth: 2.1.6
   double_back_to_close: 2.0.0
   expandable: 5.0.1
 
