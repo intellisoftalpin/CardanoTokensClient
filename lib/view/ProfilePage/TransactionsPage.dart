@@ -1302,7 +1302,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                         print("transactionEntity = $transactionEntity");
                         context.read<TransactionBloc>().add(
                             SaveTransaction(transaction: transactionEntity));
-                        Future.delayed(Duration(milliseconds: 200), () {
+                        Future.delayed(Duration(milliseconds: 400), () {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
