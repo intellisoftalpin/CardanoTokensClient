@@ -14,6 +14,7 @@ class ChangePassProfile extends ChangePassProfileEvent {
   final String newProfilePath;
   final String newNameProfile;
   final String newProfilePass;
+  final int passPref;
 
   const ChangePassProfile(
       {required this.profile,
@@ -21,7 +22,8 @@ class ChangePassProfile extends ChangePassProfileEvent {
       required this.pass,
       required this.newProfilePath,
       required this.newNameProfile,
-      required this.newProfilePass});
+      required this.newProfilePass,
+      required this.passPref});
 
   @override
   List<Object> get props => [profile];

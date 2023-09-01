@@ -10,6 +10,7 @@ void main() async{
   await EasyLocalization.ensureInitialized();
   await GetStorage.init('MyStorage');
   await GetStorage.init('PassPrefer');
+  await GetStorage.init('ProfileStorage');
   await Hive.initFlutter();
   runApp(
       EasyLocalization(

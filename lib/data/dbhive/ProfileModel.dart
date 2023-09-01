@@ -1,28 +1,43 @@
+import 'dart:convert';
 
-import 'package:hive/hive.dart';
-part 'ProfileModel.g.dart';
+class ProfileModel {
+  String? nameProfile;
+  String? id;
+  int? pref;
 
-@HiveType(typeId: 1)
-class ProfileModel  extends  HiveObject {
+  ProfileModel(
+      {this.nameProfile,
+        this.id,
+        this.pref});
 
-  @HiveField(0)
-  String nameProfile;
-  @HiveField(1)
-  String id;
-
-  ProfileModel({required this.nameProfile, required this.id});
-
-  @override
-  String toString() {
-    return '${this.nameProfile}, ${this.id}';
+  ProfileModel.fromJson(Map<String, dynamic> json) {
+    nameProfile = json['nameProfile'];
+    id = json['id'];
+    pref = json['pref'];
   }
 
-  @override
-  bool operator == (Object other) =>
-          other is ProfileModel && nameProfile == other.nameProfile &&
-              id == other.id;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['nameProfile'] = nameProfile;
+    data['id'] = id;
+    data['pref'] = pref;
+    return data;
+  }
 
-  @override
-  int get hashCode => nameProfile.hashCode ^ id.hashCode;
+  static Map<String, dynamic> toMap(ProfileModel profile) => {
+    'nameProfile': profile.nameProfile,
+    'id': profile.id,
+    'pref': profile.pref,
+  };
 
+  static String encode(List<ProfileModel> habits) => json.encode(
+    habits
+        .map<Map<String, dynamic>>((profile) => ProfileModel.toMap(profile))
+        .toList(),
+  );
+
+  static List<ProfileModel> decode(String habits) =>
+      (json.decode(habits) as List<dynamic>)
+          .map<ProfileModel>((item) => ProfileModel.fromJson(item))
+          .toList();
 }

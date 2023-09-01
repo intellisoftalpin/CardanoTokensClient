@@ -36,7 +36,7 @@ Future<bool> internet() async {
 Future<void> authRestoreAlertReplace(
     BuildContext context, bool havePass, String name, String nameId) async {
   print('NAMEE:::$name NAMEID:::$nameId');
-  int pref = box.read(name + nameId);
+  int pref = globals.passPrefer;
   print('PREFF:::::$pref');
   HivePrefProfileRepository _hiveProfileRepository =
       HivePrefProfileRepositoryImpl();
@@ -82,7 +82,7 @@ Future<void> authRestoreAlertReplace(
                           profile = await _hiveProfileRepository
                               .deleteGroupFrom(name, nameId);
                           print('PROFILES:::::::::: $profile');
-                          int pref = box.read(name + nameId);
+                          int pref = globals.passPrefer;
                           box.remove(name + nameId);
                           await _prefProfileRepository.delProfile('lastProf');
                           if (pref == 0) {

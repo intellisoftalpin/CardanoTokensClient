@@ -17,13 +17,16 @@ import '../generated/locale_keys.g.dart';
 import '../view/CreateProfilePage/CreateProfilePage.dart';
 import '../view/OnBoardingPages/SecondOnBoardScreen.dart';
 import '../view/ProfilePage/InputPasswordPage.dart';
+import '../view/ProfilePage/InputPasswordPage.dart' as input;
 import '../view/ProfilePage/ProfilePage.dart';
 import 'constants.dart';
-import 'package:crypto_offline/view/CreateProfilePage/CreateProfilePage.dart' as globals;
-import 'package:crypto_offline/bloc/CreateProfile/CreateProfileBloc.dart' as global;
+import 'package:crypto_offline/view/CreateProfilePage/CreateProfilePage.dart'
+    as globals;
+import 'package:crypto_offline/bloc/CreateProfile/CreateProfileBloc.dart'
+    as global;
 import 'delete_db.dart';
 
-Future<void> showAlertChangeName(BuildContext context) async {
+Future<void> showAlertChangeName(BuildContext context, int pref) async {
   final nameController = TextEditingController();
   bool error = false;
   showDialog(
@@ -45,14 +48,11 @@ Future<void> showAlertChangeName(BuildContext context) async {
                   errorText: error ? LocaleKeys.invalid_alert_name.tr() : null,
                   hintText: LocaleKeys.edit_alert_change_name_new.tr(),
                   hintStyle: TextStyle(
-                      fontSize: textSize15, color: Theme
-                      .of(context)
-                      .shadowColor),
+                      fontSize: textSize15,
+                      color: Theme.of(context).shadowColor),
                   errorStyle: TextStyle(color: lErrorColorLight)),
               style: TextStyle(
-                  color: Theme
-                      .of(context)
-                      .shadowColor,
+                  color: Theme.of(context).shadowColor,
                   fontFamily: 'MyriadPro',
                   fontSize: textSize20),
               onChanged: (value) {
@@ -69,17 +69,10 @@ Future<void> showAlertChangeName(BuildContext context) async {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       side: BorderSide(
-                          color: Theme
-                              .of(context)
-                              .secondaryHeaderColor)),
-                  color: Theme
-                      .of(context)
-                      .secondaryHeaderColor,
+                          color: Theme.of(context).secondaryHeaderColor)),
+                  color: Theme.of(context).secondaryHeaderColor,
                   child: MaterialButton(
-                    minWidth: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    minWidth: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
                     onPressed: () async {
                       if (nameController.text.isEmpty ||
@@ -93,35 +86,35 @@ Future<void> showAlertChangeName(BuildContext context) async {
                         //    globals.nameProfile, nameController.text.trim());
                         // await deleteDB(globals.nameProfile);
                         BlocListener<ChangeNameProfileBloc,
-                            ChangeNameProfileState>(
+                                ChangeNameProfileState>(
                             bloc: ChangeNameProfileBloc(
-                                DatabaseProvider(),
-                                HivePrefProfileRepositoryImpl(),
-                                globals.nameProfile,
-                                nameController.text.trim()),
+                              DatabaseProvider(),
+                              HivePrefProfileRepositoryImpl(),
+                              globals.nameProfile,
+                              nameController.text.trim(),
+                            ),
                             listener: (context, state) {
                               if (state.state ==
                                   ChangeNameProfileStatus.start) {
                                 BlocProvider.of<ChangeNameProfileBloc>(context)
                                     .add(ChangeNameProfile(
-                                    profile: globals.nameProfile,
-                                    newProfile: nameController.text.trim()));
+                                        profile: globals.nameProfile,
+                                        newProfile:
+                                            nameController.text.trim()));
                               }
                             });
                         globals.nameProfile = nameController.text;
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                                 builder: (context) => ProfilePage()),
-                                (Route<dynamic> route) => false);
+                            (Route<dynamic> route) => false);
                       }
                     },
                     child: Text(
                       LocaleKeys.yes.tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: Theme
-                              .of(context)
-                              .shadowColor,
+                          color: Theme.of(context).shadowColor,
                           fontFamily: 'MyriadPro',
                           fontSize: textSize14),
                     ),
@@ -158,14 +151,11 @@ Future<void> showAlertChangePass(BuildContext context) async {
                   errorText: error,
                   hintText: LocaleKeys.edit_alert_change_pass_old.tr(),
                   hintStyle: TextStyle(
-                      fontSize: textSize15, color: Theme
-                      .of(context)
-                      .shadowColor),
+                      fontSize: textSize15,
+                      color: Theme.of(context).shadowColor),
                   errorStyle: TextStyle(color: lErrorColorLight)),
               style: TextStyle(
-                  color: Theme
-                      .of(context)
-                      .shadowColor,
+                  color: Theme.of(context).shadowColor,
                   fontFamily: 'MyriadPro',
                   fontSize: textSize20),
               onChanged: (value) {
@@ -182,17 +172,10 @@ Future<void> showAlertChangePass(BuildContext context) async {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       side: BorderSide(
-                          color: Theme
-                              .of(context)
-                              .secondaryHeaderColor)),
-                  color: Theme
-                      .of(context)
-                      .secondaryHeaderColor,
+                          color: Theme.of(context).secondaryHeaderColor)),
+                  color: Theme.of(context).secondaryHeaderColor,
                   child: MaterialButton(
-                    minWidth: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    minWidth: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
                     onPressed: () {
                       if (passController.text == globals.pass) {
@@ -215,9 +198,7 @@ Future<void> showAlertChangePass(BuildContext context) async {
                       LocaleKeys.yes.tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: Theme
-                              .of(context)
-                              .shadowColor,
+                          color: Theme.of(context).shadowColor,
                           fontFamily: 'MyriadPro',
                           fontSize: textSize14),
                     ),
@@ -234,7 +215,7 @@ Future<void> showAlertChangePass(BuildContext context) async {
 
 Future<void> showAlertPassConfirm(BuildContext context) async {
   SharedPrefProfileRepositoryImpl _prefProfileRepository =
-  SharedPrefProfileRepositoryImpl();
+      SharedPrefProfileRepositoryImpl();
   bool errorFirst = false;
   bool errorSecond = false;
   String errorTextFirst = '';
@@ -242,7 +223,6 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
   int pref = 0;
   final passController = TextEditingController();
   final passControllerConfirm = TextEditingController();
-  List<ProfileModel> profiles = [];
   showDialog(
     barrierDismissible: true,
     context: context,
@@ -258,64 +238,56 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
               height: 155.0,
               child: SingleChildScrollView(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextFormField(
-                        keyboardType: TextInputType.text,
-                        controller: passController,
-                        obscureText: true,
-                        decoration: kTextFieldEditAlert(context).copyWith(
-                            errorText: errorFirst ? errorTextFirst : null,
-                            hintText: LocaleKeys.edit_alert_change_pass_new
-                                .tr(),
-                            hintStyle: TextStyle(
-                                fontSize: textSize15, color: Theme
-                                .of(context)
-                                .shadowColor),
-                            errorStyle: TextStyle(color: lErrorColorLight)),
-                        style: TextStyle(
-                            color: Theme
-                                .of(context)
-                                .shadowColor,
-                            fontFamily: 'MyriadPro',
-                            fontSize: textSize20),
-                        onChanged: (value) {
-                          setState(() {
-                            errorFirst = false;
-                          });
-                        },
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      TextFormField(
-                        keyboardType: TextInputType.text,
-                        controller: passControllerConfirm,
-                        obscureText: true,
-                        decoration: kTextFieldEditAlert(context).copyWith(
-                            errorText: errorSecond ? errorTextSecond : null,
-                            hintText:
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextFormField(
+                    keyboardType: TextInputType.text,
+                    controller: passController,
+                    obscureText: true,
+                    decoration: kTextFieldEditAlert(context).copyWith(
+                        errorText: errorFirst ? errorTextFirst : null,
+                        hintText: LocaleKeys.edit_alert_change_pass_new.tr(),
+                        hintStyle: TextStyle(
+                            fontSize: textSize15,
+                            color: Theme.of(context).shadowColor),
+                        errorStyle: TextStyle(color: lErrorColorLight)),
+                    style: TextStyle(
+                        color: Theme.of(context).shadowColor,
+                        fontFamily: 'MyriadPro',
+                        fontSize: textSize20),
+                    onChanged: (value) {
+                      setState(() {
+                        errorFirst = false;
+                      });
+                    },
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.text,
+                    controller: passControllerConfirm,
+                    obscureText: true,
+                    decoration: kTextFieldEditAlert(context).copyWith(
+                        errorText: errorSecond ? errorTextSecond : null,
+                        hintText:
                             LocaleKeys.edit_alert_change_pass_new_confirm.tr(),
-                            hintStyle: TextStyle(
-                                fontSize: textSize15,
-                                color: Theme
-                                    .of(context)
-                                    .shadowColor),
-                            errorStyle: TextStyle(color: lErrorColorLight)),
-                        style: TextStyle(
-                            color: Theme
-                                .of(context)
-                                .shadowColor,
-                            fontFamily: 'MyriadPro',
-                            fontSize: textSize20),
-                        onChanged: (value) {
-                          setState(() {
-                            errorSecond = false;
-                          });
-                        },
-                      ),
-                    ],
-                  )),
+                        hintStyle: TextStyle(
+                            fontSize: textSize15,
+                            color: Theme.of(context).shadowColor),
+                        errorStyle: TextStyle(color: lErrorColorLight)),
+                    style: TextStyle(
+                        color: Theme.of(context).shadowColor,
+                        fontFamily: 'MyriadPro',
+                        fontSize: textSize20),
+                    onChanged: (value) {
+                      setState(() {
+                        errorSecond = false;
+                      });
+                    },
+                  ),
+                ],
+              )),
             ),
             actions: <Widget>[
               Container(
@@ -325,17 +297,10 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       side: BorderSide(
-                          color: Theme
-                              .of(context)
-                              .secondaryHeaderColor)),
-                  color: Theme
-                      .of(context)
-                      .secondaryHeaderColor,
+                          color: Theme.of(context).secondaryHeaderColor)),
+                  color: Theme.of(context).secondaryHeaderColor,
                   child: MaterialButton(
-                    minWidth: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    minWidth: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
                     onPressed: () async {
                       if (passController.text == passControllerConfirm.text &&
@@ -347,73 +312,30 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
                         String oldPort = globals.nameProfile;
                         String newIdPort = RandomString.getRandomString(10);
                         String oldIdPort = global.idProfile;
-                        pref = box.read(oldPort + oldIdPort);
-                        BlocListener<CreateProfileBloc, CreateProfileState>(
-                            bloc: CreateProfileBloc(
-                                DatabaseProvider(),
-                                HivePrefProfileRepositoryImpl(),
-                                oldPort + "+true",
-                                oldIdPort,
-                                newIdPort,
-                                passControllerConfirm.text,
-                                pref,
-                                null),
-                            listener: (context, state) {
-                              if (state.state == CreateProfileStatus.start) {
-                                BlocProvider.of<CreateProfileBloc>(context).add(
-                                    SaveProfile(
-                                        profile: oldPort + "+true",
-                                        idProfile: oldIdPort,
-                                        pass: passControllerConfirm.text.trim(),
-                                        passPrefer: pref));
-                              }
-                            });
-                        BlocListener<ChangePassProfileBloc,
-                            ChangePassProfileState>(
-                            bloc: ChangePassProfileBloc(
-                                DatabaseProvider(),
-                                HivePrefProfileRepositoryImpl(),
-                                oldIdPort,
-                                oldPort,
-                                globals.pass,
-                                newIdPort,
-                                newPort,
-                                passControllerConfirm.text),
-                            listener: (context, state) {
-                              if (state.state ==
-                                  ChangePassProfileStatus.start) {
-                                BlocProvider.of<ChangePassProfileBloc>(context)
-                                    .add(ChangePassProfile(
-                                    profile: oldIdPort,
-                                    nameProfile: oldPort,
-                                    pass: globals.pass,
-                                    newProfilePath: newIdPort,
-                                    newNameProfile: newPort,
-                                    newProfilePass: passControllerConfirm
-                                        .text));
-                              }
-                            });
-                        // await deleteDB(oldIdPort);
-                        HivePrefProfileRepository _hiveProfileRepository = HivePrefProfileRepositoryImpl();
-                        var prof = await _hiveProfileRepository.showProfile();
-                        print('PROFILES  prof :::::::::: $prof');
-                        prof.toSet().toList();
+                        pref = globals.passPrefer;
+                        await createBloc(oldPort, oldIdPort, newIdPort,
+                            passControllerConfirm.text, pref);
+                        await changePassBloc(oldIdPort, oldPort, newIdPort,
+                            newPort, passControllerConfirm.text);
+                        HivePrefProfileRepository _hiveProfileRepository =
+                            HivePrefProfileRepositoryImpl();
                         globals.pass = passControllerConfirm.text;
-                        await _prefProfileRepository.saveProfile('lastProf',
-                            newPort);
+                        await _prefProfileRepository.saveProfile(
+                            'lastProf', newPort);
                         globals.nameProfile = newPort;
                         global.idProfile = newIdPort;
-                        profiles = prof;
-                        print('PROFILES:::::::::: $profiles');
                         globals.passChosen = false;
+                        List<ProfileModel> prof =
+                            await _hiveProfileRepository.showProfile();
+                        print('prof_in_alert: $prof');
                         Fluttertoast.showToast(
                             msg: LocaleKeys.success_change_pass.tr());
+                        input.deleteProf = true;
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    InputPasswordPage(
-                                        newPort, newIdPort, '', '', profiles)),
-                                (Route<dynamic> route) => false);
+                                builder: (context) => InputPasswordPage(
+                                    newPort, newIdPort, '', '', prof)),
+                            (Route<dynamic> route) => false);
                       } else if (passController.text.isEmpty &&
                           passControllerConfirm.text.isEmpty) {
                         setState(() {
@@ -441,8 +363,8 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
                           errorSecond = true;
                         });
                         return;
-                      } else if (passController.text != passControllerConfirm
-                          .text) {
+                      } else if (passController.text !=
+                          passControllerConfirm.text) {
                         setState(() {
                           errorTextSecond =
                               LocaleKeys.invalid_alert_pass_not_equals.tr();
@@ -456,9 +378,7 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
                       LocaleKeys.yes.tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: Theme
-                              .of(context)
-                              .shadowColor,
+                          color: Theme.of(context).shadowColor,
                           fontFamily: 'MyriadPro',
                           fontSize: textSize14),
                     ),
@@ -475,128 +395,159 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
 
 Future<void> showAlertDelete(BuildContext context) async {
   HivePrefProfileRepository _hiveProfileRepository =
-  HivePrefProfileRepositoryImpl();
+      HivePrefProfileRepositoryImpl();
   List<ProfileModel> profile = [];
   SharedPrefProfileRepositoryImpl _prefProfileRepository =
-  SharedPrefProfileRepositoryImpl();
+      SharedPrefProfileRepositoryImpl();
   showDialog(
     barrierDismissible: true,
     context: context,
-    builder: (context) =>
-        AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20.0))),
-          title: Text(LocaleKeys.edit_delete.tr(), textAlign: TextAlign.center),
-          content:
+    builder: (context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      title: Text(LocaleKeys.edit_delete.tr(), textAlign: TextAlign.center),
+      content:
           Text(LocaleKeys.edit_alert_delete.tr(), textAlign: TextAlign.center),
-          actions: <Widget>[
-            Container(
-              height: 35.0,
-              width: 65.0,
-              child: Material(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    side:
-                    BorderSide(color: Theme
-                        .of(context)
-                        .secondaryHeaderColor)),
-                color: Theme
-                    .of(context)
-                    .secondaryHeaderColor,
-                child: MaterialButton(
-                  minWidth: MediaQuery
-                      .of(context)
-                      .size
-                      .width,
-                  padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
-                  onPressed: () async {
-                    await deleteDB(global.idProfile.split("_")[0]);
-                    profile = await _hiveProfileRepository.deleteGroupFrom(
-                        globals.nameProfile, global.idProfile);
-                    print('PROFILES:::::::::: $profile');
-                    int pref = box.read(globals.nameProfile + global.idProfile);
-                    box.remove(globals.nameProfile + global.idProfile);
-                    await _prefProfileRepository.delProfile('lastProf');
-                    if (pref == 0) {
-                      box.remove('${globals.nameProfile +
-                          global.idProfile}create_time');
-                      box.remove('${globals.nameProfile +
-                          global.idProfile}enter_time');
-                      box.remove(
-                          '${globals.nameProfile + global.idProfile}pass');
-                    }
-                    if (profile.isEmpty || profile == []) {
-                      box.write('onBoard', 1);
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  SecondOnBoardScreen(
-                                      appBarBackArrow: SizedBox.shrink())),
-                              (Route<dynamic> route) => false);
-                    } else if (profile.isNotEmpty) {
-                      BlocProvider.of<CloseDbBloc>(context).add(
-                          UpdateProfile(idProfile: profile.first.id));
-                      globals.nameProfile = profile.first.nameProfile;
-                      global.idProfile = profile.first.id;
-                      globals.passChosen = false;
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  InputPasswordPage(
-                                      profile.first.nameProfile,
-                                      profile.first.id, '', '', profile)),
-                              (Route<dynamic> route) => false);
-                    }
-                  },
-                  child: Text(
-                    LocaleKeys.yes.tr(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Theme
-                            .of(context)
-                            .shadowColor,
-                        fontFamily: 'MyriadPro',
-                        fontSize: textSize14),
-                  ),
-                ),
+      actions: <Widget>[
+        Container(
+          height: 35.0,
+          width: 65.0,
+          child: Material(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                side:
+                    BorderSide(color: Theme.of(context).secondaryHeaderColor)),
+            color: Theme.of(context).secondaryHeaderColor,
+            child: MaterialButton(
+              minWidth: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
+              onPressed: () async {
+                await deleteDB(global.idProfile.split("_")[0]);
+                profile = await _hiveProfileRepository.deleteGroupFrom(
+                    globals.nameProfile, global.idProfile);
+                print('PROFILES:::::::::: $profile');
+                int pref = globals.passPrefer;
+                box.remove(globals.nameProfile + global.idProfile);
+                await _prefProfileRepository.delProfile('lastProf');
+                if (pref == 0) {
+                  box.remove(
+                      '${globals.nameProfile + global.idProfile}create_time');
+                  box.remove(
+                      '${globals.nameProfile + global.idProfile}enter_time');
+                  box.remove('${globals.nameProfile + global.idProfile}pass');
+                }
+                if (profile.isEmpty || profile == []) {
+                  box.write('onBoard', 1);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => SecondOnBoardScreen(
+                              appBarBackArrow: SizedBox.shrink())),
+                      (Route<dynamic> route) => false);
+                } else if (profile.isNotEmpty) {
+                  BlocProvider.of<CloseDbBloc>(context)
+                      .add(UpdateProfile(idProfile: profile.first.id!));
+                  globals.nameProfile = profile.first.nameProfile!;
+                  global.idProfile = profile.first.id!;
+                  globals.passChosen = false;
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => InputPasswordPage(
+                              profile.first.nameProfile,
+                              profile.first.id,
+                              '',
+                              '',
+                              profile)),
+                      (Route<dynamic> route) => false);
+                }
+              },
+              child: Text(
+                LocaleKeys.yes.tr(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Theme.of(context).shadowColor,
+                    fontFamily: 'MyriadPro',
+                    fontSize: textSize14),
               ),
             ),
-            Container(
-              height: 35.0,
-              width: 65.0,
-              child: Material(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    side:
-                    BorderSide(color: Theme
-                        .of(context)
-                        .secondaryHeaderColor)),
-                color: Theme
-                    .of(context)
-                    .secondaryHeaderColor,
-                child: MaterialButton(
-                  minWidth: MediaQuery
-                      .of(context)
-                      .size
-                      .width,
-                  padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                  child: Text(
-                    LocaleKeys.no.tr(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Theme
-                            .of(context)
-                            .shadowColor,
-                        fontFamily: 'MyriadPro',
-                        fontSize: textSize14),
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
+        Container(
+          height: 35.0,
+          width: 65.0,
+          child: Material(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                side:
+                    BorderSide(color: Theme.of(context).secondaryHeaderColor)),
+            color: Theme.of(context).secondaryHeaderColor,
+            child: MaterialButton(
+              minWidth: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text(
+                LocaleKeys.no.tr(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Theme.of(context).shadowColor,
+                    fontFamily: 'MyriadPro',
+                    fontSize: textSize14),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
   );
+}
+
+Future<void> createBloc(String oldPort, String oldIdPort, String newIdPort,
+    String passControllerConfirm, int pref) async {
+  BlocListener<CreateProfileBloc, CreateProfileState>(
+      bloc: CreateProfileBloc(
+          DatabaseProvider(),
+          HivePrefProfileRepositoryImpl(),
+          oldPort + "+true",
+          oldIdPort,
+          newIdPort,
+          passControllerConfirm,
+          pref,
+          null),
+      listener: (context, state) {
+        if (state.state == CreateProfileStatus.start) {
+          BlocProvider.of<CreateProfileBloc>(context).add(SaveProfile(
+              profile: oldPort + "+true",
+              idProfile: oldIdPort,
+              pass: passControllerConfirm.trim(),
+              passPrefer: pref));
+        }
+      });
+}
+
+Future<void> changePassBloc(String oldIdPort, String oldPort, String newIdPort,
+    String newPort, String passControllerConfirm) async {
+  BlocListener<ChangePassProfileBloc, ChangePassProfileState>(
+      bloc: ChangePassProfileBloc(
+          DatabaseProvider(),
+          HivePrefProfileRepositoryImpl(),
+          oldIdPort,
+          oldPort,
+          globals.pass,
+          newIdPort,
+          newPort,
+          passControllerConfirm,
+          globals.passPrefer),
+      listener: (context, state) {
+        if (state.state == ChangePassProfileStatus.start) {
+          BlocProvider.of<ChangePassProfileBloc>(context).add(ChangePassProfile(
+              profile: oldIdPort,
+              nameProfile: oldPort,
+              pass: globals.pass,
+              newProfilePath: newIdPort,
+              newNameProfile: newPort,
+              newProfilePass: passControllerConfirm,
+              passPref: globals.passPrefer));
+        }
+      });
 }

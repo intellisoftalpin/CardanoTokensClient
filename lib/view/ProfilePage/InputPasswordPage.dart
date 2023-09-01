@@ -17,10 +17,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../../data/dbhive/HivePrefProfileRepository.dart';
+import '../../data/dbhive/HivePrefProfileRepositoryImpl.dart';
 import '../../utils/check_create_profile_time.dart';
 import 'ProfilePage.dart';
 
 bool passIsEmpty = false;
+bool deleteProf = false;
 
 //ignore: must_be_immutable
 class InputPasswordPage extends StatefulWidget {
@@ -28,10 +31,10 @@ class InputPasswordPage extends StatefulWidget {
   var idProfile;
   var teamName;
   var error;
-  final List<ProfileModel> profileExist;
+  final List<ProfileModel> profileExists;
 
   InputPasswordPage(this.nameProfile, this.idProfile, this.teamName, this.error,
-      this.profileExist);
+      this.profileExists);
 
   static Route route() {
     return MaterialPageRoute<void>(
@@ -48,7 +51,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
   String _nameId = '';
   bool fingerPass = false;
   static bool isAuthenticate = false;
-  int prefGlob = 0;
+  int prefGlob = 5;
   DateTime? profileCreateDate;
   DateTime? profileEnterDate;
   int? createDate;
@@ -70,9 +73,29 @@ class InputPasswordPageState extends State<InputPasswordPage> {
   TextEditingController passwordController = new TextEditingController();
   TextEditingController passwordControllerAuth = new TextEditingController();
 
+  void getProfilesAfterChangePass() async {
+    deleteProf = false;
+    profileExist = widget.profileExists;
+    setState(() {});
+  }
+
+  void getProfiles() async {
+    HivePrefProfileRepository _hiveProfileRepository =
+        HivePrefProfileRepositoryImpl();
+    profileExist = await _hiveProfileRepository.showProfile();
+    print('getProfiles() async');
+    print('profileExist async: $profileExist');
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
+    if (deleteProf == true) {
+      getProfilesAfterChangePass();
+    } else {
+      getProfiles();
+    }
     textError = widget.error;
     passwordStreamController = StreamController<String>.broadcast();
     passwordController.addListener(() {
@@ -105,9 +128,9 @@ class InputPasswordPageState extends State<InputPasswordPage> {
     }
 
     if (globals.nameProfile.isEmpty ||
-        globals.nameProfile == '' && widget.profileExist.isNotEmpty) {
-      _name = widget.profileExist.first.nameProfile;
-      _nameId = widget.profileExist.first.id;
+        globals.nameProfile == '' && profileExist.isNotEmpty) {
+      _name = profileExist.first.nameProfile!;
+      _nameId = profileExist.first.id!;
     }
 
     if (onSelect) {
@@ -118,7 +141,6 @@ class InputPasswordPageState extends State<InputPasswordPage> {
     }
     print(
         "passVisible _name = $_name, _nameId = $_nameId onSelect = $onSelect");
-    prefGlob = box.read(_name + _nameId);
     if (prefGlob == 0) {
       createDate = box.read('${_name + _nameId}create_time');
       enterDate = box.read('${_name + _nameId}enter_time');
@@ -192,8 +214,10 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                               child: RawMaterialButton(
                                 onPressed: () async {
                                   final isAuthenticated =
-                                      await LocalAuthApi.authenticate();
-                                  if (await LocalAuthApi.availableBiometric() == false) {
+                                      await LocalAuthApi().authenticate();
+                                  if (await LocalAuthApi()
+                                          .availableBiometric() ==
+                                      false) {
                                     Fluttertoast.showToast(
                                         msg: LocaleKeys.noBiometrics.tr());
                                   }
@@ -240,8 +264,9 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                       ),
                     ),
                     onTap: () async {
-                      final isAuthenticated = await LocalAuthApi.authenticate();
-                      if (await LocalAuthApi.availableBiometric() == false) {
+                      final isAuthenticated =
+                          await LocalAuthApi().authenticate();
+                      if (await LocalAuthApi().availableBiometric() == false) {
                         Fluttertoast.showToast(
                             msg: LocaleKeys.noBiometrics.tr());
                       }
@@ -379,9 +404,9 @@ class InputPasswordPageState extends State<InputPasswordPage> {
     }
 
     if (globals.nameProfile.isEmpty ||
-        globals.nameProfile == '' && widget.profileExist.isNotEmpty) {
-      _name = widget.profileExist.first.nameProfile;
-      _nameId = widget.profileExist.first.id;
+        globals.nameProfile == '' && profileExist.isNotEmpty) {
+      _name = profileExist.first.nameProfile!;
+      _nameId = profileExist.first.id!;
     }
 
     if (onSelect) {
@@ -389,6 +414,29 @@ class InputPasswordPageState extends State<InputPasswordPage> {
       _nameId = global.idProfile;
       errorTxt = '';
       //onSelect = false;
+    }
+
+    print('profileExist: $profileExist');
+    if (prefGlob == 5) {
+      if (profileExist.length == 1) {
+        print('1');
+        setState(() {
+          prefGlob = profileExist.first.pref!;
+        });
+      } else {
+        print('2');
+        print('_nameId: $_nameId');
+        for (var data in profileExist) {
+          print('data.id in list: ${data.id}');
+          if (data.id == _nameId) {
+            print('data.id: ${data.id}');
+            print('data.pref: ${data.pref}');
+            setState(() {
+              prefGlob = data.pref!;
+            });
+          }
+        }
+      }
     }
 
     if (globals.pass.isEmpty || globals.pass == '') {
@@ -408,8 +456,8 @@ class InputPasswordPageState extends State<InputPasswordPage> {
 
     print(
         "!!!! _name!!!! = $_name, nameProfile = $nameProfile _nameId = $_nameId, passIsEmpty = $passIsEmpty");
-    print("!!!!pref!!!! = ${box.read(_name + _nameId)}");
-    int pref = box.read(_name + _nameId);
+    print("!!!!pref!!!! = $prefGlob");
+    int pref = prefGlob;
     if (pref == 0) {
       createDate = box.read('${_name + _nameId}create_time');
       enterDate = box.read('${_name + _nameId}enter_time');
@@ -516,9 +564,9 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                   textError = '';
                                 },
                                 style: TextStyle(
-                                        color: Theme.of(context).disabledColor,
-                                        fontFamily: 'MyriadPro',
-                                        fontSize: textSize20),
+                                    color: Theme.of(context).disabledColor,
+                                    fontFamily: 'MyriadPro',
+                                    fontSize: textSize20),
                               );
                             }),
                       ),
@@ -535,8 +583,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                 : errorTxt,
                             textAlign: TextAlign.start,
                             style: TextStyle(
-                                    fontSize: textSize14,
-                                    color: kErrorColor)),
+                                fontSize: textSize14, color: kErrorColor)),
                       ),
                     ),
                   ],
@@ -585,9 +632,9 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                           LocaleKeys.ok.tr(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                                  color: Theme.of(context).shadowColor,
-                                  fontFamily: 'MyriadPro',
-                                  fontSize: textSize20),
+                              color: Theme.of(context).shadowColor,
+                              fontFamily: 'MyriadPro',
+                              fontSize: textSize20),
                         ),
                       )),
                 ),
@@ -635,10 +682,9 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                     textError = '';
                                   },
                                   style: TextStyle(
-                                          color:
-                                              Theme.of(context).disabledColor,
-                                          fontFamily: 'MyriadPro',
-                                          fontSize: textSize20),
+                                      color: Theme.of(context).disabledColor,
+                                      fontFamily: 'MyriadPro',
+                                      fontSize: textSize20),
                                 ));
                           }),
                     ),
@@ -655,8 +701,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                               : errorTxt,
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                                  fontSize: textSize14,
-                                  color: kErrorColor)),
+                              fontSize: textSize14, color: kErrorColor)),
                     ),
                   ),
                 ],
@@ -700,8 +745,8 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                   // + ' ' + _name,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                          fontSize: textSize17,
-                                          color: Theme.of(context).focusColor),
+                                      fontSize: textSize17,
+                                      color: Theme.of(context).focusColor),
                                   key: UniqueKey(),
                                 ),
                                 Row(
@@ -716,10 +761,9 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         style: TextStyle(
-                                                fontSize: textSize22,
-                                                color: Theme.of(context)
-                                                    .focusColor,
-                                                fontWeight: FontWeight.bold),
+                                            fontSize: textSize22,
+                                            color: Theme.of(context).focusColor,
+                                            fontWeight: FontWeight.bold),
                                         key: UniqueKey(),
                                       ),
                                     ),
@@ -731,18 +775,16 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                             color:
                                                 Theme.of(context).focusColor),
                                         itemBuilder: (context) {
-                                          return widget.profileExist
-                                              .map((item) {
+                                          return profileExist.map((item) {
                                             return PopupMenuItem<ProfileModel>(
                                               value: item,
                                               child: ListTile(
                                                 title: Text(
-                                                  item.nameProfile,
+                                                  item.nameProfile!,
                                                   style: TextStyle(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .focusColor,
-                                                          fontSize: textSize24),
+                                                      color: Theme.of(context)
+                                                          .focusColor,
+                                                      fontSize: textSize24),
                                                 ),
                                               ),
                                             );
@@ -754,15 +796,15 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                                           setState(() {
                                             globals.passChosen = false;
                                             onSelect = true;
-                                            _name = item.nameProfile;
-                                            _nameId = item.id;
+                                            _name = item.nameProfile!;
+                                            _nameId = item.id!;
                                             nameProfile = _name;
                                             globals.nameProfile = _name;
                                             global.idProfile = _nameId;
                                             globals.pass = '';
                                             passIsEmpty = false;
-                                            int pref =
-                                                box.read(_name + _nameId);
+                                            int pref = item.pref!;
+                                            prefGlob = item.pref!;
                                             print(
                                                 "press pref = $pref,  _name = $_name , _nameId = $_nameId onSelect = $onSelect,"
                                                 "globals.nameProfile = ${globals.nameProfile}, global.idProfile = ${global.idProfile}");
@@ -840,9 +882,9 @@ class InputPasswordPageState extends State<InputPasswordPage> {
                               LocaleKeys.ok.tr(),
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                      color: Theme.of(context).shadowColor,
-                                      fontFamily: 'MyriadPro',
-                                      fontSize: textSize20),
+                                  color: Theme.of(context).shadowColor,
+                                  fontFamily: 'MyriadPro',
+                                  fontSize: textSize20),
                             ),
                           )),
                     ),
@@ -865,7 +907,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
   }
 
   void _getPressEnterButton() {
-    print(prefGlob);
+    print('prefGlob: $prefGlob');
     if (prefGlob == 0) {
       if (createTimeCheck(profileCreateDate!, profileEnterDate!)) {
         if (fingerPass == false) {
@@ -876,6 +918,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
         } else if (fingerPass == true) {
           globals.nameProfile = _name;
           global.idProfile = _nameId;
+          globals.passPrefer = prefGlob;
           //globals.pass = widget.teamName;
           globals.pass = passwordController.text;
           passwordController.text = '';
@@ -886,14 +929,14 @@ class InputPasswordPageState extends State<InputPasswordPage> {
         }
       } else if (!createTimeCheck(profileCreateDate!, profileEnterDate!)) {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
-          final isAuthenticated = await LocalAuthApi.authenticate();
-          if (await LocalAuthApi.availableBiometric()  == false) {
-            Fluttertoast.showToast(
-                msg: LocaleKeys.noBiometrics.tr());
+          final isAuthenticated = await LocalAuthApi().authenticate();
+          if (await LocalAuthApi().availableBiometric() == false) {
+            Fluttertoast.showToast(msg: LocaleKeys.noBiometrics.tr());
           }
           if (isAuthenticated) {
             globals.nameProfile = _name;
             global.idProfile = _nameId;
+            globals.passPrefer = prefGlob;
             //globals.pass = widget.teamName;
             globals.pass = box.read('${_name + _nameId}pass');
             Navigator.pushAndRemoveUntil(
@@ -906,6 +949,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
     } else if (prefGlob == 1) {
       globals.nameProfile = _name;
       global.idProfile = _nameId;
+      globals.passPrefer = prefGlob;
       //globals.pass = widget.teamName;
       globals.pass = passwordController.text;
       passwordController.text = '';
@@ -915,14 +959,14 @@ class InputPasswordPageState extends State<InputPasswordPage> {
           (Route<dynamic> route) => false);
     } else if (prefGlob == 2) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        final isAuthenticated = await LocalAuthApi.authenticate();
-        if (await LocalAuthApi.availableBiometric() == false) {
-          Fluttertoast.showToast(
-              msg: LocaleKeys.noBiometrics.tr());
+        final isAuthenticated = await LocalAuthApi().authenticate();
+        if (await LocalAuthApi().availableBiometric() == false) {
+          Fluttertoast.showToast(msg: LocaleKeys.noBiometrics.tr());
         }
         if (isAuthenticated) {
           globals.nameProfile = _name;
           global.idProfile = _nameId;
+          globals.passPrefer = prefGlob;
           globals.pass = hashPass(hashPassword).toString();
           Navigator.pushAndRemoveUntil(
               context,
@@ -933,6 +977,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
     } else if (prefGlob == 3) {
       globals.nameProfile = _name;
       global.idProfile = _nameId;
+      globals.passPrefer = prefGlob;
       globals.pass = hashPass(hashPassword).toString();
       Navigator.pushAndRemoveUntil(
           context,

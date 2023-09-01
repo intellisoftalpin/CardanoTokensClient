@@ -11,7 +11,6 @@ import '../../data/dbhive/HivePrefProfileRepositoryImpl.dart';
 import '../../data/dbhive/ProfileModel.dart';
 import '../../utils/delete_db.dart';
 import '../../utils/edit_alerts.dart';
-import '../CreateProfilePage/CreateProfilePage.dart';
 import 'InputPasswordPage.dart';
 import 'ProfilePage.dart';
 import 'package:crypto_offline/bloc/CreateProfile/CreateProfileBloc.dart' as global;
@@ -38,8 +37,8 @@ class EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (box.read(globals.nameProfile + global.idProfile) == 0 ||
-        box.read(globals.nameProfile + global.idProfile) == 1) {
+    if (globals.passPrefer == 0 ||
+        globals.passPrefer == 1) {
       changePassWidget = changePass();
     } else {
       changePassWidget = changePassUnavailable();
@@ -122,7 +121,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    changeName(),
+                                    changeName(context),
                                     Divider(
                                         height: 0.4,
                                         color: Theme.of(context)
@@ -140,7 +139,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                                                 color:
                                                     Theme.of(context).hintColor)
                                             .color),
-                                    deletePort(),
+                                    deletePort(context),
                                   ],
                                 ),
                               ),
@@ -155,7 +154,7 @@ class EditProfilePageState extends State<EditProfilePage> {
 
   }
 
-  Widget changeName() {
+  Widget changeName(BuildContext context) {
     return InkWell(
       child: Container(
         margin: EdgeInsets.only(top: 10.0, bottom: 5.0),
@@ -202,7 +201,7 @@ class EditProfilePageState extends State<EditProfilePage> {
       ),
       onTap: () {
         if(mounted) {
-          showAlertChangeName(context);
+          showAlertChangeName(context, globals.passPrefer);
         }
       },
     );
@@ -310,7 +309,7 @@ class EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Widget deletePort() {
+  Widget deletePort(BuildContext context) {
     return InkWell(
       child: Container(
         margin: EdgeInsets.only(top: 5.0, bottom: 10.0),
