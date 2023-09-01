@@ -230,8 +230,8 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                               WidgetsBinding.instance
                                   .addPostFrameCallback((_) async {
                                 final isAuthenticated =
-                                    await LocalAuthApi.authenticate();
-                                if (await LocalAuthApi.availableBiometric() ==
+                                    await LocalAuthApi().authenticate();
+                                if (await LocalAuthApi().availableBiometric() ==
                                     false) {
                                   Fluttertoast.showToast(
                                       msg: LocaleKeys.noBiometrics.tr());
@@ -285,8 +285,8 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                               WidgetsBinding.instance
                                   .addPostFrameCallback((_) async {
                                 final isAuthenticated =
-                                    await LocalAuthApi.authenticate();
-                                if (await LocalAuthApi.availableBiometric() ==
+                                    await LocalAuthApi().authenticate();
+                                if (await LocalAuthApi().availableBiometric() ==
                                     false) {
                                   Fluttertoast.showToast(
                                       msg: LocaleKeys.noBiometrics.tr());

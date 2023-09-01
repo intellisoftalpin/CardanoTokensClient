@@ -6,10 +6,10 @@ import 'package:crypto_offline/data/repository/DbRepository/DbRepository.dart';
 import 'package:crypto_offline/utils/random_string.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart';
 
 import '../../data/dbhive/ProfileModel.dart';
+import 'package:crypto_offline/view/CreateProfilePage/CreateProfilePage.dart';
 import 'package:crypto_offline/view/CreateProfilePage/CreateProfilePage.dart'
     as globals;
 
@@ -61,21 +61,21 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
     try {
       if (profile.isNotEmpty && pass.isNotEmpty ||
           profile != '' && pass != '' && profile != 'null') {
-        final box = GetStorage('PassPrefer');
         String prof = globals.nameProfile.trim() + "+true";
         print(
             ":::::::::CreateBloc  prof = $prof, profile= $profile :::::: profile == prof ${profile == prof}");
         if (profile == prof && newProfileId != null) {
+          print('!)(!1111111111111111111111111111111111');
           var newIdProfile = newProfileId!;
           var newPort = globals.nameProfile;
 
           print(":::::prof = ${await _hiveProfileRepository.showProfile()}");
-          await _hiveProfileRepository.saveProfile(newPort, newIdProfile);
+          await _hiveProfileRepository.saveProfile(
+              newPort, newIdProfile, passPrefer);
           print("profile= $profile, idProfile = $oldIdProfile, pass = $pass");
           print(":::::profiles= ${await _hiveProfileRepository.showProfile()}");
 
-          box.remove(globals.nameProfile + oldIdProfile);
-          box.write(newPort + newIdProfile, passPrefer);
+          print("newPort = $newPort  newIdProfile = $newIdProfile");
           print("edit_alert pref = $passPrefer");
           if (passPrefer == 0) {
             box.remove('${globals.nameProfile + oldIdProfile}pass');
@@ -92,7 +92,6 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
           box.remove('${globals.nameProfile.trim() + oldIdProfile}enter_time');
           box.write('${newPort + newIdProfile}create_time', createDate);
           box.write('${newPort + newIdProfile}enter_time', enterDate);
-          box.write(newPort + newIdProfile, passPrefer);
 
           List<FileSystemEntity> listFiles = [];
           String idProfile = oldIdProfile;
@@ -130,6 +129,7 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
           yield state.copyWith(CreateProfileStatus.start);
         } else {
           if (idDBProf != null) {
+            print('!)(!2222222222222222222222222222');
             ApiRepository _apiRepository = ApiRepository();
             var internet = await _apiRepository.check();
             List<Tokens> cardanoList = [];
@@ -153,7 +153,8 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
               String idProf = idDBProf!;
               idProfile = idProf;
               print("RECOVERY_BLOC:::profile= $profile, idProfile = $idProf");
-              await _hiveProfileRepository.saveProfile(profile, idProfile);
+              await _hiveProfileRepository.saveProfile(
+                  profile, idProfile, passPrefer);
               await _dbRepository.openDb(idProfile, pass);
               List<TransactionEntity> transactions =
                   await _dbRepository.getAllTransaction();
@@ -181,7 +182,6 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
                   }
                 }
               }
-              box.write(profile + idProf, passPrefer);
               if (passPrefer == 0) {
                 box.write('${profile + idProf}pass', pass.trim());
               }
@@ -194,13 +194,16 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
               yield state.copyWith(CreateProfileStatus.start);
             }
           } else {
+            print('!)(!333333333333333333333333333');
             String idProf = await getIdProf();
             idProfile = idProf;
             print("profile= $profile, idProfile = $idProf");
-            await _hiveProfileRepository.saveProfile(profile, idProfile);
+            await _hiveProfileRepository.saveProfile(
+                profile, idProfile, passPrefer);
             await _dbRepository.openDb(idProfile, pass);
 
-            box.write(profile + idProf, passPrefer);
+            print("1profile = $profile  1idProf = $idProf");
+            print("1edit_alert pref = $passPrefer");
             if (passPrefer == 0) {
               box.write('${profile + idProf}pass', pass.trim());
             }

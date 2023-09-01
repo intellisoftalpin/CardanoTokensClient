@@ -4,6 +4,7 @@ import 'package:crypto_offline/data/repository/SharedPrefProfile/SharedPrefProfi
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crypto_offline/view/CreateProfilePage/CreateProfilePage.dart' as globals;
 import 'package:crypto_offline/bloc/CreateProfile/CreateProfileBloc.dart' as global;
+import '../../data/dbhive/HivePrefProfileRepositoryImpl.dart';
 import 'AuthProfileEvent.dart';
 import 'AuthProfileState.dart';
 
@@ -39,10 +40,11 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
 
         for(var profile in profileExist) {
           if(profile.nameProfile == lastProfile) {
-            global.idProfile = profile.id;
+            global.idProfile = profile.id!;
           }
         }
-        globals.nameProfile = lastProfile;
+        globals.nameProfile = lastProfile!;
+        globals.passPrefer = await getPassPref(global.idProfile);
 
         print("globals.nameProfile=  ${globals.nameProfile} global.idProfile = ${global.idProfile}   profileAll = $profileExist");
 

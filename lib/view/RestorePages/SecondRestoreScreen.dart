@@ -257,7 +257,7 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                                       left: 15, right: 15, bottom: 10),
                                   child: ListTile(
                                     title: new Text(
-                                      profile[index].nameProfile,
+                                      profile[index].nameProfile!,
                                       maxLines: 1,
                                       overflow: TextOverflow.clip,
                                     ),
@@ -271,16 +271,16 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
                                           authRestoreAlertReplace(
                                               context,
                                               false,
-                                              profile[index].nameProfile,
-                                              profile[index].id);
+                                              profile[index].nameProfile!,
+                                              profile[index].id!);
                                         }
                                       } else {
                                         if (mounted) {
                                           authRestoreAlertReplace(
                                               context,
                                               true,
-                                              profile[index].nameProfile,
-                                              profile[index].id);
+                                              profile[index].nameProfile!,
+                                              profile[index].id!);
                                         }
                                       }
                                     },

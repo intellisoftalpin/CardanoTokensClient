@@ -17,6 +17,7 @@ import '../../data/dbhive/ProfileModel.dart';
 import '../OnBoardingPages/SecondOnBoardScreen.dart';
 
 String nameProfile = '';
+int passPrefer = 5;
 String pass = '';
 bool passChosen = false;
 final box = GetStorage('PassPrefer');
@@ -188,6 +189,7 @@ class CreateProfilePageState extends State<CreateProfilePage> {
   void _buttonEnter() {
     nameProfile = nameController.text;
     pass = passController;
+    passPrefer = widget.passPrefer;
     //box.write(nameProfile, widget.passPrefer);
     if (widget.passwordField == false) {
       pass = hashPass(hashPassword).toString();

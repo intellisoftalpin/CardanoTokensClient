@@ -68,6 +68,7 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
   final _formKey = GlobalKey<FormState>();
   static List<ProfileModel> profile = [];
   bool errorText = false;
+  bool load = false;
 
   List<String> profileList = [];
 
@@ -116,24 +117,39 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
             ),
             body: LayoutBuilder(builder: (context, constraint) {
               return SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraint.maxHeight),
-                  child: IntrinsicHeight(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          profilePageLabel(),
-                          namePasswordField(),
-                          createButton(),
-                        ],
-                      ),
-                    ),
+                  child: Stack(
+                children: [
+                  AbsorbPointer(
+                      absorbing: load,
+                      child: ConstrainedBox(
+                        constraints:
+                            BoxConstraints(minHeight: constraint.maxHeight),
+                        child: IntrinsicHeight(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                profilePageLabel(),
+                                namePasswordField(),
+                                createButton(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )),
+                  Visibility(
+                    visible: load,
+                    child: SizedBox(
+                        height: MediaQuery.of(context).size.height - 150,
+                        width: MediaQuery.of(context).size.width,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        )),
                   ),
-                ),
-              );
+                ],
+              ));
             })),
       ),
     );
@@ -142,6 +158,7 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
   void _buttonEnter() {
     globals.nameProfile = nameController.text;
     global.idProfile = recovery.dbRecoveryName!;
+    globals.passPrefer = widget.passPrefer;
     pass = '';
     print('CPP pass PREFER::::${widget.passPrefer}');
     if (widget.passPrefer == 0 || widget.passPrefer == 1) {
@@ -229,6 +246,9 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
                 if (connect == true) {
                   if (nameController.text.isNotEmpty) {
                     prof.selectedIndex = 0;
+                    setState(() {
+                      load = true;
+                    });
                     _buttonEnter();
                   } else {
                     setState(() {
@@ -301,6 +321,9 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
                         globals.nameProfile = nameController.text;
                         box.write('temporaryName', nameController.text);
                         prof.selectedIndex = 0;
+                        setState(() {
+                          load = true;
+                        });
                         _buttonEnter();
                       } else {
                         setState(() {

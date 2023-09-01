@@ -5,10 +5,10 @@ import 'package:crypto_offline/data/dbhive/WalletModel.dart';
 
 abstract class HivePrefProfileRepository {
   Future<List<ProfileModel>> showProfile();
-  renameProfile(String name, String newName, String idProfile);
-  saveProfile(String nameProfile, String idProfile);
-  getProfile();
-  Future<String> getProfileByName(String name);
+  renameProfile(String name, String newName, String idProfile, int pref);
+  saveProfile(String nameProfile, String idProfile, int pref);
+  //getProfile();
+  //Future<String> getProfileByName(String name);
   Future<List<ProfileModel>> deleteGroupFrom(String name, String idProfile);
 
   Future<List<CoinsModel>> showCoins();

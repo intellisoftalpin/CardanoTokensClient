@@ -42,10 +42,10 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                     InkWell(
                       onTap: () async {
                         if (havePass == true) {
-                          final isAuthenticated =
-                              await LocalAuthApi.authenticate();
+                          bool isAuthenticated =
+                              await LocalAuthApi().authenticate();
                           print(" ::: isAuthenticated::: $isAuthenticated");
-                          if (await LocalAuthApi.availableBiometric() ==
+                          if (await LocalAuthApi().availableBiometric() ==
                               false) {
                             Fluttertoast.showToast(
                                 msg: LocaleKeys.noBiometrics.tr());
@@ -67,9 +67,9 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                                 (Route<dynamic> route) => false);
                           }
                         } else {
-                          final isAuthenticated =
-                              await LocalAuthApi.authenticate();
-                          if (await LocalAuthApi.availableBiometric() ==
+                          bool isAuthenticated =
+                              await LocalAuthApi().authenticate();
+                          if (await LocalAuthApi().availableBiometric() ==
                               false) {
                             Fluttertoast.showToast(
                                 msg: LocaleKeys.noBiometrics.tr());
