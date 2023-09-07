@@ -241,6 +241,18 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
     }
     print(
         'GLOBALS NAME:::::::::::${globals.nameProfile}, GLOBALS IDNAME:::::::::::${global.idProfile}');
+    if (Platform.isAndroid) {
+      ReceiveSharingIntent.getMediaStream().listen(
+              (List<SharedMediaFile> value) {
+            print("Shared:" +
+                (_sharedFilesLifeCycle.map((f) => f.path).join(",")));
+            _sharedFilesLifeCycle = value;
+            String path = (_sharedFilesLifeCycle.map((f) => f.path).join(","));
+            recoveryPath = path;
+          }, onError: (err) {
+        print("getIntentDataStream error: $err");
+      });
+    }
     return Sizer(builder: (context, orientation, deviceType) {
       return LayoutBuilder(builder: (context, constraints) {
         return ChangeNotifierProvider(
@@ -376,18 +388,6 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
               pref: globals.passPrefer);
           if (profileExist.isEmpty) profileExist.add(name);
           print('prof = $profileExist');
-        }
-        if (Platform.isAndroid) {
-          ReceiveSharingIntent.getMediaStream().listen(
-              (List<SharedMediaFile> value) {
-            print("Shared:" +
-                (_sharedFilesLifeCycle.map((f) => f.path).join(",")));
-            _sharedFilesLifeCycle = value;
-            String path = (_sharedFilesLifeCycle.map((f) => f.path).join(","));
-            recoveryPath = path;
-          }, onError: (err) {
-            print("getIntentDataStream error: $err");
-          });
         }
         if (Platform.isIOS) {
           _channel.setMethodCallHandler(_importZipFile);

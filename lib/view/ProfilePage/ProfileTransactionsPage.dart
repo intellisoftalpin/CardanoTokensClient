@@ -72,6 +72,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
   int transactionId = -1;
   var d = NumberFormat('##0.0##');
   bool _isVisible = false;
+  bool deleting = false;
 
   Future<bool> internet() async {
     IApiRepository _apiRepository = ApiRepository();
@@ -120,6 +121,8 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
             walletAda = state.walletAda!;
             print('walletCoin!!!!!::: $walletCoin');
             print('walletAda!!!!!::: $walletAda');
+            print('transactionList!!!!!::: $transactionList');
+            print('transactionList.length!!!!!::: ${transactionList.length}');
           }
           return WillPopScope(
             onWillPop: () async {
@@ -305,201 +308,220 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                             child: Padding(
                               padding:
                                   const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                              child: ListView.builder(
-                                  itemCount: sortTransactionList.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Dismissible(
-                                      key: UniqueKey(),
-                                      confirmDismiss:
-                                          (DismissDirection direction) async {
-                                        if (direction ==
-                                            DismissDirection.startToEnd) {
-                                          return await showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                contentPadding: EdgeInsets.zero,
-                                                backgroundColor: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                20.0))),
-                                                content: Container(
-                                                    padding: EdgeInsets.only(
-                                                        top: 10.0,
-                                                        right: 10.0,
-                                                        left: 10.0,
-                                                        bottom: 5.0),
-                                                    child: Text(
-                                                      LocaleKeys.confirm_delete
-                                                          .tr(),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          color:
-                                                              Theme.of(context)
+                              child: deleting == false
+                                  ? ListView.builder(
+                                      itemCount: sortTransactionList.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Dismissible(
+                                          key: UniqueKey(),
+                                          confirmDismiss: (DismissDirection
+                                              direction) async {
+                                            if (direction ==
+                                                DismissDirection.startToEnd) {
+                                              return await showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    contentPadding:
+                                                        EdgeInsets.zero,
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    20.0))),
+                                                    content: Container(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 10.0,
+                                                                right: 10.0,
+                                                                left: 10.0,
+                                                                bottom: 5.0),
+                                                        child: Text(
+                                                          LocaleKeys
+                                                              .confirm_delete
+                                                              .tr(),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              color: Theme.of(
+                                                                      context)
                                                                   .hoverColor,
-                                                          fontFamily:
-                                                              'MyriadPro',
-                                                          fontSize: textSize14),
-                                                    )),
-                                                actions: <Widget>[
-                                                  Center(
-                                                      child: Column(
-                                                    children: [
-                                                      Divider(
-                                                          height: 1.0,
-                                                          color:
-                                                              Theme.of(context)
+                                                              fontFamily:
+                                                                  'MyriadPro',
+                                                              fontSize:
+                                                                  textSize14),
+                                                        )),
+                                                    actions: <Widget>[
+                                                      Center(
+                                                          child: Column(
+                                                        children: [
+                                                          Divider(
+                                                              height: 1.0,
+                                                              color: Theme.of(
+                                                                      context)
                                                                   .hoverColor),
-                                                      SizedBox(height: 10.0),
-                                                      Container(
-                                                          child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                            InkWell(
-                                                              onTap: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop(true);
-                                                              },
-                                                              child: Container(
-                                                                  width: 100.0,
-                                                                  height: 25.0,
-                                                                  child: Text(
-                                                                    LocaleKeys
-                                                                        .yes
-                                                                        .tr(),
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style: TextStyle(
-                                                                        color:
-                                                                            kInIconColor,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        fontFamily:
-                                                                            'MyriadPro',
-                                                                        fontSize:
-                                                                            textSize18),
-                                                                  )),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 50.0,
-                                                            ),
-                                                            InkWell(
-                                                              onTap: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop(false);
-                                                              },
-                                                              child: Container(
-                                                                  width: 100.0,
-                                                                  height: 25.0,
-                                                                  child: Text(
-                                                                    LocaleKeys
-                                                                        .no
-                                                                        .tr(),
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style: TextStyle(
-                                                                        color:
-                                                                            kErrorColorLight,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        fontFamily:
-                                                                            'MyriadPro',
-                                                                        fontSize:
-                                                                            textSize18),
-                                                                  )),
-                                                            ),
-                                                          ])),
+                                                          SizedBox(
+                                                              height: 10.0),
+                                                          Container(
+                                                              child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop(
+                                                                            true);
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                          width:
+                                                                              100.0,
+                                                                          height:
+                                                                              25.0,
+                                                                          child:
+                                                                              Text(
+                                                                            LocaleKeys.yes.tr(),
+                                                                            textAlign:
+                                                                                TextAlign.center,
+                                                                            style: TextStyle(
+                                                                                color: kInIconColor,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                fontFamily: 'MyriadPro',
+                                                                                fontSize: textSize18),
+                                                                          )),
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 50.0,
+                                                                ),
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop(
+                                                                            false);
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                          width:
+                                                                              100.0,
+                                                                          height:
+                                                                              25.0,
+                                                                          child:
+                                                                              Text(
+                                                                            LocaleKeys.no.tr(),
+                                                                            textAlign:
+                                                                                TextAlign.center,
+                                                                            style: TextStyle(
+                                                                                color: kErrorColorLight,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                fontFamily: 'MyriadPro',
+                                                                                fontSize: textSize18),
+                                                                          )),
+                                                                ),
+                                                              ])),
+                                                        ],
+                                                      ))
                                                     ],
-                                                  ))
-                                                ],
+                                                  );
+                                                },
                                               );
-                                            },
-                                          );
-                                        } else if (direction ==
-                                            DismissDirection.endToStart) {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      TransactionsPage(
-                                                          symbol: symbol,
-                                                          name: name,
-                                                          image: image,
-                                                          id: id,
-                                                          transactionId: state
-                                                              .transactionList![
-                                                                  index]
-                                                              .transactionId!,
-                                                          isRelevant:
-                                                              isRelevant,
-                                                          cost: state
-                                                              .transactionList![
-                                                                  index]
-                                                              .qty)));
-                                        }
-                                        return null;
-                                      },
-                                      onDismissed: (direction) {
-                                        BlocProvider.of<ProfileTransactionBloc>(
-                                                context)
-                                            .add(DeleteTransaction(
-                                                transactionId: state
-                                                    .transactionList![index]
-                                                    .transactionId!));
-                                        //setState(() {});
-                                      },
-                                      background: Container(
-                                          color: Theme.of(context)
-                                              .secondaryHeaderColor,
-                                          alignment: Alignment.center,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                  margin: EdgeInsets.only(
-                                                      left: 20.0),
-                                                  child: Icon(
-                                                    Icons.delete,
-                                                    size: Theme.of(context)
-                                                        .iconTheme
-                                                        .copyWith(
-                                                            size: MediumIcon)
-                                                        .size,
-                                                    color: Theme.of(context)
-                                                        .primaryColorDark,
-                                                  )),
-                                              Container(
-                                                  margin: EdgeInsets.only(
-                                                      left: 20.0),
-                                                  child: Icon(
-                                                    Icons.edit,
-                                                    size: Theme.of(context)
-                                                        .iconTheme
-                                                        .copyWith(
-                                                            size: MediumIcon)
-                                                        .size,
-                                                    color: Theme.of(context)
-                                                        .primaryColorDark,
-                                                  )),
-                                            ],
-                                          )),
-                                      child: getListTransaction(
-                                          index, state, context),
-                                    );
-                                  }),
+                                            } else if (direction ==
+                                                DismissDirection.endToStart) {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          TransactionsPage(
+                                                              symbol: symbol,
+                                                              name: name,
+                                                              image: image,
+                                                              id: id,
+                                                              transactionId: state
+                                                                  .transactionList![
+                                                                      index]
+                                                                  .transactionId!,
+                                                              isRelevant:
+                                                                  isRelevant,
+                                                              cost: state
+                                                                  .transactionList![
+                                                                      index]
+                                                                  .qty)));
+                                            }
+                                            return null;
+                                          },
+                                          onDismissed: (direction) {
+                                            setState(() {
+                                              deleting = true;
+                                            });
+                                            BlocProvider.of<
+                                                        ProfileTransactionBloc>(
+                                                    context)
+                                                .add(DeleteTransaction(
+                                                    transactionId: state
+                                                        .transactionList![index]
+                                                        .transactionId!));
+                                            setState(() {
+                                              deleting = false;
+                                            });
+                                          },
+                                          background: Container(
+                                              color: Theme.of(context)
+                                                  .secondaryHeaderColor,
+                                              alignment: Alignment.center,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 20.0),
+                                                      child: Icon(
+                                                        Icons.delete,
+                                                        size: Theme.of(context)
+                                                            .iconTheme
+                                                            .copyWith(
+                                                                size:
+                                                                    MediumIcon)
+                                                            .size,
+                                                        color: Theme.of(context)
+                                                            .primaryColorDark,
+                                                      )),
+                                                  Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 20.0),
+                                                      child: Icon(
+                                                        Icons.edit,
+                                                        size: Theme.of(context)
+                                                            .iconTheme
+                                                            .copyWith(
+                                                                size:
+                                                                    MediumIcon)
+                                                            .size,
+                                                        color: Theme.of(context)
+                                                            .primaryColorDark,
+                                                      )),
+                                                ],
+                                              )),
+                                          child: deleting == false
+                                              ? getListTransaction(
+                                                  index, state, context)
+                                              : Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                        );
+                                      })
+                                  : Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
                             ),
                           ),
                   ]),
