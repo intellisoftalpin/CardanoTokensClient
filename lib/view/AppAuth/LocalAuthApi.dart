@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 
 class LocalAuthApi {
-  final LocalAuthentication _auth = LocalAuthentication();
+  LocalAuthentication _auth = LocalAuthentication();
 
   Future<bool> hasBiometrics() async {
     try {
@@ -16,7 +16,7 @@ class LocalAuthApi {
   }
 
   Future<bool> getFaceId() async {
-    final List<BiometricType> availableBiometrics =
+    List<BiometricType> availableBiometrics =
         await _auth.getAvailableBiometrics();
     print(availableBiometrics);
     print(await _auth.canCheckBiometrics);
@@ -28,7 +28,7 @@ class LocalAuthApi {
   }
 
   Future<bool> availableBiometric() async {
-    final List<BiometricType> availableBiometrics =
+    List<BiometricType> availableBiometrics =
     await _auth.getAvailableBiometrics();
     print('availableBiometrics === $availableBiometrics');
     if (availableBiometrics.isEmpty){
@@ -40,7 +40,7 @@ class LocalAuthApi {
   }
 
   Future<bool> getFingerPrint() async {
-    final List<BiometricType> availableBiometrics =
+    List<BiometricType> availableBiometrics =
         await _auth.getAvailableBiometrics();
     try {
       return availableBiometrics.contains(BiometricType.fingerprint);
@@ -51,7 +51,7 @@ class LocalAuthApi {
   }
 
   Future<bool> authenticate() async {
-    final isAvailable = await hasBiometrics();
+    bool isAvailable = await hasBiometrics();
     if (!isAvailable) return false;
     try {
       return await _auth.authenticate(

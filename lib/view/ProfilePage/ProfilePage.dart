@@ -20,7 +20,7 @@ import 'package:crypto_offline/view/ProfilePage/InputPasswordPage.dart'
     as input;
 import 'package:crypto_offline/view/ProfilePage/PrivacyPolicyPage.dart';
 import 'package:crypto_offline/view/ProfilePage/ProfileTransactionsPage.dart';
-import 'package:crypto_offline/view/splash/splash.dart';
+import 'package:crypto_offline/view/splash/view/splash_page.dart';
 import 'package:double_back_to_close/double_back_to_close.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +35,7 @@ import '../../bloc/CloseDbBloc/CloseDbBloc.dart';
 import '../../data/dbhive/HivePrefProfileRepository.dart';
 import '../../data/model/CardanoModel.dart';
 import '../../data/repository/ApiRepository/CardanoTokensApi.dart';
-import '../../utils/CaradanoTokenListTile.dart';
+import '../utils/CaradanoTokenListTile.dart';
 import '../../utils/check_create_profile_time.dart';
 import '../OnBoardingPages/SecondOnBoardScreen.dart';
 import 'BackupRestorePage.dart';
