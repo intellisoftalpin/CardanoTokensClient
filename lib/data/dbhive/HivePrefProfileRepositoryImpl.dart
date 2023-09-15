@@ -82,7 +82,8 @@ class HivePrefProfileRepositoryImpl extends HivePrefProfileRepository {
   }
 
   @override
-  saveProfile(String nameProfile, String idProfile, int pref) async {
+  saveProfile(String nameProfile, String idProfile, int pref, int createDate,
+      int enterDate) async {
     ProfileModel profile =
         ProfileModel(nameProfile: nameProfile, id: idProfile, pref: pref);
     try {

@@ -58,6 +58,9 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
 
   Stream<CreateProfileState> _saveProfile(CreateProfileEvent event) async* {
     print('idDBProf::::$idDBProf');
+    DateTime now = DateTime.now();
+    int createTime = now.millisecondsSinceEpoch;
+    int enterTime = now.millisecondsSinceEpoch;
     try {
       if (profile.isNotEmpty && pass.isNotEmpty ||
           profile != '' && pass != '' && profile != 'null') {
@@ -71,7 +74,7 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
 
           print(":::::prof = ${await _hiveProfileRepository.showProfile()}");
           await _hiveProfileRepository.saveProfile(
-              newPort, newIdProfile, passPrefer);
+              newPort, newIdProfile, passPrefer, createTime, enterTime);
           print("profile= $profile, idProfile = $oldIdProfile, pass = $pass");
           print(":::::profiles= ${await _hiveProfileRepository.showProfile()}");
 
@@ -154,7 +157,7 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
               idProfile = idProf;
               print("RECOVERY_BLOC:::profile= $profile, idProfile = $idProf");
               await _hiveProfileRepository.saveProfile(
-                  profile, idProfile, passPrefer);
+                  profile, idProfile, passPrefer, createTime, enterTime);
               await _dbRepository.openDb(idProfile, pass);
               List<TransactionEntity> transactions =
                   await _dbRepository.getAllTransaction();
@@ -185,9 +188,6 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
               if (passPrefer == 0) {
                 box.write('${profile + idProf}pass', pass.trim());
               }
-              DateTime now = DateTime.now();
-              int createTime = now.millisecondsSinceEpoch;
-              int enterTime = now.millisecondsSinceEpoch;
               box.write('${profile + idProf}create_time', createTime);
               box.write('${profile + idProf}enter_time', enterTime);
 
@@ -199,7 +199,7 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
             idProfile = idProf;
             print("profile= $profile, idProfile = $idProf");
             await _hiveProfileRepository.saveProfile(
-                profile, idProfile, passPrefer);
+                profile, idProfile, passPrefer, createTime, enterTime);
             await _dbRepository.openDb(idProfile, pass);
 
             print("1profile = $profile  1idProf = $idProf");
@@ -207,9 +207,6 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
             if (passPrefer == 0) {
               box.write('${profile + idProf}pass', pass.trim());
             }
-            DateTime now = DateTime.now();
-            int createTime = now.millisecondsSinceEpoch;
-            int enterTime = now.millisecondsSinceEpoch;
             box.write('${profile + idProf}create_time', createTime);
             box.write('${profile + idProf}enter_time', enterTime);
 
