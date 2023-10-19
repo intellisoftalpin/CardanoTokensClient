@@ -20,7 +20,7 @@ import 'package:crypto_offline/view/ProfilePage/InputPasswordPage.dart'
     as input;
 import 'package:crypto_offline/view/ProfilePage/PrivacyPolicyPage.dart';
 import 'package:crypto_offline/view/ProfilePage/ProfileTransactionsPage.dart';
-import 'package:crypto_offline/view/splash/splash.dart';
+import 'package:crypto_offline/view/splash/view/splash_page.dart';
 import 'package:double_back_to_close/double_back_to_close.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,9 +32,10 @@ import 'dart:io' show Platform;
 import '../../bloc/AuthenticateProfile/AuthProfileBloc.dart';
 import '../../bloc/AuthenticateProfile/AuthProfileEvent.dart';
 import '../../bloc/CloseDbBloc/CloseDbBloc.dart';
+import '../../data/dbhive/HivePrefProfileRepository.dart';
 import '../../data/model/CardanoModel.dart';
 import '../../data/repository/ApiRepository/CardanoTokensApi.dart';
-import '../../utils/CaradanoTokenListTile.dart';
+import '../utils/CaradanoTokenListTile.dart';
 import '../../utils/check_create_profile_time.dart';
 import '../OnBoardingPages/SecondOnBoardScreen.dart';
 import 'BackupRestorePage.dart';
@@ -316,7 +317,19 @@ class ProfilePageState extends State<ProfilePage> {
                           tokensPage(context, appBar),
                         ],
                       ),
-                      drawer: getDrawMenu(context, _packageInfo),
+                      drawer: FutureBuilder(
+                          future: getProfilesToDraw(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<List<ProfileModel>> snapshot) {
+                            if (snapshot.hasData) {
+                              return getDrawMenu(
+                                  context, _packageInfo, snapshot.data!);
+                            } else {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          }),
                       bottomNavigationBar: SizedBox(
                           height: Platform.isIOS ? 90.0 : 65.0,
                           child: BottomNavigationBar(
@@ -624,8 +637,18 @@ class ProfilePageState extends State<ProfilePage> {
         ));
   }
 
-  static Widget getDrawMenu(BuildContext context, PackageInfo info) {
-    // print(" getDrawMenu profile = $profile");
+  Future<List<ProfileModel>> getProfilesToDraw() async {
+    List<ProfileModel> profiles = [];
+    HivePrefProfileRepository _hiveProfileRepository =
+        HivePrefProfileRepositoryImpl();
+    profiles = await _hiveProfileRepository.showProfile();
+    return profiles;
+  }
+
+  static Widget getDrawMenu(
+      BuildContext context, PackageInfo info, List<ProfileModel> profile) {
+    print("profile.length = ${profile.length}");
+    print("profile.isEmpty = ${profile.isEmpty}");
     String version = info.version;
     int dots = version.replaceAll(new RegExp(r'[^\\.]'), '').length;
     if (dots == 3) {
@@ -633,7 +656,7 @@ class ProfilePageState extends State<ProfilePage> {
       version = (pos != -1) ? version.substring(0, pos) : version;
       print('VERSION:: $version');
     }
-    int prefGlob = box.read(globals.nameProfile + global.idProfile);
+    int prefGlob = globals.passPrefer;
     return Container(
         width: MediaQuery.of(context).size.width * 0.85,
         child: Drawer(
@@ -736,7 +759,6 @@ class ProfilePageState extends State<ProfilePage> {
                     ],
                   )),
               Container(
-                //  height: 120.0,
                 child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
@@ -759,8 +781,8 @@ class ProfilePageState extends State<ProfilePage> {
                         child: InkWell(
                           onTap: () {
                             String oldId = global.idProfile;
-                            String id = profile[index].id;
-                            String name = profile[index].nameProfile;
+                            String id = profile[index].id!;
+                            String name = profile[index].nameProfile!;
                             if (id == global.idProfile &&
                                 name == globals.nameProfile) {
                               Navigator.pop(context);
@@ -775,6 +797,7 @@ class ProfilePageState extends State<ProfilePage> {
                                   " profile.elementAt(index)Id = ${profile[index].id}");
                               globals.nameProfile = name;
                               global.idProfile = id;
+                              globals.passPrefer = profile[index].pref!;
                               input.passIsEmpty = false;
                             }
                           },
@@ -791,7 +814,7 @@ class ProfilePageState extends State<ProfilePage> {
                                     MediaQuery.of(context).size.width * 0.85 -
                                         75.0,
                                 child: Text(
-                                  profile[index].nameProfile,
+                                  profile[index].nameProfile!,
                                   maxLines: 1,
                                   overflow: TextOverflow.clip,
                                   style: TextStyle(
@@ -830,9 +853,9 @@ class ProfilePageState extends State<ProfilePage> {
                                           )),
                                       child: InkWell(
                                           onTap: () {
-                                            String id = profile[index].id;
+                                            String id = profile[index].id!;
                                             String name =
-                                                profile[index].nameProfile;
+                                                profile[index].nameProfile!;
                                             if (id == global.idProfile &&
                                                 name == globals.nameProfile) {
                                               Navigator.pushReplacement(
@@ -1943,10 +1966,11 @@ class ProfilePageState extends State<ProfilePage> {
                           //  scaffoldKey.currentState;
                           //  _exchangeAda(true);
                           //});
-                          Navigator.push(
+                          Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ProfilePage()));
+                                  builder: (context) => ProfilePage()),
+                              (Route<dynamic> route) => false);
                         },
                         child: Container(
                             width: 100.0,
@@ -1991,9 +2015,7 @@ class ProfilePageState extends State<ProfilePage> {
   }
 
   saveTemporaryPass() {
-    int pref = box.read(globals.nameProfile + global.idProfile) == null
-        ? -1
-        : box.read(globals.nameProfile + global.idProfile);
+    int pref = globals.passPrefer;
     if (pref == 0) {
       int? createDate =
           box.read('${globals.nameProfile + global.idProfile}create_time');

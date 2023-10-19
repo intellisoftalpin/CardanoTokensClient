@@ -248,7 +248,18 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     List<PriceEntity> priceEntity = [];
     var internet = await _apiRepository.check();
     print("intenet = $internet");
-    print("FileManager.readCoinById(id) = ${await FileManager.readCoinById(id)}");
+    print(
+        "FileManager.readCoinById(id) = ${await FileManager.readCoinById(id)}");
+    CoinEntity coin = await _dbRepository.getCoin(id);
+    priceEntity = [
+      PriceEntity(
+          date: formattedDate,
+          coinId: id,
+          name: coin.name,
+          symbol: coin.symbol,
+          usdPrice: coin.price,
+          adaPrice: coin.adaPrice)
+    ];
     if (await FileManager.readCoinById(id) != null) {
       CoinEntity coinById =
           CoinEntity.fromDatabaseJson(await FileManager.readCoinById(id));
@@ -266,8 +277,8 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     } else {
       if (internet) {
         try {
-          Response responseCardano = await _apiRepository
-              .getCardanoTokensList();
+          Response responseCardano =
+              await _apiRepository.getCardanoTokensList();
           var statusCardano = responseCardano.statusCode;
           if (statusCardano == HttpStatus.ok) {
             Map data = jsonDecode(responseCardano.body);

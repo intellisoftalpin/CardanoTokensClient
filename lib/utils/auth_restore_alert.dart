@@ -42,61 +42,55 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                     InkWell(
                       onTap: () async {
                         if (havePass == true) {
-                          WidgetsBinding.instance
-                              .addPostFrameCallback((_) async {
-                            final isAuthenticated =
-                                await LocalAuthApi.authenticate();
-                            print(" ::: isAuthenticated::: $isAuthenticated");
-                            if (await LocalAuthApi.availableBiometric() == false) {
-                              Fluttertoast.showToast(
-                                  msg: LocaleKeys.noBiometrics.tr());
-                            }
-                            if (isAuthenticated) {
-                              print('BOOL authRestoreAlert havePass::::: 0');
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) => ThirdRestoreScreen(
-                                            welcome: Text(
-                                              LocaleKeys.welcome.tr(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                      fontSize: textSize45,
-                                                      color: Theme.of(context)
-                                                          .secondaryHeaderColor),
-                                            ),
-                                            passPrefer: 0
-                                          )),
-                                  (Route<dynamic> route) => false);
-                            }
-                          });
+                          bool isAuthenticated =
+                              await LocalAuthApi().authenticate();
+                          print(" ::: isAuthenticated::: $isAuthenticated");
+                          if (await LocalAuthApi().availableBiometric() ==
+                              false) {
+                            Fluttertoast.showToast(
+                                msg: LocaleKeys.noBiometrics.tr());
+                          }
+                          if (isAuthenticated) {
+                            print('BOOL authRestoreAlert havePass::::: 0');
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => ThirdRestoreScreen(
+                                        welcome: Text(
+                                          LocaleKeys.welcome.tr(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: textSize45,
+                                              color: Theme.of(context)
+                                                  .secondaryHeaderColor),
+                                        ),
+                                        passPrefer: 0)),
+                                (Route<dynamic> route) => false);
+                          }
                         } else {
-                          WidgetsBinding.instance
-                              .addPostFrameCallback((_) async {
-                            final isAuthenticated =
-                                await LocalAuthApi.authenticate();
-                            if (await LocalAuthApi.availableBiometric() == false) {
-                              Fluttertoast.showToast(
-                                  msg: LocaleKeys.noBiometrics.tr());
-                            }
-                            print(" ::: isAuthenticated::: $isAuthenticated");
-                            if (isAuthenticated) {
-                              print('BOOL authRestoreAlert havePass::::: 1');
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) => ThirdRestoreScreen(
-                                            welcome: Text(
-                                              LocaleKeys.welcome.tr(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                      fontSize: textSize45,
-                                                      color: Theme.of(context)
-                                                          .secondaryHeaderColor),
-                                            ),
-                                            passPrefer: 2
-                                          )),
-                                  (Route<dynamic> route) => false);
-                            }
-                          });
+                          bool isAuthenticated =
+                              await LocalAuthApi().authenticate();
+                          if (await LocalAuthApi().availableBiometric() ==
+                              false) {
+                            Fluttertoast.showToast(
+                                msg: LocaleKeys.noBiometrics.tr());
+                          }
+                          print(" ::: isAuthenticated::: $isAuthenticated");
+                          if (isAuthenticated) {
+                            print('BOOL authRestoreAlert havePass::::: 1');
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => ThirdRestoreScreen(
+                                        welcome: Text(
+                                          LocaleKeys.welcome.tr(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: textSize45,
+                                              color: Theme.of(context)
+                                                  .secondaryHeaderColor),
+                                        ),
+                                        passPrefer: 2)),
+                                (Route<dynamic> route) => false);
+                          }
                         }
                       },
                       child: Container(
@@ -106,10 +100,10 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                             LocaleKeys.yes.tr(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                    color: kInIconColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'MyriadPro',
-                                    fontSize: textSize18),
+                                color: kInIconColor,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'MyriadPro',
+                                fontSize: textSize18),
                           )),
                     ),
                     SizedBox(
@@ -122,32 +116,30 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (context) => ThirdRestoreScreen(
-                                        welcome: Text(
-                                          LocaleKeys.welcome.tr(),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                                  fontSize: textSize45,
-                                                  color: Theme.of(context)
-                                                      .secondaryHeaderColor),
-                                        ),
-                                        passPrefer: 1
-                                      )),
+                                      welcome: Text(
+                                        LocaleKeys.welcome.tr(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: textSize45,
+                                            color: Theme.of(context)
+                                                .secondaryHeaderColor),
+                                      ),
+                                      passPrefer: 1)),
                               (Route<dynamic> route) => false);
                         } else {
                           print('BOOL authRestoreAlert havePass::::: 3');
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (context) => ThirdRestoreScreen(
-                                        welcome: Text(
-                                          LocaleKeys.welcome.tr(),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                                  fontSize: textSize45,
-                                                  color: Theme.of(context)
-                                                      .secondaryHeaderColor),
-                                        ),
-                                        passPrefer: 3
-                                      )),
+                                      welcome: Text(
+                                        LocaleKeys.welcome.tr(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: textSize45,
+                                            color: Theme.of(context)
+                                                .secondaryHeaderColor),
+                                      ),
+                                      passPrefer: 3)),
                               (Route<dynamic> route) => false);
                         }
                       },
@@ -158,10 +150,10 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                             LocaleKeys.no.tr(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                    color: kErrorColorLight,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'MyriadPro',
-                                    fontSize: textSize18),
+                                color: kErrorColorLight,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'MyriadPro',
+                                fontSize: textSize18),
                           )),
                     ),
                   ])),

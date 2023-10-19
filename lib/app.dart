@@ -148,8 +148,10 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
 
   void _showLockScreenDialog() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var name =
-          ProfileModel(nameProfile: globals.nameProfile, id: global.idProfile);
+      var name = ProfileModel(
+          nameProfile: globals.nameProfile,
+          id: global.idProfile,
+          pref: globals.passPrefer);
       if (profileExist.isEmpty) profileExist.add(name);
       int? onBoard = box.read('onBoard');
       print(
@@ -198,13 +200,10 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
                 !ProfilePageState.isCreateNewPortfolio) {
           List<ProfileModel> profiles = globals.profiles;
           print('profileExist.length = ${profileExist.length}');
-          print(
-              'box.read(globals.nameProfile +global.idProfile) = ${box.read(globals.nameProfile + global.idProfile)}');
           if (profiles.isNotEmpty) {
             profileExist = profiles;
           }
-          if (profileExist.length == 1 &&
-              box.read(globals.nameProfile + global.idProfile) == 3) {
+          if (profileExist.length == 1 && globals.passPrefer == 3) {
             globals.pass = hashPass(hashPassword).toString();
             _navigatorKey.currentState?.pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => ProfilePage()),
@@ -242,6 +241,18 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
     }
     print(
         'GLOBALS NAME:::::::::::${globals.nameProfile}, GLOBALS IDNAME:::::::::::${global.idProfile}');
+    if (Platform.isAndroid) {
+      ReceiveSharingIntent.getMediaStream().listen(
+              (List<SharedMediaFile> value) {
+            print("Shared:" +
+                (_sharedFilesLifeCycle.map((f) => f.path).join(",")));
+            _sharedFilesLifeCycle = value;
+            String path = (_sharedFilesLifeCycle.map((f) => f.path).join(","));
+            recoveryPath = path;
+          }, onError: (err) {
+        print("getIntentDataStream error: $err");
+      });
+    }
     return Sizer(builder: (context, orientation, deviceType) {
       return LayoutBuilder(builder: (context, constraints) {
         return ChangeNotifierProvider(
@@ -280,7 +291,9 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
                                           FirstRestoreScreen()),
                                   (Route<dynamic> route) => false);
                             } else {
+                              print('else');
                               if (state.state == AuthProfileStatus.exist) {
+                                print('AuthProfileStatus.exist');
                                 context.read<AuthProfileBloc>().add(LoggedIn());
                                 profileExist = state.profileExist;
                                 print('prof = $profileExist');
@@ -289,17 +302,10 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
                                 if (profiles.isNotEmpty) {
                                   profileExist = profiles;
                                 }
-                                if (profiles.isNotEmpty) {
-                                  profileExist = profiles;
-                                }
                                 print(
                                     'profileExist.length = ${profileExist.length}');
-                                print(
-                                    'box.read(globals.nameProfile +global.idProfile) = ${box.read(globals.nameProfile + global.idProfile)}');
                                 if (profileExist.length == 1 &&
-                                    box.read(globals.nameProfile +
-                                            global.idProfile) ==
-                                        3) {
+                                    globals.passPrefer == 3) {
                                   globals.pass =
                                       hashPass(hashPassword).toString();
                                   _navigatorKey.currentState?.pushReplacement(
@@ -321,6 +327,7 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
                                 }
                               } else if (state.state ==
                                   AuthProfileStatus.noexist) {
+                                print('AuthProfileStatus.noexist');
                                 if (onBoard == null) {
                                   _navigator.pushAndRemoveUntil(
                                       MaterialPageRoute(
@@ -353,6 +360,9 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
+      case AppLifecycleState.hidden:
+          print("HIDDEN");
+        break;
       case AppLifecycleState.inactive:
         print("INACTIVE");
         BlocProvider.of<AuthProfileBloc>(context).add(LoggedOut());
@@ -361,40 +371,26 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
         int? onBoard = box.read('onBoard');
         if (onBoard == 2) {
           var name = ProfileModel(
-              nameProfile: globals.nameProfile, id: global.idProfile);
+              nameProfile: globals.nameProfile,
+              id: global.idProfile,
+              pref: globals.passPrefer);
           if (profileExist.isEmpty) profileExist.add(name);
           print('prof = $profileExist');
         }
         break;
       case AppLifecycleState.paused:
         print("PAUSED");
-
-
-
         BlocProvider.of<AuthProfileBloc>(context).add(LoggedOut());
         BlocProvider.of<CloseDbBloc>(this.context)
           ..add(UpdateProfile(idProfile: global.idProfile));
         int? onBoard = box.read('onBoard');
         if (onBoard == 2) {
           var name = ProfileModel(
-              nameProfile: globals.nameProfile, id: global.idProfile);
+              nameProfile: globals.nameProfile,
+              id: global.idProfile,
+              pref: globals.passPrefer);
           if (profileExist.isEmpty) profileExist.add(name);
           print('prof = $profileExist');
-        }
-
-
-
-        if (Platform.isAndroid) {
-          ReceiveSharingIntent.getMediaStream().listen(
-              (List<SharedMediaFile> value) {
-            print("Shared:" +
-                (_sharedFilesLifeCycle.map((f) => f.path).join(",")));
-            _sharedFilesLifeCycle = value;
-            String path = (_sharedFilesLifeCycle.map((f) => f.path).join(","));
-            recoveryPath = path;
-          }, onError: (err) {
-            print("getIntentDataStream error: $err");
-          });
         }
         if (Platform.isIOS) {
           _channel.setMethodCallHandler(_importZipFile);

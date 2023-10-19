@@ -8,11 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:crypto_offline/view/CreateProfilePage/CreateProfilePage.dart'
     as globals;
 import 'package:crypto_offline/bloc/CreateProfile/CreateProfileBloc.dart'
-as global;
+    as global;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../CreateProfilePage/CreateProfilePage.dart';
+import '../../data/dbhive/HivePrefProfileRepositoryImpl.dart';
 import 'ProfilePage.dart';
 
 //ignore: must_be_immutable
@@ -40,7 +40,7 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
 
   Stream<bool> passVisible() async* {
     bool visible = true;
-    int pref = box.read(widget.nameProfile + global.idProfile);
+    int pref = await getPassPref(global.idProfile);
     print(':::::::::::::${widget.nameProfile + global.idProfile} +  $pref');
     if (pref == 0) {
       if (fingerPass == false) {
@@ -79,7 +79,7 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      pref = box.read(widget.nameProfile + global.idProfile);
+      pref = await getPassPref(global.idProfile);
     });
     var hintTxt;
     if (widget.error.toString().isNotEmpty) {
@@ -123,9 +123,9 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                                 style: TextStyle(
-                                        fontSize: textSize24,
-                                        color: Theme.of(context)
-                                            .secondaryHeaderColor),
+                                    fontSize: textSize24,
+                                    color:
+                                        Theme.of(context).secondaryHeaderColor),
                               ),
                             ),
                           ],
@@ -162,11 +162,10 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
                                               widget.teamPass = value;
                                             },
                                             style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .disabledColor,
-                                                    fontFamily: 'MyriadPro',
-                                                    fontSize:
-                                                        textSize20),
+                                                color: Theme.of(context)
+                                                    .disabledColor,
+                                                fontFamily: 'MyriadPro',
+                                                fontSize: textSize20),
                                           ),
                                         ),
                                       ],
@@ -212,10 +211,9 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
                                     LocaleKeys.cancel.tr(),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                            color:
-                                                Theme.of(context).shadowColor,
-                                            fontFamily: 'MyriadPro',
-                                            fontSize: textSize20),
+                                        color: Theme.of(context).shadowColor,
+                                        fontFamily: 'MyriadPro',
+                                        fontSize: textSize20),
                                   ),
                                 ),
                               ),
@@ -243,10 +241,9 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
                                     LocaleKeys.ok.tr(),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                            color:
-                                                Theme.of(context).shadowColor,
-                                            fontFamily: 'MyriadPro',
-                                            fontSize: textSize20),
+                                        color: Theme.of(context).shadowColor,
+                                        fontFamily: 'MyriadPro',
+                                        fontSize: textSize20),
                                   ),
                                 ),
                               ),
@@ -267,7 +264,7 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
     if (pref == 0) {
       if (fingerPass == false) {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
-          final isAuthenticated = await LocalAuthApi.authenticate();
+          final isAuthenticated = await LocalAuthApi().authenticate();
           if (isAuthenticated) {
             setState(() {
               fingerPass = true;
@@ -275,7 +272,8 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
           }
         });
       } else if (fingerPass == true) {
-        BlocProvider.of<CloseDbBloc>(context).add(UpdateProfile(idProfile: global.idProfile));
+        BlocProvider.of<CloseDbBloc>(context)
+            .add(UpdateProfile(idProfile: global.idProfile));
         globals.nameProfile = widget.nameProfile;
         globals.pass = widget.teamPass;
         if (globals.pass.isEmpty || globals.pass == '') {
@@ -287,7 +285,8 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
             (Route<dynamic> route) => false);
       }
     } else if (pref == 1) {
-      BlocProvider.of<CloseDbBloc>(context).add(UpdateProfile(idProfile: global.idProfile));
+      BlocProvider.of<CloseDbBloc>(context)
+          .add(UpdateProfile(idProfile: global.idProfile));
       globals.nameProfile = widget.nameProfile;
       globals.pass = widget.teamPass;
       if (globals.pass.isEmpty || globals.pass == '') {
@@ -299,9 +298,10 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
           (Route<dynamic> route) => false);
     } else if (pref == 2) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        final isAuthenticated = await LocalAuthApi.authenticate();
+        final isAuthenticated = await LocalAuthApi().authenticate();
         if (isAuthenticated) {
-          BlocProvider.of<CloseDbBloc>(context).add(UpdateProfile(idProfile: global.idProfile));
+          BlocProvider.of<CloseDbBloc>(context)
+              .add(UpdateProfile(idProfile: global.idProfile));
           globals.nameProfile = widget.nameProfile;
           globals.pass = hashPass(hashPassword).toString();
           Navigator.pushAndRemoveUntil(
@@ -311,7 +311,8 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
         }
       });
     } else if (pref == 3) {
-      BlocProvider.of<CloseDbBloc>(context).add(UpdateProfile(idProfile: global.idProfile));
+      BlocProvider.of<CloseDbBloc>(context)
+          .add(UpdateProfile(idProfile: global.idProfile));
       globals.nameProfile = widget.nameProfile;
       globals.pass = hashPass(hashPassword).toString();
       Navigator.pushAndRemoveUntil(

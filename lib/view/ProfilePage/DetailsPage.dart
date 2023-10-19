@@ -13,6 +13,8 @@ import 'package:crypto_offline/view/ProfilePage/ProfilePage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info/package_info.dart';
 
+import '../../data/dbhive/HivePrefProfileRepository.dart';
+import '../../data/dbhive/ProfileModel.dart';
 import '../../domain/entities/ListCoin.dart';
 import 'ProfileTransactionsPage.dart';
 
@@ -51,6 +53,14 @@ class _DetailsPageState extends State<DetailsPage> {
     _initPackageInfo();
   }
 
+  Future<List<ProfileModel>> getProfilesToDraw() async {
+    List<ProfileModel> profiles = [];
+    HivePrefProfileRepository _hiveProfileRepository =
+        HivePrefProfileRepositoryImpl();
+    profiles = await _hiveProfileRepository.showProfile();
+    return profiles;
+  }
+
   @override
   Widget build(BuildContext context) {
     _key = GlobalKey();
@@ -77,7 +87,19 @@ class _DetailsPageState extends State<DetailsPage> {
       backgroundColor: Theme.of(context).primaryColorDark,
       key: _key,
       appBar: appBar,
-      drawer: ProfilePageState.getDrawMenu(context, _packageInfo),
+      drawer: FutureBuilder(
+          future: getProfilesToDraw(),
+          builder: (BuildContext context,
+              AsyncSnapshot<List<ProfileModel>> snapshot) {
+            if (snapshot.hasData) {
+              return ProfilePageState.getDrawMenu(
+                  context, _packageInfo, snapshot.data!);
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          }),
       body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height -

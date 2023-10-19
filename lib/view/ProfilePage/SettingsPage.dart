@@ -14,6 +14,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 
+import '../../data/dbhive/HivePrefProfileRepository.dart';
+import '../../data/dbhive/ProfileModel.dart';
 import '../../data/repository/SharedPreferences/SharedPreferencesRepository.dart';
 import 'package:crypto_offline/bloc/CreateProfile/CreateProfileBloc.dart'
     as global;
@@ -83,6 +85,14 @@ class _SettingsPageState extends State<SettingsPage> {
     });
   }
 
+  Future<List<ProfileModel>> getProfilesToDraw() async {
+    List<ProfileModel> profiles = [];
+    HivePrefProfileRepository _hiveProfileRepository =
+        HivePrefProfileRepositoryImpl();
+    profiles = await _hiveProfileRepository.showProfile();
+    return profiles;
+  }
+
   @override
   Widget build(BuildContext context) {
     getBackUpPref();
@@ -120,7 +130,11 @@ class _SettingsPageState extends State<SettingsPage> {
     if (_stringLocaleShPref == 'Системный(Русский)' ||
         _stringLocaleShPref == 'System(English)' ||
         _stringLocaleShPref == 'language') {
-      if (View.of(context).platformDispatcher.locale.languageCode.contains('ru')) {
+      if (View.of(context)
+          .platformDispatcher
+          .locale
+          .languageCode
+          .contains('ru')) {
         _stringLocaleShPref = 'Системный(Русский)';
       } else {
         _stringLocaleShPref = 'System(English)';
@@ -171,8 +185,23 @@ class _SettingsPageState extends State<SettingsPage> {
                               builder: (context) => ProfilePage())),
                     ),
                   ),
-                  drawer: ProfilePageState.getDrawMenu(context, _packageInfo),
-                  backgroundColor: Theme.of(context).brightness == Brightness.dark ? kSettingsPageBackground : lSettingsPageBackground,
+                  drawer: FutureBuilder(
+                      future: getProfilesToDraw(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<ProfileModel>> snapshot) {
+                        if (snapshot.hasData) {
+                          return ProfilePageState.getDrawMenu(
+                              context, _packageInfo, snapshot.data!);
+                        } else {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      }),
+                  backgroundColor:
+                      Theme.of(context).brightness == Brightness.dark
+                          ? kSettingsPageBackground
+                          : lSettingsPageBackground,
                   body: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 18.0),
                     child: ListView(

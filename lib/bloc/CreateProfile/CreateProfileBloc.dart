@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:crypto_offline/data/dbhive/HivePrefProfileRepository.dart';
@@ -5,13 +6,19 @@ import 'package:crypto_offline/data/repository/DbRepository/DbRepository.dart';
 import 'package:crypto_offline/utils/random_string.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart';
 
 import '../../data/dbhive/ProfileModel.dart';
+import 'package:crypto_offline/view/CreateProfilePage/CreateProfilePage.dart';
 import 'package:crypto_offline/view/CreateProfilePage/CreateProfilePage.dart'
     as globals;
 
+import '../../data/model/CardanoModel.dart';
+import '../../data/repository/ApiRepository/ApiRepository.dart';
+import '../../domain/entities/CoinEntity.dart';
+import '../../domain/entities/TransactionEntity.dart';
 import '../../utils/backup_restore.dart';
+import '../../utils/file_manager.dart';
 
 part 'CreateProfileEvent.dart';
 
@@ -51,24 +58,27 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
 
   Stream<CreateProfileState> _saveProfile(CreateProfileEvent event) async* {
     print('idDBProf::::$idDBProf');
+    DateTime now = DateTime.now();
+    int createTime = now.millisecondsSinceEpoch;
+    int enterTime = now.millisecondsSinceEpoch;
     try {
       if (profile.isNotEmpty && pass.isNotEmpty ||
           profile != '' && pass != '' && profile != 'null') {
-        final box = GetStorage('PassPrefer');
         String prof = globals.nameProfile.trim() + "+true";
         print(
             ":::::::::CreateBloc  prof = $prof, profile= $profile :::::: profile == prof ${profile == prof}");
         if (profile == prof && newProfileId != null) {
+          print('!)(!1111111111111111111111111111111111');
           var newIdProfile = newProfileId!;
           var newPort = globals.nameProfile;
 
           print(":::::prof = ${await _hiveProfileRepository.showProfile()}");
-          await _hiveProfileRepository.saveProfile(newPort, newIdProfile);
+          await _hiveProfileRepository.saveProfile(
+              newPort, newIdProfile, passPrefer, createTime, enterTime);
           print("profile= $profile, idProfile = $oldIdProfile, pass = $pass");
           print(":::::profiles= ${await _hiveProfileRepository.showProfile()}");
 
-          box.remove(globals.nameProfile + oldIdProfile);
-          box.write(newPort + newIdProfile, passPrefer);
+          print("newPort = $newPort  newIdProfile = $newIdProfile");
           print("edit_alert pref = $passPrefer");
           if (passPrefer == 0) {
             box.remove('${globals.nameProfile + oldIdProfile}pass');
@@ -85,7 +95,6 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
           box.remove('${globals.nameProfile.trim() + oldIdProfile}enter_time');
           box.write('${newPort + newIdProfile}create_time', createDate);
           box.write('${newPort + newIdProfile}enter_time', enterDate);
-          box.write(newPort + newIdProfile, passPrefer);
 
           List<FileSystemEntity> listFiles = [];
           String idProfile = oldIdProfile;
@@ -108,7 +117,6 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
 
                   listFiles = await BackupRestore.getFilesFromDir(zipFiles);
                   print("list = $listFiles");
-
                 } on Exception catch (e) {
                   print("Exception_backup: $e");
                 }
@@ -124,37 +132,81 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
           yield state.copyWith(CreateProfileStatus.start);
         } else {
           if (idDBProf != null) {
-            String idProf = idDBProf!;
-            idProfile = idProf;
-            print("RECOVERY_BLOC:::profile= $profile, idProfile = $idProf");
-            await _hiveProfileRepository.saveProfile(profile, idProfile);
-            await _dbRepository.openDb(idProfile, pass);
+            print('!)(!2222222222222222222222222222');
+            ApiRepository _apiRepository = ApiRepository();
+            var internet = await _apiRepository.check();
+            List<Tokens> cardanoList = [];
+            if (internet) {
+              Response responseCardano =
+                  await _apiRepository.getCardanoTokensList();
+              try {
+                int statusCardano = responseCardano.statusCode;
+                if (statusCardano == HttpStatus.ok) {
+                  Map data = jsonDecode(responseCardano.body);
+                  cardanoList = (data["tokens"] as List)
+                      .map((e) => Tokens.fromJson(e))
+                      .cast<Tokens>()
+                      .toList();
+                } else {
+                  print('http error');
+                }
+              } on Exception catch (e) {
+                print('Exception::: $e');
+              }
+              String idProf = idDBProf!;
+              idProfile = idProf;
+              print("RECOVERY_BLOC:::profile= $profile, idProfile = $idProf");
+              await _hiveProfileRepository.saveProfile(
+                  profile, idProfile, passPrefer, createTime, enterTime);
+              await _dbRepository.openDb(idProfile, pass);
+              List<TransactionEntity> transactions =
+                  await _dbRepository.getAllTransaction();
+              for (var cardano in cardanoList) {
+                for (var trans in transactions) {
+                  if (cardano.tokenId == trans.coinId) {
+                    CoinEntity coinEntity = CoinEntity(
+                        coinId: cardano.tokenId!,
+                        name: cardano.name!,
+                        symbol: cardano.assetName!,
+                        image:
+                            'https://ctokens.io/api/v1/tokens/images/${cardano.policyId}.${cardano.assetId}.png',
+                        currentPrice: cardano.priceUsd!,
+                        percentChange24h: cardano.priceTrend24h,
+                        percentChange7d: cardano.priceTrend7d,
+                        marketCap: cardano.capUsd!.toInt(),
+                        rank: cardano.decimals,
+                        price: cardano.priceUsd!,
+                        adaPrice: cardano.priceAda!,
+                        liquidAda: cardano.liquidAda!,
+                        isRelevant: 1);
+                    await _hiveProfileRepository.saveCoinId(coinEntity.coinId);
+                    await FileManager.saveCoinById(
+                        coinEntity.coinId, coinEntity.toDatabaseJson());
+                  }
+                }
+              }
+              if (passPrefer == 0) {
+                box.write('${profile + idProf}pass', pass.trim());
+              }
+              box.write('${profile + idProf}create_time', createTime);
+              box.write('${profile + idProf}enter_time', enterTime);
 
-            box.write(profile + idProf, passPrefer);
-            if (passPrefer == 0) {
-              box.write('${profile + idProf}pass', pass.trim());
+              yield state.copyWith(CreateProfileStatus.start);
             }
-            DateTime now = DateTime.now();
-            int createTime = now.millisecondsSinceEpoch;
-            int enterTime = now.millisecondsSinceEpoch;
-            box.write('${profile + idProf}create_time', createTime);
-            box.write('${profile + idProf}enter_time', enterTime);
-
-            yield state.copyWith(CreateProfileStatus.start);
           } else {
+            print('!)(!333333333333333333333333333');
             String idProf = await getIdProf();
             idProfile = idProf;
             print("profile= $profile, idProfile = $idProf");
-            await _hiveProfileRepository.saveProfile(profile, idProfile);
+            await _hiveProfileRepository.saveProfile(
+                profile, idProfile, passPrefer, createTime, enterTime);
             await _dbRepository.openDb(idProfile, pass);
 
-            box.write(profile + idProf, passPrefer);
+            print("1profile = $profile  1idProf = $idProf");
+            print("1edit_alert pref = $passPrefer");
             if (passPrefer == 0) {
               box.write('${profile + idProf}pass', pass.trim());
             }
-            DateTime now = DateTime.now();
-            int createTime = now.millisecondsSinceEpoch;
-            int enterTime = now.millisecondsSinceEpoch;
             box.write('${profile + idProf}create_time', createTime);
             box.write('${profile + idProf}enter_time', enterTime);
 

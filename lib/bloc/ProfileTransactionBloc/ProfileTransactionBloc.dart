@@ -144,7 +144,10 @@ class ProfileTransactionBloc
     List<PriceEntity> priceEntity = [];
     var internet = await _apiRepository.check();
     print('getPriceEntity ID=== $id');
-    print('getPriceEntity FileManager.readList()=== ${await FileManager.readList()}');
+    print(
+        'getPriceEntity FileManager.readList()=== ${await FileManager.readList()}');
+    print(
+        'await FileManager.readCoinById(id) === ${await FileManager.readCoinById(id)}');
     if (await FileManager.readCoinById(id) != null) {
       print('getPriceEntity FileManager.readCoinById(id) != null');
       CoinEntity coinById =
@@ -228,6 +231,19 @@ class ProfileTransactionBloc
                   adaPrice: coin.adaPrice)
             ];
           }
+        }
+      } else {
+        if ((await _dbRepository.getCoin(id)).coinId.isNotEmpty) {
+          CoinEntity coin = await _dbRepository.getCoin(id);
+          priceEntity = [
+            PriceEntity(
+                date: formattedDate,
+                coinId: id,
+                name: coin.name,
+                symbol: coin.symbol,
+                usdPrice: coin.price,
+                adaPrice: coin.adaPrice)
+          ];
         }
       }
     }

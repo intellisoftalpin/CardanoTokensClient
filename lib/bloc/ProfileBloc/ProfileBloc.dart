@@ -20,6 +20,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 
 import '../../core/error/exeption.dart';
+import '../../data/dbhive/CoinsModel.dart';
 import '../../data/model/CardanoModel.dart';
 
 part 'ProfileEvent.dart';
@@ -153,12 +154,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             } on Exception catch (e) {
               print('Exception::: $e');
             }
-            await savePrices(responseCardano);
+            await savePricesAPI(responseCardano, transactions);
             wallet =
                 await getWalletApi(transactions, responseCardano, cardanoList);
             walletAda = await getWalletAdaApi(
                 transactions, responseCardano, cardanoList);
           } else {
+            await savePrices(transactions);
             wallet = (await getWallet(transactions))!;
             walletAda = (await getWalletAda(transactions))!;
           }
@@ -185,7 +187,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             } on Exception catch (e) {
               print('Exception::: $e');
             }
-            await savePrices(responseCardano);
             listCoin = await getListCoin(internet, cardanoList);
           } else {
             listCoin = await getListCoin(internet, cardanoList);
@@ -374,7 +375,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (coinsList.isNotEmpty) {
       for (var coin in coinsList) {
         String id = coin.coinId;
-        // print("!!Coin!!!id!!!! = $id FileManager.readCoinById(id) = ${await FileManager.readCoinById(id)}");
         id = coin.coinId;
         symbol = coin.symbol;
         name = coin.name;
@@ -393,7 +393,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               id = cardano.tokenId!;
               name = cardano.name!;
               symbol = cardano.assetName!;
-              image = 'https://ctokens.io/api/v1/tokens/images/${cardano.policyId}.${cardano.assetId}.png';
+              image =
+                  'https://ctokens.io/api/v1/tokens/images/${cardano.policyId}.${cardano.assetId}.png';
               priseUsd = cardano.priceUsd!;
               adaPrise = cardano.priceAda!;
               marketCap = cardano.capUsd!.toInt();
@@ -413,7 +414,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
                 id = cardano.tokenId!;
                 name = cardano.name!;
                 symbol = cardano.assetName!;
-                image = 'https://ctokens.io/api/v1/tokens/images/${cardano.policyId}.${cardano.assetId}.png';
+                image =
+                    'https://ctokens.io/api/v1/tokens/images/${cardano.policyId}.${cardano.assetId}.png';
                 priseUsd = cardano.priceUsd!;
                 adaPrise = cardano.priceAda!;
                 marketCap = cardano.capUsd!.toInt();
@@ -507,19 +509,22 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     return isRelevant;
   }
 
-  Future<void> savePrices(Response responseCardano) async {
-    //Response response = await _apiRepository.check();
-    //if (response.statusCode == HttpStatus.ok) {
-    //  var coinList = jsonDecode(response.body);
-    //    List<CoinModel> coinPrice = (coinList as List)
-    // //    .map((i) => CoinModel.fromJson(i))
-    //     .toList();
-    //  print("coinPrice1 = $coinPrice");
-    //  await FileManager.saveList(coinList);
-    // var now = new DateTime.now();
-    //var formatterCache = new DateFormat('yyyy-MM-dd hh:mm');
-    //// String formattedDateCache = formatterCache.format(now);
-    var coinsId = await _hiveProfileRepository.getCoinId();
+  Future<void> savePricesAPI(
+      Response responseCardano, List<TransactionEntity> transactions) async {
+    List<String> transIds = [];
+    for (var data in transactions) {
+      print('!?!?! ${data.coinId}');
+      transIds.add(data.coinId);
+    }
+    List<CoinsModel> coinsIdDB = await _hiveProfileRepository.getCoinId();
+    List<CoinsModel> coinsId = [];
+    for (var trans in transIds) {
+      for (var coinId in coinsIdDB) {
+        if (trans == coinId.id) {
+          coinsId.add(coinId);
+        }
+      }
+    }
     print("coinsId ProfBloc = $coinsId");
     if (coinsId.isNotEmpty) {
       print('coinsId.length== ${coinsId.length}');
@@ -581,6 +586,49 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               liquidAda: coinIdDB.liquidAda,
               isRelevant: 0);
         }
+        await FileManager.saveCoinById(coinElem.id, (coin.toDatabaseJson()));
+        print('saveCoinById=== ${coinElem.id} SAVED');
+        print('');
+        await _dbRepository.updateCoinIsRelevant(coin);
+      }
+    }
+  }
+
+  Future<void> savePrices(List<TransactionEntity> transactions) async {
+    List<String> transIds = [];
+    for (var data in transactions) {
+      print('!?!?! ${data.coinId}');
+      transIds.add(data.coinId);
+    }
+    List<CoinsModel> coinsIdDB = await _hiveProfileRepository.getCoinId();
+    List<CoinsModel> coinsId = [];
+    for (var trans in transIds) {
+      for (var coinId in coinsIdDB) {
+        if (trans == coinId.id) {
+          coinsId.add(coinId);
+        }
+      }
+    }
+    print("coinsId ProfBloc = $coinsId");
+    if (coinsId.isNotEmpty) {
+      print('coinsId.length== ${coinsId.length}');
+      for (var coinElem in coinsId) {
+        CoinEntity coin;
+        var coinIdDB = await _dbRepository.getCoin(coinElem.id);
+        coin = CoinEntity(
+            coinId: coinElem.id,
+            name: coinIdDB.name,
+            symbol: coinIdDB.symbol,
+            image: coinIdDB.image,
+            currentPrice: coinIdDB.currentPrice,
+            marketCap: coinIdDB.marketCap,
+            percentChange24h: coinIdDB.percentChange24h,
+            percentChange7d: coinIdDB.percentChange7d,
+            rank: coinIdDB.rank,
+            price: coinIdDB.price,
+            adaPrice: coinIdDB.adaPrice,
+            liquidAda: coinIdDB.liquidAda,
+            isRelevant: 0);
         await FileManager.saveCoinById(coinElem.id, (coin.toDatabaseJson()));
         print('saveCoinById=== ${coinElem.id} SAVED');
         print('');
