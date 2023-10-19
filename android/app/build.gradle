@@ -37,7 +37,7 @@ android {
         applicationId "com.intellisoftalpin.ctokens"
         multiDexEnabled true
         minSdkVersion 24
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         signingConfig signingConfigs.debug
