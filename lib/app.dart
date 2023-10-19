@@ -360,6 +360,9 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
+      case AppLifecycleState.hidden:
+          print("HIDDEN");
+        break;
       case AppLifecycleState.inactive:
         print("INACTIVE");
         BlocProvider.of<AuthProfileBloc>(context).add(LoggedOut());
