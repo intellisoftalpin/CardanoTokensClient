@@ -207,8 +207,8 @@ jobs:
       - name: Create zip for apk
         run: zip -r cardanotokensclient.${{ env.VERSION }}.${{ env.INCREMENTED_BUILD_NUMBER }}.zip ./apk/*.apk
           
-      - name: Send APK to Telegram
-        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F document=@cardanotokensclient.${{ env.VERSION }}.${{ env.INCREMENTED_BUILD_NUMBER }}.zip -F "caption=CardanoTokensClient build is ready!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument --http1.1
+#      - name: Send APK to Telegram
+#        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F document=@cardanotokensclient.${{ env.VERSION }}.${{ env.INCREMENTED_BUILD_NUMBER }}.zip -F "caption=CardanoTokensClient build is ready!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument --http1.1
          
 #  deploy_google_play:
  #     runs-on: ubuntu-latest
@@ -247,5 +247,5 @@ jobs:
  #         track: internal
 #          status: draft
         
-      - name: Send message to Telegram after deployed to Google Play Deploy
-        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F "text=CardanoTokensClient build ${{ env.VERSION }} (${{ env.INCREMENTED_BUILD_NUMBER }}) has been sent to Google Play!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage --http1.1
+#      - name: Send message to Telegram after deployed to Google Play Deploy
+#        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F "text=CardanoTokensClient build ${{ env.VERSION }} (${{ env.INCREMENTED_BUILD_NUMBER }}) has been sent to Google Play!" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage --http1.1
