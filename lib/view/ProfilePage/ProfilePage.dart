@@ -81,7 +81,7 @@ class ProfilePageState extends State<ProfilePage> {
   List<double> walletAda = [];
   List<TransactionEntity> transactionEntity = [];
   String id = '';
-  static String aboutUrl = "https://ctokens.io/about";
+  static String aboutUrl = "https://ctokens.io/mobile-privacy-policy";
   static String blogUrl = "https://ctokens.io/blog";
   static String privacyUrl = "";
   static bool isCreateNewPortfolio = false;
