@@ -125,6 +125,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
   var f = NumberFormat('##0.0##');
 
   final _formKey = GlobalKey<FormState>();
+  bool load = false;
 
   @override
   void initState() {
@@ -298,31 +299,34 @@ class _TransactionsPageState extends State<TransactionsPage> {
                       )
                     ],
                   ),
-                  body: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          child: Form(
-                              key: _formKey,
-                              child: ListView(children: <Widget>[
-                                getCost(context),
-                                Divider(
-                                  height: 0.4,
-                                  color: Theme.of(context)
-                                      .cardTheme
-                                      .copyWith(
-                                          color: Theme.of(context).hintColor)
-                                      .color,
-                                ),
-                                getTxcost(),
-                                transactionTypeWidgets(context),
-                                advancedWidgets(context),
-                                getButton(context),
-                              ])),
-                        ),
-                        //getButton(context, cost.replaceAll(",", ".")),
-                      ]));
+                  body: AbsorbPointer(
+                      absorbing: load,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(
+                              child: Form(
+                                  key: _formKey,
+                                  child: ListView(children: <Widget>[
+                                    getCost(context),
+                                    Divider(
+                                      height: 0.4,
+                                      color: Theme.of(context)
+                                          .cardTheme
+                                          .copyWith(
+                                              color:
+                                                  Theme.of(context).hintColor)
+                                          .color,
+                                    ),
+                                    getTxcost(),
+                                    transactionTypeWidgets(context),
+                                    advancedWidgets(context),
+                                    getButton(context),
+                                  ])),
+                            ),
+                            //getButton(context, cost.replaceAll(",", ".")),
+                          ])));
             },
           ),
         ));
@@ -1223,6 +1227,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     minWidth: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
                     onPressed: () {
+                      setState(() {
+                        load = true;
+                      });
                       var now = new DateTime.now();
                       var formatter = new DateFormat('hh:mm');
                       String formattedDate = formatter.format(now);

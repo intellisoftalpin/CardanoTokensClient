@@ -467,9 +467,18 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                                     transactionId: state
                                                         .transactionList![index]
                                                         .transactionId!));
-                                            setState(() {
-                                              deleting = false;
-                                            });
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProfileTransactionsPage(
+                                                          id: widget.id,
+                                                          name: widget.name,
+                                                          symbol: widget.symbol,
+                                                          image: widget.image,
+                                                          isRelevant:
+                                                              widget.isRelevant,
+                                                        )));
                                           },
                                           background: Container(
                                               color: Theme.of(context)
