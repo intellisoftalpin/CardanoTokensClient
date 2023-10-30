@@ -36,6 +36,7 @@ import 'generated/codegen_loader.g.dart';
 
 String? recoveryPath;
 bool isLastTransaction = false;
+bool dismissLifecycle = false;
 
 enum SaveOrEdit { edit, save }
 
@@ -93,7 +94,9 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     _showLockScreenSubs = _showLockScreenStream.stream.listen((bool show) {
       if (mounted && show) {
-        _showLockScreenDialog();
+        if (dismissLifecycle == false) {
+          _showLockScreenDialog();
+        }
       }
     });
     if (Platform.isAndroid) {

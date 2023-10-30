@@ -18,7 +18,6 @@ import 'package:crypto_offline/view/ProfilePage/CardanoDescriptionPage.dart';
 import 'package:crypto_offline/view/ProfilePage/InputPasswordPage.dart';
 import 'package:crypto_offline/view/ProfilePage/InputPasswordPage.dart'
     as input;
-import 'package:crypto_offline/view/ProfilePage/PrivacyPolicyPage.dart';
 import 'package:crypto_offline/view/ProfilePage/ProfileTransactionsPage.dart';
 import 'package:crypto_offline/view/splash/view/splash_page.dart';
 import 'package:double_back_to_close/double_back_to_close.dart';
@@ -28,6 +27,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:io' show Platform;
 import '../../bloc/AuthenticateProfile/AuthProfileBloc.dart';
 import '../../bloc/AuthenticateProfile/AuthProfileEvent.dart';
@@ -991,11 +991,17 @@ class ProfilePageState extends State<ProfilePage> {
                       height: 40.0,
                       child: InkWell(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      PrivacyPolicyPage(aboutUrl)));
+                          final url = Uri.parse("$aboutUrl");
+                          print('LAUNCH_URL: $url');
+                          launchUrl(
+                            url,
+                            mode: LaunchMode.externalApplication,
+                          );
+                          //Navigator.push(
+                          //    context,
+                          //    MaterialPageRoute(
+                          //        builder: (context) =>
+                          //            PrivacyPolicyPage(aboutUrl)));
                         },
                         child: Row(
                           children: [

@@ -1227,14 +1227,14 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     minWidth: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
                     onPressed: () {
-                      setState(() {
-                        load = true;
-                      });
                       var now = new DateTime.now();
                       var formatter = new DateFormat('hh:mm');
                       String formattedDate = formatter.format(now);
                       print("formattedDate = $formattedDate");
                       if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          load = true;
+                        });
                         if (transactionId != -1) {
                           transactionEntity = [
                             TransactionEntity(
