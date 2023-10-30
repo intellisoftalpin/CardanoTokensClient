@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - feature/CTE-314-github-actions branch
+      - feature/CTE-314-github-actions
 
 env:
   ARTIFACTS_DIRECTORY: ./artifacts
@@ -51,5 +51,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           
-      - name: Send message to Telegram 
-        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F "text=CardanoTokensClient release ${{ env.VERSION }} (${{ env.BUILD_NUMBER }}) has been finished! 🚀" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage --http1.1
+#      - name: Send message to Telegram 
+#        run: curl -v -F "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -F "text=CardanoTokensClient release ${{ env.VERSION }} (${{ env.BUILD_NUMBER }}) has been finished! 🚀" https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage --http1.1
