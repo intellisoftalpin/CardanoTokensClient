@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:crypto_offline/app.dart' as app;
 
 import '../../utils/onBoardAlert.dart';
 
@@ -282,6 +283,7 @@ class SecondOnBoardScreenState extends State<SecondOnBoardScreen> {
                                           )),
                                   (Route<dynamic> route) => false);
                             } else if (_select == 2) {
+                              app.dismissLifecycle = true;
                               WidgetsBinding.instance
                                   .addPostFrameCallback((_) async {
                                 final isAuthenticated =

@@ -12,6 +12,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:crypto_offline/bloc/CreateProfile/CreateProfileBloc.dart'
     as global;
 import 'package:crypto_offline/view/ProfilePage/ProfilePage.dart' as prof;
+import 'package:crypto_offline/app.dart' as app;
 
 import '../../data/dbhive/ProfileModel.dart';
 import '../OnBoardingPages/SecondOnBoardScreen.dart';
@@ -82,6 +83,7 @@ class CreateProfilePageState extends State<CreateProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    app.dismissLifecycle = false;
     screenWidth = MediaQuery.of(context).size.width;
     int? onBoard = box.read('onBoard');
     Widget backArrow = SizedBox.shrink();
