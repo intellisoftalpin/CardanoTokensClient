@@ -80,6 +80,7 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
 
   @override
   Widget build(BuildContext context) {
+    app.dismissLifecycle = false;
     return WillPopScope(
       onWillPop: () async {
         app.recoveryPath = null;

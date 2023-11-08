@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:crypto_offline/app.dart' as app;
 
 import '../generated/locale_keys.g.dart';
 import '../view/AppAuth/LocalAuthApi.dart';
@@ -41,6 +42,7 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                       children: [
                     InkWell(
                       onTap: () async {
+                        app.dismissLifecycle = true;
                         if (havePass == true) {
                           bool isAuthenticated =
                               await LocalAuthApi().authenticate();
@@ -66,6 +68,7 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                                         passPrefer: 0)),
                                 (Route<dynamic> route) => false);
                           }
+                          app.dismissLifecycle = false;
                         } else {
                           bool isAuthenticated =
                               await LocalAuthApi().authenticate();
@@ -91,6 +94,7 @@ Future<void> authRestoreAlert(BuildContext context, bool havePass) async {
                                         passPrefer: 2)),
                                 (Route<dynamic> route) => false);
                           }
+                          app.dismissLifecycle = false;
                         }
                       },
                       child: Container(
