@@ -13,6 +13,7 @@ import 'package:crypto_offline/view/CreateProfilePage/CreateProfilePage.dart'
     as globals;
 import 'package:crypto_offline/bloc/CreateProfile/CreateProfileBloc.dart'
     as global;
+import 'package:crypto_offline/app.dart' as app;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -144,8 +145,12 @@ class InputPasswordPageState extends State<InputPasswordPage> {
     if (prefGlob == 0) {
       createDate = box.read('${_name + _nameId}create_time');
       enterDate = box.read('${_name + _nameId}enter_time');
-      profileCreateDate = DateTime.fromMillisecondsSinceEpoch(createDate!);
-      profileEnterDate = DateTime.fromMillisecondsSinceEpoch(enterDate!);
+      DateTime now = DateTime.now();
+      int createTime = now.millisecondsSinceEpoch;
+      profileCreateDate =
+          DateTime.fromMillisecondsSinceEpoch(createDate ?? createTime);
+      profileEnterDate =
+          DateTime.fromMillisecondsSinceEpoch(enterDate ?? createTime);
       print('TIIIIMEEEE::::::: $profileCreateDate;   $profileEnterDate');
       print(
           'PROFILE CHECK::::::${createTimeCheck(profileCreateDate!, profileEnterDate!)}');
@@ -374,6 +379,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    app.dismissLifecycle = false;
     print('ERROR::::: ${textError.toString()}');
     print('TIME:::::: $profileCreateDate');
     print('KEY_BOARD OPENED:::::: ${MediaQuery.of(context).viewInsets.bottom}');

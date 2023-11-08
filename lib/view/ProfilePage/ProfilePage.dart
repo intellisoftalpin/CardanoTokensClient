@@ -40,9 +40,9 @@ import '../../utils/check_create_profile_time.dart';
 import '../OnBoardingPages/SecondOnBoardScreen.dart';
 import 'BackupRestorePage.dart';
 
-import 'WebBlogPage.dart';
 import 'EditProfilePage.dart';
 import 'SettingsPage.dart';
+import 'package:crypto_offline/app.dart' as app;
 import 'package:crypto_offline/view/CreateProfilePage/CreateProfilePage.dart'
     as globals;
 import 'package:crypto_offline/bloc/CreateProfile/CreateProfileBloc.dart'
@@ -189,6 +189,7 @@ class ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    app.dismissLifecycle = false;
     print('selectedIndex::: $selectedIndex');
     AppBar appBar = AppBar();
     orientation = MediaQuery.of(context).orientation;
@@ -1096,11 +1097,17 @@ class ProfilePageState extends State<ProfilePage> {
                       height: 40.0,
                       child: InkWell(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      WebBlogPage(url: blogUrl)));
+                          final url = Uri.parse("$blogUrl");
+                          print('LAUNCH_URL: $blogUrl');
+                          launchUrl(
+                            url,
+                            mode: LaunchMode.externalApplication,
+                          );
+                          //Navigator.push(
+                          //    context,
+                          //    MaterialPageRoute(
+                          //        builder: (context) =>
+                          //            WebBlogPage(url: blogUrl)));
                         },
                         child: Row(
                           children: [

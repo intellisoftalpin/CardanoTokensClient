@@ -6,8 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:package_info/package_info.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:crypto_offline/view/ProfilePage/ProfilePage.dart';
-
-import 'WebAboutPage.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatefulWidget {
   final String platform;
@@ -46,22 +45,16 @@ class _AboutPageState extends State<AboutPage> {
     final platform = widget.platform;
     final image = widget.image;
     String version = _packageInfo.version;
-    int dots = version
-        .replaceAll(new RegExp(r'[^\\.]'), '')
-        .length;
+    int dots = version.replaceAll(new RegExp(r'[^\\.]'), '').length;
     if (dots == 3) {
       var pos = version.lastIndexOf('.');
       version = (pos != -1) ? version.substring(0, pos) : version;
       print('VERSION:: $version');
     }
     AssetImage background = AssetImage('assets/background/background.png');
-    if (Theme
-        .of(context)
-        .primaryColor == lBackgroundColor) {
+    if (Theme.of(context).primaryColor == lBackgroundColor) {
       background = AssetImage('assets/background/background_lt.png');
-    } else if (Theme
-        .of(context)
-        .primaryColor == kBackgroundColor) {
+    } else if (Theme.of(context).primaryColor == kBackgroundColor) {
       background = AssetImage('assets/background/background.png');
     }
     return WillPopScope(
@@ -80,18 +73,12 @@ class _AboutPageState extends State<AboutPage> {
               icon: Icon(
                 Icons.arrow_back_ios,
                 size: 35.0,
-                color: Theme
-                    .of(context)
-                    .focusColor,
+                color: Theme.of(context).focusColor,
               ),
-              onPressed: () =>
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => ProfilePage())),
+              onPressed: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => ProfilePage())),
             ),
-            backgroundColor: Theme
-                .of(context)
-                .splashColor,
+            backgroundColor: Theme.of(context).splashColor,
             centerTitle: true,
             elevation: 0.0,
             bottomOpacity: 0.0,
@@ -102,7 +89,7 @@ class _AboutPageState extends State<AboutPage> {
                 image: DecorationImage(image: background, fit: BoxFit.cover)),
             child: Center(
                 child:
-                portrait(image, platform, _packageInfo, version, context)),
+                    portrait(image, platform, _packageInfo, version, context)),
           ),
         ));
   }
@@ -113,9 +100,7 @@ class _AboutPageState extends State<AboutPage> {
     String twitter = '';
     String web = '';
     String youtube = '';
-    if (Theme
-        .of(context)
-        .focusColor == lAppBarIconColor) {
+    if (Theme.of(context).focusColor == lAppBarIconColor) {
       tiktok = 'assets/icons/l_tiktok.png';
       twitter = 'assets/icons/l_twitter.png';
       web = 'assets/icons/l_web.png';
@@ -159,9 +144,7 @@ class _AboutPageState extends State<AboutPage> {
               Text(
                 "v. $version   build ${info.buildNumber}",
                 style: TextStyle(
-                  color: Theme
-                      .of(context)
-                      .focusColor,
+                  color: Theme.of(context).focusColor,
                   fontSize: textSize14,
                 ),
               ),
@@ -198,93 +181,59 @@ class _AboutPageState extends State<AboutPage> {
         ),
         Container(
             margin: EdgeInsets.only(bottom: 10.0),
-            height: MediaQuery
-                .of(context)
-                .size
-                .width * 0.10,
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+            height: MediaQuery.of(context).size.width * 0.10,
+            width: MediaQuery.of(context).size.width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
                   alignment: Alignment.center,
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.10,
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.10,
+                  height: MediaQuery.of(context).size.width * 0.10,
+                  width: MediaQuery.of(context).size.width * 0.10,
                   child: InkWell(
                     onTap: () {
                       Fluttertoast.showToast(msg: 'web_link');
                     },
-                    child: Image.asset(web,
-                        fit: BoxFit.fitHeight),
+                    child: Image.asset(web, fit: BoxFit.fitHeight),
                   ),
                 ),
                 SizedBox(
                   width: 20.0,
                 ),
                 Container(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.10,
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.10,
+                  height: MediaQuery.of(context).size.width * 0.10,
+                  width: MediaQuery.of(context).size.width * 0.10,
                   child: InkWell(
                     onTap: () {
                       Fluttertoast.showToast(msg: 'twitter_link');
                     },
-                    child: Image.asset(twitter,
-                        fit: BoxFit.fitHeight),
+                    child: Image.asset(twitter, fit: BoxFit.fitHeight),
                   ),
                 ),
                 SizedBox(
                   width: 20.0,
                 ),
                 Container(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.10,
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.10,
+                  height: MediaQuery.of(context).size.width * 0.10,
+                  width: MediaQuery.of(context).size.width * 0.10,
                   child: InkWell(
                     onTap: () {
                       Fluttertoast.showToast(msg: 'tiktok_link');
                     },
-                    child: Image.asset(tiktok,
-                        fit: BoxFit.fitHeight),
+                    child: Image.asset(tiktok, fit: BoxFit.fitHeight),
                   ),
                 ),
                 SizedBox(
                   width: 20.0,
                 ),
                 Container(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.10,
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.10,
+                  height: MediaQuery.of(context).size.width * 0.10,
+                  width: MediaQuery.of(context).size.width * 0.10,
                   child: InkWell(
                     onTap: () {
                       Fluttertoast.showToast(msg: 'youtube_link');
                     },
-                    child: Image.asset(youtube,
-                        fit: BoxFit.fitHeight),
+                    child: Image.asset(youtube, fit: BoxFit.fitHeight),
                   ),
                 ),
               ],
@@ -294,20 +243,25 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
-  Widget launchUrlAbout(BuildContext context) =>
-      Container(
+  Widget launchUrlAbout(BuildContext context) => Container(
         margin: EdgeInsets.only(bottom: 20.0),
         child: Center(
           child: new InkWell(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          WebAboutPage(
-                              platform: widget.platform,
-                              image: widget.image,
-                              url: 'https://ctokens.io/about')));
+              final url = Uri.parse("https://ctokens.io/about");
+              print('LAUNCH_URL: https://ctokens.io/about');
+              launchUrl(
+                url,
+                mode: LaunchMode.externalApplication,
+              );
+              //Navigator.push(
+              //    context,
+              //    MaterialPageRoute(
+              //        builder: (context) =>
+              //            WebAboutPage(
+              //                platform: widget.platform,
+              //                image: widget.image,
+              //                url: 'https://ctokens.io/about')));
             },
             child: new Text('ctokens.io/about'),
           ),
