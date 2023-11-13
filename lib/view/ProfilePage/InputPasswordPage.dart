@@ -456,7 +456,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
       hintTxt = LocaleKeys.password.tr();
     }
 
-    if (passIsEmpty) {
+    if (passIsEmpty == true) {
       errorTxt = LocaleKeys.password_is_empty.tr();
     }
 

@@ -12,7 +12,6 @@ import 'package:crypto_offline/generated/locale_keys.g.dart';
 import 'package:crypto_offline/utils/constants.dart';
 import 'package:crypto_offline/utils/decimal.dart';
 import 'package:crypto_offline/view/AddCoinPage/AddCoinPage.dart';
-import 'package:crypto_offline/view/CreateProfilePage/CreateProfilePage.dart';
 import 'package:crypto_offline/view/ProfilePage/AboutPage.dart';
 import 'package:crypto_offline/view/ProfilePage/CardanoDescriptionPage.dart';
 import 'package:crypto_offline/view/ProfilePage/InputPasswordPage.dart';
@@ -35,8 +34,8 @@ import '../../bloc/CloseDbBloc/CloseDbBloc.dart';
 import '../../data/dbhive/HivePrefProfileRepository.dart';
 import '../../data/model/CardanoModel.dart';
 import '../../data/repository/ApiRepository/CardanoTokensApi.dart';
+import '../../utils/save_temporary_pass.dart';
 import '../utils/CaradanoTokenListTile.dart';
-import '../../utils/check_create_profile_time.dart';
 import '../OnBoardingPages/SecondOnBoardScreen.dart';
 import 'BackupRestorePage.dart';
 
@@ -303,7 +302,7 @@ class ProfilePageState extends State<ProfilePage> {
                   wallet = (wallet.isEmpty) ? wallet = [0.0] : wallet;
                   walletAda =
                       (walletAda.isEmpty) ? walletAda = [0.0] : walletAda;
-                  //SplashPage();
+                  input.passIsEmpty = false;
                   return Scaffold(
                       key: scaffoldKey,
                       backgroundColor: Theme.of(context).primaryColor,
@@ -2025,26 +2024,5 @@ class ProfilePageState extends State<ProfilePage> {
         );
       },
     );
-  }
-
-  saveTemporaryPass() {
-    int pref = globals.passPrefer;
-    if (pref == 0) {
-      int? createDate =
-          box.read('${globals.nameProfile + global.idProfile}create_time');
-      int? enterDate =
-          box.read('${globals.nameProfile + global.idProfile}enter_time');
-      DateTime? profileCreateDate =
-          DateTime.fromMillisecondsSinceEpoch(createDate!);
-      DateTime? profileEnterDate =
-          DateTime.fromMillisecondsSinceEpoch(enterDate!);
-      if (createTimeCheck(profileCreateDate, profileEnterDate)) {
-        box.write('${globals.nameProfile + global.idProfile}enter_time',
-            DateTime.now().millisecondsSinceEpoch);
-        box.write(
-            '${globals.nameProfile + global.idProfile}pass', globals.pass);
-        print('DONE!!!!!!!');
-      }
-    }
   }
 }

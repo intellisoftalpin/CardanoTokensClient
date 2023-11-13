@@ -246,13 +246,12 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
         'GLOBALS NAME:::::::::::${globals.nameProfile}, GLOBALS IDNAME:::::::::::${global.idProfile}');
     if (Platform.isAndroid) {
       ReceiveSharingIntent.getMediaStream().listen(
-              (List<SharedMediaFile> value) {
-            print("Shared:" +
-                (_sharedFilesLifeCycle.map((f) => f.path).join(",")));
-            _sharedFilesLifeCycle = value;
-            String path = (_sharedFilesLifeCycle.map((f) => f.path).join(","));
-            recoveryPath = path;
-          }, onError: (err) {
+          (List<SharedMediaFile> value) {
+        print("Shared:" + (_sharedFilesLifeCycle.map((f) => f.path).join(",")));
+        _sharedFilesLifeCycle = value;
+        String path = (_sharedFilesLifeCycle.map((f) => f.path).join(","));
+        recoveryPath = path;
+      }, onError: (err) {
         print("getIntentDataStream error: $err");
       });
     }
@@ -364,59 +363,65 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.hidden:
-          print("HIDDEN");
+        print("HIDDEN");
         break;
       case AppLifecycleState.inactive:
-        print("INACTIVE");
-        BlocProvider.of<AuthProfileBloc>(context).add(LoggedOut());
-        BlocProvider.of<CloseDbBloc>(this.context)
-          ..add(UpdateProfile(idProfile: global.idProfile));
-        int? onBoard = box.read('onBoard');
-        if (onBoard == 2) {
-          var name = ProfileModel(
-              nameProfile: globals.nameProfile,
-              id: global.idProfile,
-              pref: globals.passPrefer);
-          if (profileExist.isEmpty) profileExist.add(name);
-          print('prof = $profileExist');
+        if (dismissLifecycle == false) {
+          print("INACTIVE");
+          BlocProvider.of<AuthProfileBloc>(context).add(LoggedOut());
+          BlocProvider.of<CloseDbBloc>(this.context)
+            ..add(UpdateProfile(idProfile: global.idProfile));
+          int? onBoard = box.read('onBoard');
+          if (onBoard == 2) {
+            var name = ProfileModel(
+                nameProfile: globals.nameProfile,
+                id: global.idProfile,
+                pref: globals.passPrefer);
+            if (profileExist.isEmpty) profileExist.add(name);
+            print('prof = $profileExist');
+          }
         }
         break;
       case AppLifecycleState.paused:
         print("PAUSED");
-        BlocProvider.of<AuthProfileBloc>(context).add(LoggedOut());
-        BlocProvider.of<CloseDbBloc>(this.context)
-          ..add(UpdateProfile(idProfile: global.idProfile));
-        int? onBoard = box.read('onBoard');
-        if (onBoard == 2) {
-          var name = ProfileModel(
-              nameProfile: globals.nameProfile,
-              id: global.idProfile,
-              pref: globals.passPrefer);
-          if (profileExist.isEmpty) profileExist.add(name);
-          print('prof = $profileExist');
-        }
-        if (Platform.isIOS) {
-          _channel.setMethodCallHandler(_importZipFile);
+        if (dismissLifecycle == false) {
+          BlocProvider.of<AuthProfileBloc>(context).add(LoggedOut());
+          BlocProvider.of<CloseDbBloc>(this.context)
+            ..add(UpdateProfile(idProfile: global.idProfile));
+          int? onBoard = box.read('onBoard');
+          if (onBoard == 2) {
+            var name = ProfileModel(
+                nameProfile: globals.nameProfile,
+                id: global.idProfile,
+                pref: globals.passPrefer);
+            if (profileExist.isEmpty) profileExist.add(name);
+            print('prof = $profileExist');
+          }
+          if (Platform.isIOS) {
+            _channel.setMethodCallHandler(_importZipFile);
+          }
         }
         break;
       case AppLifecycleState.resumed:
-        print("RESUMED");
-        String locale = box.read('stringLocaleShPref') ?? 'language';
-        print('locale = $locale');
-        if (locale == 'Системный(Русский)' ||
-            locale == 'System(English)' ||
-            locale == 'language') {
-          if (View.of(context)
-              .platformDispatcher
-              .locale
-              .toString()
-              .contains('ru')) {
-            context.setLocale(Locale('ru'));
-          } else {
-            context.setLocale(Locale('en'));
+        if (dismissLifecycle == false) {
+          print("RESUMED");
+          String locale = box.read('stringLocaleShPref') ?? 'language';
+          print('locale = $locale');
+          if (locale == 'Системный(Русский)' ||
+              locale == 'System(English)' ||
+              locale == 'language') {
+            if (View.of(context)
+                .platformDispatcher
+                .locale
+                .toString()
+                .contains('ru')) {
+              context.setLocale(Locale('ru'));
+            } else {
+              context.setLocale(Locale('en'));
+            }
           }
+          _showLockScreenStream.add(true);
         }
-        _showLockScreenStream.add(true);
         break;
       case AppLifecycleState.detached:
         print("DETACHED");
