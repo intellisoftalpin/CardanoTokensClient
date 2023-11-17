@@ -79,26 +79,21 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
   late ThemeModel themeNotifier;
   List<ProfileModel> profileExist = [];
   String lifecycleState = '';
-  final StreamController<bool> _showLockScreenStream = StreamController();
+
+  ///final StreamController<bool> _showLockScreenStream = StreamController();
   late StreamSubscription _showLockScreenSubs;
   List<SharedMediaFile> _sharedFiles = [];
   List<SharedMediaFile> _sharedFilesLifeCycle = [];
-  MethodChannel _channel =
+  MethodChannel _channelIOS =
       const MethodChannel('org.cardanotokens.app/import_zip');
+
+  ///static const _channelAndroid = MethodChannel('cardano_tokens_client');
 
   NavigatorState get _navigator => _navigatorKey.currentState!;
 
   @override
   void initState() {
     print("initState = ");
-    WidgetsBinding.instance.addObserver(this);
-    _showLockScreenSubs = _showLockScreenStream.stream.listen((bool show) {
-      if (mounted && show) {
-        if (dismissLifecycle == false) {
-          _showLockScreenDialog();
-        }
-      }
-    });
     if (Platform.isAndroid) {
       ReceiveSharingIntent.getInitialMedia()
           .then((List<SharedMediaFile> value) {
@@ -108,10 +103,24 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
         print('PATH::: $recoveryPath');
       });
     }
-    super.initState();
     if (Platform.isIOS) {
-      _channel.setMethodCallHandler(_importZipFile);
+      _channelIOS.setMethodCallHandler(_importZipFile);
     }
+    WidgetsBinding.instance.addObserver(this);
+    if (dismissLifecycle == false) {
+      _customAppNavigation();
+    }
+
+    ///if (Platform.isAndroid) {
+    ///  WidgetsBinding.instance.addPostFrameCallback((_) async {
+    ///    try {
+    ///      recoveryPath = await _channelAndroid.invokeMethod('check');
+    ///    } on PlatformException catch (e) {
+    ///      print("Failed to get connect: '${e.message}'.");
+    ///    }
+    ///  });
+    ///}
+    super.initState();
   }
 
   @override
@@ -130,7 +139,8 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
     print("dispose = ");
     _showLockScreenSubs.cancel();
-    _showLockScreenStream.close();
+
+    ///_showLockScreenStream.close();
     super.dispose();
   }
 
@@ -149,78 +159,76 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
     }
   }
 
-  void _showLockScreenDialog() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var name = ProfileModel(
-          nameProfile: globals.nameProfile,
-          id: global.idProfile,
-          pref: globals.passPrefer);
-      if (profileExist.isEmpty) profileExist.add(name);
-      int? onBoard = box.read('onBoard');
-      print(
-          ':::SecondOnBoardScreenState.isAuthenticateState = ${SecondOnBoardScreenState.isAuthenticateState} onBoard = $onBoard'
-          ' InputPasswordPageState.isAuthenticate = ${InputPasswordPageState.isAuthenticate} '
-          'ProfilePageState.isCreateNewPortfolio = ${ProfilePageState.isCreateNewPortfolio}'
-          ' name = ${globals.nameProfile}, nameId = ${global.idProfile} pass = ${globals.pass}');
-      if (recoveryPath != null && recoveryPath != '') {
-        if (Platform.isIOS) {
-          print('USE IOS BIOMETRIC');
-        } else {
-          _navigatorKey.currentState?.pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => FirstRestoreScreen()),
-              (Route<dynamic> route) => false);
-        }
+  void _customAppNavigation() {
+    var name = ProfileModel(
+        nameProfile: globals.nameProfile,
+        id: global.idProfile,
+        pref: globals.passPrefer);
+    if (profileExist.isEmpty) profileExist.add(name);
+    int? onBoard = box.read('onBoard');
+    print(
+        ':::SecondOnBoardScreenState.isAuthenticateState = ${SecondOnBoardScreenState.isAuthenticateState} onBoard = $onBoard'
+        ' InputPasswordPageState.isAuthenticate = ${InputPasswordPageState.isAuthenticate} '
+        'ProfilePageState.isCreateNewPortfolio = ${ProfilePageState.isCreateNewPortfolio}'
+        ' name = ${globals.nameProfile}, nameId = ${global.idProfile} pass = ${globals.pass}');
+    if (recoveryPath != null && recoveryPath != '') {
+      if (Platform.isIOS) {
+        print('USE IOS BIOMETRIC');
       } else {
-        if (onBoard == null) {
-          _navigatorKey.currentState?.pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => FirstOnBoardScreen()),
-              (Route<dynamic> route) => false);
-        }
-        /*else if (onBoard == 1) {
+        _navigatorKey.currentState?.pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => FirstRestoreScreen()),
+            (Route<dynamic> route) => false);
+      }
+    } else {
+      if (onBoard == null) {
+        _navigatorKey.currentState?.pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => FirstOnBoardScreen()),
+            (Route<dynamic> route) => false);
+      }
+      /*else if (onBoard == 1) {
         _navigatorKey.currentState?.pushReplacement(
             MaterialPageRoute(builder: (BuildContext context) {
           return SecondOnBoardScreen(appBarBackArrow: SizedBox.shrink());
         }));
       } */
-        else if (onBoard == 2 &&
-                SecondOnBoardScreenState.isAuthenticateState &&
-                !ProfilePageState.isCreateNewPortfolio &&
-                (globals.pass.isEmpty || globals.pass == '') ||
-            onBoard == 2 && InputPasswordPageState.isAuthenticate ||
-            onBoard == 2 &&
-                globals.pass.isEmpty &&
-                !SecondOnBoardScreenState.isAuthenticateState ||
-            onBoard == 2 &&
-                globals.pass == '' &&
-                !SecondOnBoardScreenState.isAuthenticateState ||
-            onBoard == 2 &&
-                globals.pass.isEmpty &&
-                !InputPasswordPageState.isAuthenticate &&
-                !ProfilePageState.isCreateNewPortfolio ||
-            onBoard == 2 &&
-                globals.pass == '' &&
-                !InputPasswordPageState.isAuthenticate &&
-                !ProfilePageState.isCreateNewPortfolio) {
-          List<ProfileModel> profiles = globals.profiles;
-          print('profileExist.length = ${profileExist.length}');
-          if (profiles.isNotEmpty) {
-            profileExist = profiles;
-          }
-          if (profileExist.length == 1 && globals.passPrefer == 3) {
-            globals.pass = hashPass(hashPassword).toString();
-            _navigatorKey.currentState?.pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => ProfilePage()),
-                (Route<dynamic> route) => false);
-          } else {
-            _navigatorKey.currentState?.pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (context) => InputPasswordPage(globals.nameProfile,
-                        global.idProfile, '', '', profileExist)),
-                (Route<dynamic> route) => false);
-          }
+      else if (onBoard == 2 &&
+              SecondOnBoardScreenState.isAuthenticateState &&
+              !ProfilePageState.isCreateNewPortfolio &&
+              (globals.pass.isEmpty || globals.pass == '') ||
+          onBoard == 2 && InputPasswordPageState.isAuthenticate ||
+          onBoard == 2 &&
+              globals.pass.isEmpty &&
+              !SecondOnBoardScreenState.isAuthenticateState ||
+          onBoard == 2 &&
+              globals.pass == '' &&
+              !SecondOnBoardScreenState.isAuthenticateState ||
+          onBoard == 2 &&
+              globals.pass.isEmpty &&
+              !InputPasswordPageState.isAuthenticate &&
+              !ProfilePageState.isCreateNewPortfolio ||
+          onBoard == 2 &&
+              globals.pass == '' &&
+              !InputPasswordPageState.isAuthenticate &&
+              !ProfilePageState.isCreateNewPortfolio) {
+        List<ProfileModel> profiles = globals.profiles;
+        print('profileExist.length = ${profileExist.length}');
+        if (profiles.isNotEmpty) {
+          profileExist = profiles;
+        }
+        if (profileExist.length == 1 && globals.passPrefer == 3) {
+          globals.pass = hashPass(hashPassword).toString();
+          _navigatorKey.currentState?.pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => ProfilePage()),
+              (Route<dynamic> route) => false);
+        } else {
+          _navigatorKey.currentState?.pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => InputPasswordPage(globals.nameProfile,
+                      global.idProfile, '', '', profileExist)),
+              (Route<dynamic> route) => false);
         }
       }
-    });
+    }
   }
 
   @override
@@ -398,7 +406,7 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
             print('prof = $profileExist');
           }
           if (Platform.isIOS) {
-            _channel.setMethodCallHandler(_importZipFile);
+            _channelIOS.setMethodCallHandler(_importZipFile);
           }
         }
         break;
@@ -420,7 +428,20 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
               context.setLocale(Locale('en'));
             }
           }
-          _showLockScreenStream.add(true);
+          if (Platform.isAndroid) {
+            ReceiveSharingIntent.getMediaStream().listen(
+                (List<SharedMediaFile> value) {
+              print("Shared:" +
+                  (_sharedFilesLifeCycle.map((f) => f.path).join(",")));
+              _sharedFilesLifeCycle = value;
+              String path =
+                  (_sharedFilesLifeCycle.map((f) => f.path).join(","));
+              recoveryPath = path;
+            }, onError: (err) {
+              print("getIntentDataStream error: $err");
+            });
+          }
+          _customAppNavigation();
         }
         break;
       case AppLifecycleState.detached:
