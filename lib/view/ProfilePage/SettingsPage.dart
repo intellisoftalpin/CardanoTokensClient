@@ -154,11 +154,14 @@ class _SettingsPageState extends State<SettingsPage> {
           ],
           child:
               BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-            return WillPopScope(
-                onWillPop: () async {
+            return PopScope(
+                canPop: false,
+                onPopInvoked: (bool didPop) {
+                  if (didPop) {
+                    return;
+                  }
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => ProfilePage()));
-                  return true;
                 },
                 child: Scaffold(
                   key: _key,

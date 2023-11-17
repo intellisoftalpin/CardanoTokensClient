@@ -287,10 +287,7 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
                               : lightTheme(),
                   navigatorKey: _navigatorKey,
                   builder: (context, child) {
-                    return MediaQuery(
-                        data: MediaQuery.of(context)
-                            .copyWith(textScaleFactor: 1.0),
-                        child: BlocListener<AuthProfileBloc, AuthProfileState>(
+                    return BlocListener<AuthProfileBloc, AuthProfileState>(
                           listener: (context, state) {
                             int? onBoard = box.read('onBoard');
                             print('RECOVERY_PATH::: $recoveryPath');
@@ -357,7 +354,7 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
                             }
                           },
                           child: child,
-                        ));
+                        );
                   },
                   onGenerateRoute: (_) => SplashPage.route(),
                 ));

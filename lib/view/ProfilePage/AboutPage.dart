@@ -57,11 +57,14 @@ class _AboutPageState extends State<AboutPage> {
     } else if (Theme.of(context).primaryColor == kBackgroundColor) {
       background = AssetImage('assets/background/background.png');
     }
-    return WillPopScope(
-        onWillPop: () async {
+    return PopScope(
+        canPop: false,
+        onPopInvoked: (bool didPop) {
+          if (didPop) {
+            return;
+          }
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => ProfilePage()));
-          return true;
         },
         child: Scaffold(
           appBar: AppBar(

@@ -48,8 +48,12 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
   @override
   Widget build(BuildContext context) {
     app.dismissLifecycle = false;
-    return WillPopScope(
-        onWillPop: () async {
+    return PopScope(
+        canPop: false,
+        onPopInvoked: (bool didPop) {
+          if (didPop) {
+            return;
+          }
           recovery.recoveryPath = null;
           global.idProfile = lastProfile.lastProfileId!;
           ReceiveSharingIntent.reset();
@@ -58,7 +62,6 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => App()),
               (Route<dynamic> route) => false);
-          return true;
         },
         child: MultiBlocProvider(
             providers: [

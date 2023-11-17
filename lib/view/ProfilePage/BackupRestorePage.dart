@@ -48,11 +48,14 @@ class BackupRestorePageState extends State<BackupRestorePage> {
   @override
   Widget build(BuildContext context) {
     _preferences = SharedPreferencesRepository();
-    return WillPopScope(
-        onWillPop: () async {
+    return PopScope(
+        canPop: false,
+        onPopInvoked: (bool didPop) {
+          if (didPop) {
+            return;
+          }
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => ProfilePage()));
-          return true;
         },
         child: MultiBlocProvider(
           providers: [

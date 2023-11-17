@@ -52,14 +52,17 @@ class _WebAboutPageState extends State<WebAboutPage> {
         ))),
       ),
     );
-    return WillPopScope(
-        onWillPop: () async {
+    return PopScope(
+        canPop: false,
+        onPopInvoked: (bool didPop) {
+          if (didPop) {
+            return;
+          }
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => AboutPage(
             platform: widget.platform,
             image: widget.image,
           )));
-          return true;
         },
         child: Scaffold(
             appBar: appBar,

@@ -123,14 +123,17 @@ class CreateProfilePageState extends State<CreateProfilePage> {
                   HivePrefProfileRepositoryImpl(), '', '', null, '', 0, null),
             ),
           ],
-          child: WillPopScope(
-            onWillPop: () async {
+          child: PopScope(
+            canPop: false,
+            onPopInvoked: (bool didPop) {
+              if (didPop) {
+                return;
+              }
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => SecondOnBoardScreen(
                           appBarBackArrow: backArrow)));
-              return true;
             },
             child: Scaffold(
                 resizeToAvoidBottomInset: true,

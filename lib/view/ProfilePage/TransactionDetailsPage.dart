@@ -113,8 +113,12 @@ class _TransactionsDetailsPageState extends State<TransactionsDetailsPage> {
         image = Image.asset('assets/icons/outLight.png');
       }
     }
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) {
+        if (didPop) {
+          return;
+        }
         isLastTransaction = false;
         Navigator.push(
             context,
@@ -126,7 +130,6 @@ class _TransactionsDetailsPageState extends State<TransactionsDetailsPage> {
                   image: widget.image,
                       isRelevant: widget.isRelevant,
                     )));
-        return true;
       },
       child: MultiBlocProvider(
         providers: [
