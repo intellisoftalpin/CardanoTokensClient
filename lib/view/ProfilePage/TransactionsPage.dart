@@ -150,8 +150,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
     print(" ::::::::: screenHeight :::: = $screenHeight");
-    return WillPopScope(
-        onWillPop: () async {
+    return PopScope(
+        canPop: false,
+        onPopInvoked: (bool didPop) {
+          if (didPop) {
+            return;
+          }
           saveOrEdit = SaveOrEdit.save;
           Navigator.push(
               context,
@@ -178,7 +182,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
           //           price: price,
           //           trastWallet: trastWallet,
           //         )));
-          return true;
         },
         child: MultiBlocProvider(
           providers: [

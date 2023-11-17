@@ -317,14 +317,17 @@ class _FirstRestoreScreenState extends State<FirstRestoreScreen> {
     } else {
       body = badFile(context);
     }
-    return WillPopScope(
-        onWillPop: () async {
+    return PopScope(
+        canPop: false,
+        onPopInvoked: (bool didPop) {
+          if (didPop) {
+            return;
+          }
           recovery.recoveryPath = null;
           ReceiveSharingIntent.reset();
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => App()),
               (Route<dynamic> route) => false);
-          return true;
         },
         child: Scaffold(
           appBar: null,

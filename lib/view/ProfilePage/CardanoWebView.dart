@@ -59,14 +59,17 @@ class _CardanoWebViewState extends State<CardanoWebView> {
                 (Route<dynamic> route) => false),
       ),
     );
-    return WillPopScope(
-        onWillPop: () async {
+    return PopScope(
+        canPop: false,
+        onPopInvoked: (bool didPop) {
+          if (didPop) {
+            return;
+          }
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => CardanoDescriptionPage(
                       token: widget.token, exchangeAda: widget.exchangeAda)),
                   (Route<dynamic> route) => false);
-          return true;
         },
         child: Scaffold(
             appBar: appBar,

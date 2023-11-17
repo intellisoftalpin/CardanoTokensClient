@@ -717,10 +717,13 @@ class InputPasswordPageState extends State<InputPasswordPage> {
         ));
     return Scaffold(
       backgroundColor: Theme.of(context).dividerColor,
-      body: WillPopScope(
-          onWillPop: () async {
+      body: PopScope(
+          canPop: false,
+          onPopInvoked: (bool didPop) {
+            if (didPop) {
+              return;
+            }
             SystemNavigator.pop();
-            return true;
           },
           child: SingleChildScrollView(
               child: Container(

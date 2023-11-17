@@ -124,11 +124,14 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
             print('transactionList!!!!!::: $transactionList');
             print('transactionList.length!!!!!::: ${transactionList.length}');
           }
-          return WillPopScope(
-            onWillPop: () async {
+          return PopScope(
+            canPop: false,
+            onPopInvoked: (bool didPop) {
+              if (didPop) {
+                return;
+              }
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ProfilePage()));
-              return true;
             },
             child: Scaffold(
               backgroundColor: Theme.of(context).primaryColor,

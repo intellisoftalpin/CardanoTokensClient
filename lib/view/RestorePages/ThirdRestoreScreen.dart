@@ -81,8 +81,12 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
   @override
   Widget build(BuildContext context) {
     app.dismissLifecycle = false;
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) {
+        if (didPop) {
+          return;
+        }
         app.recoveryPath = null;
         global.idProfile = recovery.lastProfileId!;
         ReceiveSharingIntent.reset();
@@ -91,7 +95,6 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => App()),
             (Route<dynamic> route) => false);
-        return true;
       },
       child: MultiBlocProvider(
         providers: [

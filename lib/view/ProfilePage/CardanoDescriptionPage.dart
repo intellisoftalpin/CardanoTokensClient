@@ -80,11 +80,14 @@ class _CardanoDescriptionPageState extends State<CardanoDescriptionPage> {
         adaPrice: token.priceAda,
         liquidAda: token.liquidAda,
         isRelevant: 1);
-    return WillPopScope(
-        onWillPop: () async {
+    return PopScope(
+        canPop: false,
+        onPopInvoked: (bool didPop) {
+          if (didPop) {
+            return;
+          }
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => ProfilePage()));
-          return true;
         },
         child: Scaffold(
           appBar: appBar,

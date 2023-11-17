@@ -81,11 +81,14 @@ class AddCoinPageState extends State<AddCoinPage> {
       inputFieldTextColor = Theme.of(context).shadowColor;
       inputFieldPadding = EdgeInsets.only(left: 20.0);
     }
-    return WillPopScope(
-        onWillPop: () async {
+    return PopScope(
+        canPop: false,
+        onPopInvoked: (bool didPop) {
+          if (didPop) {
+            return;
+          }
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => ProfilePage()));
-          return true;
         },
         child: MultiBlocProvider(
           providers: [

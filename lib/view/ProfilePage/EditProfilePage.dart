@@ -43,12 +43,14 @@ class EditProfilePageState extends State<EditProfilePage> {
     } else {
       changePassWidget = changePassUnavailable();
     }
-    return WillPopScope(
-      onWillPop: () async {
-        //Замена события
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) {
+        if (didPop) {
+          return;
+        }
         Navigator.push(context,
             MaterialPageRoute(builder: (_) => ProfilePage()));
-        return false;
       },
       child: Scaffold(
         appBar: AppBar(
