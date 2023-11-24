@@ -398,7 +398,7 @@ class ProfilePageState extends State<ProfilePage> {
             Container(
                 margin: EdgeInsets.only(left: 10.0, right: 10.0),
                 child: SizedBox(
-                    height: 15.0,
+                    height: 20.0,
                     child: Text(
                       '${LocaleKeys.last_update.tr()} ${delete.exchangeTimeGlobal}',
                       textAlign: TextAlign.end,
@@ -491,15 +491,17 @@ class ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                   ),
-                  Switch(
-                    value: tokensPageLiq,
-                    activeColor: Theme.of(context).secondaryHeaderColor,
-                    onChanged: (bool value) {
-                      setState(() {
-                        tokensPageLiq = value;
-                      });
-                    },
-                  ),
+                  Transform.scale(
+                      scale: 0.75,
+                      child: Switch(
+                        value: tokensPageLiq,
+                        activeColor: Theme.of(context).secondaryHeaderColor,
+                        onChanged: (bool value) {
+                          setState(() {
+                            tokensPageLiq = value;
+                          });
+                        },
+                      )),
                   SizedBox(
                     child: Text(
                       LocaleKeys.liquidity.tr(),
@@ -664,7 +666,7 @@ class ProfilePageState extends State<ProfilePage> {
           child: ListView(
             children: <Widget>[
               Container(
-                  height: 80.0,
+                  height: 90.0,
                   child: Row(
                     children: [
                       Container(
@@ -686,6 +688,7 @@ class ProfilePageState extends State<ProfilePage> {
                               MediaQuery.of(context).size.width * 0.85 - 160.0,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
                                 "Cardano Tokens",
@@ -696,6 +699,7 @@ class ProfilePageState extends State<ProfilePage> {
                               SizedBox(width: 2.0),
                               Text(
                                 "v. $version",
+                                textAlign: TextAlign.start,
                                 style: TextStyle(
                                   fontSize: textSize13,
                                 ),
@@ -713,7 +717,7 @@ class ProfilePageState extends State<ProfilePage> {
                               height: 45.0,
                               decoration: BoxDecoration(
                                   color: Theme.of(context).secondaryHeaderColor,
-                                  borderRadius: BorderRadius.circular(15.0),
+                                  shape: BoxShape.circle,
                                   border: Border.all(
                                     width: 1.0,
                                     color:
@@ -1417,7 +1421,7 @@ class ProfilePageState extends State<ProfilePage> {
             ),
             PopupMenuButton<int>(
                 padding: EdgeInsets.all(0.0),
-                color: Theme.of(context).unselectedWidgetColor,
+                color: Theme.of(context).canvasColor,
                 offset: Offset(10.0, 65.0),
                 child: Container(
                   decoration: BoxDecoration(
@@ -1486,7 +1490,7 @@ class ProfilePageState extends State<ProfilePage> {
                             Text(LocaleKeys.holdings.tr(),
                                 style: TextStyle(
                                     fontSize: textSize18,
-                                    color: Theme.of(context).shadowColor)),
+                                    color: Theme.of(context).focusColor)),
                           ],
                         ),
                       ),
@@ -1499,7 +1503,7 @@ class ProfilePageState extends State<ProfilePage> {
                             Text(LocaleKeys.liquidity.tr(),
                                 style: TextStyle(
                                     fontSize: textSize18,
-                                    color: Theme.of(context).shadowColor)),
+                                    color: Theme.of(context).focusColor)),
                           ],
                         ),
                       ),
@@ -1512,7 +1516,7 @@ class ProfilePageState extends State<ProfilePage> {
                             Text(LocaleKeys.trend_up.tr(),
                                 style: TextStyle(
                                     fontSize: textSize18,
-                                    color: Theme.of(context).shadowColor)),
+                                    color: Theme.of(context).focusColor)),
                           ],
                         ),
                       ),
@@ -1525,7 +1529,7 @@ class ProfilePageState extends State<ProfilePage> {
                             Text(LocaleKeys.trend_down.tr(),
                                 style: TextStyle(
                                     fontSize: textSize18,
-                                    color: Theme.of(context).shadowColor)),
+                                    color: Theme.of(context).focusColor)),
                           ],
                         ),
                       ),
@@ -1538,7 +1542,7 @@ class ProfilePageState extends State<ProfilePage> {
                             Text(LocaleKeys.alphabet_sort.tr(),
                                 style: TextStyle(
                                     fontSize: textSize18,
-                                    color: Theme.of(context).shadowColor)),
+                                    color: Theme.of(context).focusColor)),
                           ],
                         ),
                       ),
@@ -1760,7 +1764,7 @@ class ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 8.0, bottom: 6.0, top: 4.0),
+                    margin: EdgeInsets.only(left: 8.0, bottom: 2.0, top: 4.0),
                     child: Text(
                       "Liq.:\n₳${NumberFormat.compactCurrency(
                         locale: 'EN',
@@ -1772,7 +1776,7 @@ class ProfilePageState extends State<ProfilePage> {
                       overflow: TextOverflow.fade,
                       style: GoogleFonts.inter(
                         color: Theme.of(context).focusColor,
-                        fontSize: textSize12,
+                        fontSize: textSize11,
                       ),
                     ),
                   ),
@@ -1789,7 +1793,7 @@ class ProfilePageState extends State<ProfilePage> {
                           "${state.listCoin![index].rank}",
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: ProfileCoinSmallText),
+                          style: TextStyle(fontSize: textSize11),
                         ),
                       ],
                     )),
@@ -1806,13 +1810,12 @@ class ProfilePageState extends State<ProfilePage> {
                 children: [
                   Container(
                     height: 25.0,
-                    margin: EdgeInsets.only(bottom: 2.5, top: 2.5),
+                    margin: EdgeInsets.only(bottom: 1.0, top: 2.5),
                     child: Text(
                       '${state.listCoin![index].name}',
-                      style: TextStyle(fontSize: ProfileCoinBigText),
+                      style: TextStyle(fontSize: textSize19),
                       maxLines: 1,
-                      overflow: TextOverflow.fade,
-                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Container(
@@ -1826,9 +1829,8 @@ class ProfilePageState extends State<ProfilePage> {
                           child: Text(
                             qtyStr,
                             maxLines: 1,
-                            overflow: TextOverflow.fade,
-                            softWrap: false,
-                            style: TextStyle(fontSize: textSize18),
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: textSize17),
                           ),
                         ),
                       ],
@@ -1853,7 +1855,7 @@ class ProfilePageState extends State<ProfilePage> {
                             fontSize: textSize10,
                             color: Theme.of(context).focusColor),
                         maxLines: 1,
-                        overflow: TextOverflow.fade,
+                        overflow: TextOverflow.ellipsis,
                         softWrap: false,
                       )),
                   SizedBox(
@@ -1865,7 +1867,7 @@ class ProfilePageState extends State<ProfilePage> {
                             fontSize: textSize10,
                             color: Theme.of(context).focusColor),
                         maxLines: 1,
-                        overflow: TextOverflow.fade,
+                        overflow: TextOverflow.ellipsis,
                         softWrap: false,
                       )),
                   SizedBox(height: 2.5),
@@ -1944,6 +1946,7 @@ class ProfilePageState extends State<ProfilePage> {
       builder: (context) {
         return AlertDialog(
           contentPadding: EdgeInsets.zero,
+          actionsPadding: EdgeInsets.zero,
           backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20.0))),
@@ -1961,9 +1964,13 @@ class ProfilePageState extends State<ProfilePage> {
           actions: <Widget>[
             Center(
                 child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Divider(height: 1.0, color: Theme.of(context).hoverColor),
-                SizedBox(height: 10.0),
+                Container(
+                    margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                    child: Divider(
+                        height: 1.0, color: Theme.of(context).hoverColor)),
+                SizedBox(height: 5.0),
                 Container(
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -1986,7 +1993,7 @@ class ProfilePageState extends State<ProfilePage> {
                         },
                         child: Container(
                             width: 100.0,
-                            height: 25.0,
+                            height: 20.0,
                             child: Text(
                               LocaleKeys.yes.tr(),
                               textAlign: TextAlign.center,
@@ -1998,7 +2005,7 @@ class ProfilePageState extends State<ProfilePage> {
                             )),
                       ),
                       SizedBox(
-                        width: 50.0,
+                        width: 25.0,
                       ),
                       InkWell(
                         onTap: () async {
@@ -2006,7 +2013,7 @@ class ProfilePageState extends State<ProfilePage> {
                         },
                         child: Container(
                             width: 100.0,
-                            height: 25.0,
+                            height: 20.0,
                             child: Text(
                               LocaleKeys.no.tr(),
                               textAlign: TextAlign.center,
@@ -2018,6 +2025,9 @@ class ProfilePageState extends State<ProfilePage> {
                             )),
                       ),
                     ])),
+                SizedBox(
+                  height: 10.0,
+                )
               ],
             ))
           ],
