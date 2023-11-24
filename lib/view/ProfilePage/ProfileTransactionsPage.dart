@@ -283,9 +283,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                                       cost: 0.0)));
                                     },
                                     style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(46.0)),
+                                        shape: CircleBorder(),
                                         backgroundColor: Theme.of(context)
                                             .secondaryHeaderColor,
                                         padding: const EdgeInsets.symmetric(
@@ -329,6 +327,8 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                                   return AlertDialog(
                                                     contentPadding:
                                                         EdgeInsets.zero,
+                                                    actionsPadding:
+                                                        EdgeInsets.zero,
                                                     backgroundColor:
                                                         Colors.white,
                                                     shape: RoundedRectangleBorder(
@@ -361,14 +361,22 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                                     actions: <Widget>[
                                                       Center(
                                                           child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
                                                         children: [
-                                                          Divider(
-                                                              height: 1.0,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .hoverColor),
-                                                          SizedBox(
-                                                              height: 10.0),
+                                                          Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      left:
+                                                                          10.0,
+                                                                      right:
+                                                                          10.0),
+                                                              child: Divider(
+                                                                  height: 1.0,
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .hoverColor)),
+                                                          SizedBox(height: 5.0),
                                                           Container(
                                                               child: Row(
                                                                   mainAxisAlignment:
@@ -387,7 +395,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                                                           width:
                                                                               100.0,
                                                                           height:
-                                                                              25.0,
+                                                                              20.0,
                                                                           child:
                                                                               Text(
                                                                             LocaleKeys.yes.tr(),
@@ -401,7 +409,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                                                           )),
                                                                 ),
                                                                 SizedBox(
-                                                                  width: 50.0,
+                                                                  width: 25.0,
                                                                 ),
                                                                 InkWell(
                                                                   onTap: () {
@@ -415,7 +423,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                                                           width:
                                                                               100.0,
                                                                           height:
-                                                                              25.0,
+                                                                              20.0,
                                                                           child:
                                                                               Text(
                                                                             LocaleKeys.no.tr(),
@@ -429,6 +437,9 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                                                           )),
                                                                 ),
                                                               ])),
+                                                          SizedBox(
+                                                            height: 10.0,
+                                                          )
                                                         ],
                                                       ))
                                                     ],
@@ -837,10 +848,10 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                               child: Text(
                                 qtyStr + ' $name',
                                 maxLines: 1,
-                                overflow: TextOverflow.fade,
+                                overflow: TextOverflow.ellipsis,
                                 softWrap: false,
                                 style: TextStyle(
-                                    fontSize: textSize22,
+                                    fontSize: textSize21,
                                     color: Theme.of(context).shadowColor),
                               ),
                             ),
@@ -1162,8 +1173,8 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                             '$minus${state.transactionList![index].qty > 1.0 ? Decimal.dividePrice(qty) : qty} $name',
                             maxLines: 1,
                             softWrap: false,
-                            overflow: TextOverflow.fade,
-                            style: TextStyle(fontSize: textSize22),
+                            overflow: TextOverflow.visible,
+                            style: TextStyle(fontSize: textSize21),
                           )),
                       SizedBox(height: 5.0),
                       SizedBox(
@@ -1199,7 +1210,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                       Text(
                                         "Wallet: ",
                                         style: TextStyle(
-                                            fontSize: ProfileCoinSmallText,
+                                            fontSize: textSize11,
                                             color: transactionHeaderTextColor),
                                       ),
                                       Expanded(
@@ -1209,7 +1220,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                           overflow: TextOverflow.ellipsis,
                                           //state.coinsList![index].name,
                                           style: TextStyle(
-                                              fontSize: ProfileCoinSmallText,
+                                              fontSize: textSize11,
                                               color:
                                                   transactionHeaderTextColor),
                                         ),
@@ -1239,7 +1250,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                       child: Text(
                                         gotUsd,
                                         maxLines: 1,
-                                        overflow: TextOverflow.fade,
+                                        overflow: TextOverflow.visible,
                                         softWrap: false,
                                         style: GoogleFonts.inter(
                                           color: transactionHeaderTextColor,
@@ -1251,11 +1262,11 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                       child: Text(
                                         "$plus$sumUsd",
                                         maxLines: 1,
-                                        overflow: TextOverflow.fade,
+                                        overflow: TextOverflow.ellipsis,
                                         softWrap: false,
                                         style: GoogleFonts.inter(
                                           color: priceColor,
-                                          fontSize: textSize16,
+                                          fontSize: textSize15,
                                         ),
                                       )),
                                   SizedBox(
@@ -1263,11 +1274,11 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                       child: Text(
                                         "$usd",
                                         maxLines: 1,
-                                        overflow: TextOverflow.fade,
+                                        overflow: TextOverflow.ellipsis,
                                         softWrap: false,
                                         style: GoogleFonts.inter(
                                           color: Theme.of(context).focusColor,
-                                          fontSize: textSize16,
+                                          fontSize: textSize15,
                                         ),
                                       )),
                                 ],
@@ -1289,7 +1300,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                       child: Text(
                                         gotAda,
                                         maxLines: 1,
-                                        overflow: TextOverflow.fade,
+                                        overflow: TextOverflow.visible,
                                         softWrap: false,
                                         style: GoogleFonts.inter(
                                           color: transactionHeaderTextColor,
@@ -1301,11 +1312,11 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                       child: Text(
                                         "$plus$sumAda",
                                         maxLines: 1,
-                                        overflow: TextOverflow.fade,
+                                        overflow: TextOverflow.ellipsis,
                                         softWrap: false,
                                         style: GoogleFonts.inter(
                                           color: priceColor,
-                                          fontSize: textSize16,
+                                          fontSize: textSize15,
                                         ),
                                       )),
                                   SizedBox(
@@ -1313,11 +1324,11 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
                                       child: Text(
                                         "$ada",
                                         maxLines: 1,
-                                        overflow: TextOverflow.fade,
+                                        overflow: TextOverflow.ellipsis,
                                         softWrap: false,
                                         style: GoogleFonts.inter(
                                           color: Theme.of(context).focusColor,
-                                          fontSize: textSize16,
+                                          fontSize: textSize15,
                                         ),
                                       )),
                                 ],
@@ -1342,6 +1353,7 @@ class _ProfileTransactionsPageState extends State<ProfileTransactionsPage> {
         Padding(
           padding: const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 8.0),
           child: FloatingActionButton(
+            shape: CircleBorder(),
             elevation: SettingsCardRadius,
             hoverElevation: textSize45,
             backgroundColor: Theme.of(context).secondaryHeaderColor,

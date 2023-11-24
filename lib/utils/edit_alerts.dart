@@ -39,7 +39,8 @@ Future<void> showAlertChangeName(BuildContext context, int pref) async {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             title: Text(LocaleKeys.edit_alert_change_name.tr(),
-                textAlign: TextAlign.center),
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: textSize19)),
             content: TextFormField(
               keyboardType: TextInputType.text,
               controller: nameController,
@@ -142,7 +143,8 @@ Future<void> showAlertChangePass(BuildContext context) async {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             title: Text(LocaleKeys.edit_alert_change_pass.tr(),
-                textAlign: TextAlign.center),
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: textSize19)),
             content: TextFormField(
               keyboardType: TextInputType.text,
               controller: passController,
@@ -233,7 +235,8 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             title: Text(LocaleKeys.edit_alert_change_pass_alert_new.tr(),
-                textAlign: TextAlign.center),
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: textSize19)),
             content: Container(
               height: 155.0,
               child: SingleChildScrollView(
@@ -405,98 +408,105 @@ Future<void> showAlertDelete(BuildContext context) async {
     builder: (context) => AlertDialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
-      title: Text(LocaleKeys.edit_delete.tr(), textAlign: TextAlign.center),
-      content:
-          Text(LocaleKeys.edit_alert_delete.tr(), textAlign: TextAlign.center),
+      title: Text(LocaleKeys.edit_delete.tr(),
+          textAlign: TextAlign.center, style: TextStyle(fontSize: textSize19)),
+      content: Text(
+        LocaleKeys.edit_alert_delete.tr(),
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            color: Theme.of(context).hoverColor,
+            fontFamily: 'MyriadPro',
+            fontSize: textSize14),
+      ),
       actions: <Widget>[
-        Container(
-          height: 35.0,
-          width: 65.0,
-          child: Material(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side:
-                    BorderSide(color: Theme.of(context).secondaryHeaderColor)),
-            color: Theme.of(context).secondaryHeaderColor,
-            child: MaterialButton(
-              minWidth: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
-              onPressed: () async {
-                await deleteDB(global.idProfile.split("_")[0]);
-                profile = await _hiveProfileRepository.deleteGroupFrom(
-                    globals.nameProfile, global.idProfile);
-                print('PROFILES:::::::::: $profile');
-                int pref = globals.passPrefer;
-                box.remove(globals.nameProfile + global.idProfile);
-                await _prefProfileRepository.delProfile('lastProf');
-                if (pref == 0) {
-                  box.remove(
-                      '${globals.nameProfile + global.idProfile}create_time');
-                  box.remove(
-                      '${globals.nameProfile + global.idProfile}enter_time');
-                  box.remove('${globals.nameProfile + global.idProfile}pass');
-                }
-                if (profile.isEmpty || profile == []) {
-                  box.write('onBoard', 1);
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (context) => SecondOnBoardScreen(
-                              appBarBackArrow: SizedBox.shrink())),
-                      (Route<dynamic> route) => false);
-                } else if (profile.isNotEmpty) {
-                  BlocProvider.of<CloseDbBloc>(context)
-                      .add(UpdateProfile(idProfile: profile.first.id!));
-                  globals.nameProfile = profile.first.nameProfile!;
-                  global.idProfile = profile.first.id!;
-                  globals.passChosen = false;
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (context) => InputPasswordPage(
-                              profile.first.nameProfile,
-                              profile.first.id,
-                              '',
-                              '',
-                              profile)),
-                      (Route<dynamic> route) => false);
-                }
-              },
-              child: Text(
-                LocaleKeys.yes.tr(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Theme.of(context).shadowColor,
-                    fontFamily: 'MyriadPro',
-                    fontSize: textSize14),
+        Center(
+            child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+                margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                child:
+                    Divider(height: 1.0, color: Theme.of(context).hoverColor)),
+            SizedBox(height: 10.0),
+            Container(
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              InkWell(
+                onTap: () async {
+                  await deleteDB(global.idProfile.split("_")[0]);
+                  profile = await _hiveProfileRepository.deleteGroupFrom(
+                      globals.nameProfile, global.idProfile);
+                  print('PROFILES:::::::::: $profile');
+                  int pref = globals.passPrefer;
+                  box.remove(globals.nameProfile + global.idProfile);
+                  await _prefProfileRepository.delProfile('lastProf');
+                  if (pref == 0) {
+                    box.remove(
+                        '${globals.nameProfile + global.idProfile}create_time');
+                    box.remove(
+                        '${globals.nameProfile + global.idProfile}enter_time');
+                    box.remove('${globals.nameProfile + global.idProfile}pass');
+                  }
+                  if (profile.isEmpty || profile == []) {
+                    box.write('onBoard', 1);
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => SecondOnBoardScreen(
+                                appBarBackArrow: SizedBox.shrink())),
+                        (Route<dynamic> route) => false);
+                  } else if (profile.isNotEmpty) {
+                    BlocProvider.of<CloseDbBloc>(context)
+                        .add(UpdateProfile(idProfile: profile.first.id!));
+                    globals.nameProfile = profile.first.nameProfile!;
+                    global.idProfile = profile.first.id!;
+                    globals.passChosen = false;
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => InputPasswordPage(
+                                profile.first.nameProfile,
+                                profile.first.id,
+                                '',
+                                '',
+                                profile)),
+                        (Route<dynamic> route) => false);
+                  }
+                },
+                child: Container(
+                    width: 100.0,
+                    height: 20.0,
+                    child: Text(
+                      LocaleKeys.yes.tr(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: kInIconColor,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'MyriadPro',
+                          fontSize: textSize18),
+                    )),
               ),
-            ),
-          ),
-        ),
-        Container(
-          height: 35.0,
-          width: 65.0,
-          child: Material(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side:
-                    BorderSide(color: Theme.of(context).secondaryHeaderColor)),
-            color: Theme.of(context).secondaryHeaderColor,
-            child: MaterialButton(
-              minWidth: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-              child: Text(
-                LocaleKeys.no.tr(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Theme.of(context).shadowColor,
-                    fontFamily: 'MyriadPro',
-                    fontSize: textSize14),
+              SizedBox(
+                width: 25.0,
               ),
-            ),
-          ),
-        ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: Container(
+                    width: 100.0,
+                    height: 20.0,
+                    child: Text(
+                      LocaleKeys.no.tr(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: kErrorColorLight,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'MyriadPro',
+                          fontSize: textSize18),
+                    )),
+              ),
+            ])),
+          ],
+        ))
       ],
     ),
   );

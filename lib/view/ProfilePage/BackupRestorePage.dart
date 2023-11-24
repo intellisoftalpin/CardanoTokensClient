@@ -172,18 +172,22 @@ class BackupRestorePageState extends State<BackupRestorePage> {
                                                   alignment: Alignment.center,
                                                   height: 22.0,
                                                   width: 22.0,
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .shadowColor),
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  5.0))),
                                                 ),
                                                 Checkbox(
-                                                  activeColor: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5.0),
+                                                  ),
+                                                  side: MaterialStateBorderSide
+                                                      .resolveWith(
+                                                    (states) => BorderSide(
+                                                        width: 1.5,
+                                                        color: Theme.of(context)
+                                                            .shadowColor),
+                                                  ),
+                                                  activeColor:
+                                                      Colors.transparent,
                                                   checkColor: Theme.of(context)
                                                       .shadowColor,
                                                   value: _select,
@@ -334,7 +338,7 @@ class BackupRestorePageState extends State<BackupRestorePage> {
         //!!Widgets HIDE on the APP FIRST VERSION!!
         // getLabelBackup(labelTopValue: 25.0, labelBottomValue: 25.0),
         // getCheckboxBackup(widthOfTextSpace: 250.0),
-        getListFiles(state),
+        getListFiles(state, context),
         recoveryButtonPortrait(context),
       ],
     );
@@ -347,7 +351,7 @@ class BackupRestorePageState extends State<BackupRestorePage> {
         //!!Widgets HIDE on the APP FIRST VERSION!!
         // getLabelBackup(labelTopValue: 5.0, labelBottomValue: 5.0),
         // getCheckboxBackup(widthOfTextSpace: 450.0),
-        getListFiles(state),
+        getListFiles(state, context),
         recoveryButtonLandscape(context)
       ],
     );
@@ -414,59 +418,82 @@ class BackupRestorePageState extends State<BackupRestorePage> {
     );
   }
 
-  Widget getListFiles(BackupRestoreState state) {
-    //final box = context.findRenderObject() as RenderBox?;
+  Widget getListFiles(BackupRestoreState state, BuildContext context) {
+    Color textColor = Theme.of(context).focusColor;
+    Color iconColor = Colors.transparent;
+    if (textColor == kAppBarIconColor) {
+      iconColor = lSecondaryColor;
+    } else {
+      iconColor = Theme.of(context).focusColor;
+    }
     return Expanded(
       child: ListView.builder(
           itemCount: state.listFiles!.length,
           itemBuilder: (BuildContext context, int index) {
-            return Card(
-              margin: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-              child: ListTile(
-                  title: Text(
-                    //state.listFiles![index].path,
-                    state.listFiles![index].path.split('/').last,
-                    style: TextStyle(
-                        fontSize: textSize14,
-                        color: Theme.of(context).focusColor),
-                  ),
-                  trailing: PopupMenuButton(
-                    //icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                    iconSize: Theme.of(context)
-                        .iconTheme
-                        .copyWith(size: MediumIcon)
-                        .size!
-                        .toDouble(),
-                    //color: Theme.of(context).iconTheme.color,
-                    itemBuilder: (BuildContext context) {
-                      return popupMenu.map((item) {
-                        return PopupMenuItem(
-                          value: item,
-                          child: ListTile(
-                            title: Text(
-                              item,
+            return Container(
+                margin:
+                    EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                width: MediaQuery.of(context).size.width - 30,
+                height: 50.0,
+                child: Card(
+                    margin: EdgeInsets.zero,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width - 80,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              //state.listFiles![index].path,
+                              state.listFiles![index].path.split('/').last,
                               style: TextStyle(
-                                  color: Theme.of(context).focusColor,
-                                  fontFamily: 'MyriadPro',
-                                  fontSize: textSize24),
+                                  fontSize: textSize14,
+                                  color: Theme.of(context).focusColor),
                             ),
                           ),
-                        );
-                      }).toList();
-                    },
-                    onSelected: (String item) {
-                      if (item == LocaleKeys.share.tr()) {
-                        Share.shareFiles(
-                          ['${listFiles[index].path}'],
-                          //sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size
-                        );
-                      } else if (item == LocaleKeys.delete.tr()) {
-                        BlocProvider.of<BackupRestoreBloc>(context)
-                            .add(DeleteZipFile(zipPath: listFiles[index].path));
-                      }
-                    },
-                  )),
-            );
+                          Container(
+                            alignment: Alignment.center,
+                            width: 30.0,
+                            child: PopupMenuButton(
+                              //icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                              child: Icon(Icons.more_vert_outlined,
+                                  size: 30, color: iconColor),
+                              itemBuilder: (BuildContext context) {
+                                return popupMenu.map((item) {
+                                  return PopupMenuItem(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: TextStyle(
+                                          color: Theme.of(context).focusColor,
+                                          fontFamily: 'MyriadPro',
+                                          fontSize: textSize20),
+                                    ),
+                                  );
+                                }).toList();
+                              },
+                              onSelected: (String item) {
+                                if (item == LocaleKeys.share.tr()) {
+                                  Share.shareFiles(
+                                    ['${listFiles[index].path}'],
+                                    //sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size
+                                  );
+                                } else if (item == LocaleKeys.delete.tr()) {
+                                  BlocProvider.of<BackupRestoreBloc>(context)
+                                      .add(DeleteZipFile(
+                                          zipPath: listFiles[index].path));
+                                }
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10.0,
+                          )
+                        ])));
           }),
     );
   }

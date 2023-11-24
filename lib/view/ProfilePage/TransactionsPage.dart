@@ -780,17 +780,17 @@ class _TransactionsPageState extends State<TransactionsPage> {
                       expanded: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            getTxtimestamp(),
+                            getTxtimestamp(context),
                             getCurrentPrice(),
                             getCurrentPriceAda(),
-                            getTrustWallet()
+                            getTrustWallet(context)
                           ]),
                     )
                   ],
                 ))));
   }
 
-  Widget getTxtimestamp() {
+  Widget getTxtimestamp(BuildContext context) {
     (_timestamp.isEmpty)
         ? cTimestamp.text = timestamp
         : cTimestamp.text = _timestamp;
@@ -800,6 +800,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
       padding:
           const EdgeInsets.only(left: 8.0, right: 8.0, top: 6.0, bottom: 6.0),
       child: Card(
+        surfaceTintColor: Theme.of(context).primaryColorDark,
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Expanded(
             child: Padding(
@@ -1025,7 +1026,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
     );
   }
 
-  Widget getTrustWallet() {
+  Widget getTrustWallet(BuildContext context) {
     (wallet != null)
         ? cTrastWallet.text = wallet!
         : (txTrastWallet.isEmpty)
@@ -1037,6 +1038,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
       padding:
           const EdgeInsets.only(left: 8.0, right: 8.0, top: 6.0, bottom: 6.0),
       child: Card(
+          surfaceTintColor: Theme.of(context).primaryColorDark,
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Expanded(
             child: Padding(
@@ -1050,7 +1052,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                       RegExp("[0-9a-zA-Zа-яА-Я .-]")),
                 ],
                 decoration: kFieldNameEditProfileDecoration(context).copyWith(
-                  fillColor: Theme.of(context).cardColor,
+                  fillColor: Colors.transparent,
                   hintText: LocaleKeys.wallet_exchange.tr(),
                 ),
                 style: TextStyle(

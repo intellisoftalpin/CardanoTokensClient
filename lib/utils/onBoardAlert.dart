@@ -12,11 +12,13 @@ Future<void> showOnBoardAlert(BuildContext context) async {
     builder: (context) {
       return AlertDialog(
         contentPadding: EdgeInsets.zero,
+        actionsPadding: EdgeInsets.zero,
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20.0))),
         content: Container(
-            padding: EdgeInsets.only(top: 10.0, right: 10.0, left: 10.0, bottom: 5.0),
+            padding: EdgeInsets.only(
+                top: 10.0, right: 10.0, left: 10.0, bottom: 5.0),
             child: Text(
               LocaleKeys.pass_alert_text.tr(),
               textAlign: TextAlign.center,
@@ -28,36 +30,40 @@ Future<void> showOnBoardAlert(BuildContext context) async {
         actions: <Widget>[
           Center(
               child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Divider(height: 1.0, color: Theme.of(context).hoverColor),
-              SizedBox(height: 10.0),
               Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children:[
+                  margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                  child: Divider(
+                      height: 1.0, color: Theme.of(context).hoverColor)),
+              SizedBox(height: 5.0),
+              Container(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                     InkWell(
                       onTap: () async {
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                                 builder: (context) => CreateProfilePage(
-                                  welcome: Text(
-                                    LocaleKeys.welcome.tr(),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: textSize45,
-                                        color: Theme.of(context)
-                                            .secondaryHeaderColor),
-                                  ),
-                                  passPrefer: 3,
-                                  passwordRemind: false,
-                                  confirmPasswordField: false,
-                                  passwordField: false,
-                                )),
-                                (Route<dynamic> route) => false);
+                                      welcome: Text(
+                                        LocaleKeys.welcome.tr(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: textSize45,
+                                            color: Theme.of(context)
+                                                .secondaryHeaderColor),
+                                      ),
+                                      passPrefer: 3,
+                                      passwordRemind: false,
+                                      confirmPasswordField: false,
+                                      passwordField: false,
+                                    )),
+                            (Route<dynamic> route) => false);
                       },
                       child: Container(
                           width: 100.0,
-                          height: 25.0,
+                          height: 20.0,
                           child: Text(
                             LocaleKeys.yes.tr(),
                             textAlign: TextAlign.center,
@@ -69,15 +75,15 @@ Future<void> showOnBoardAlert(BuildContext context) async {
                           )),
                     ),
                     SizedBox(
-                      width: 50.0,
+                      width: 25.0,
                     ),
                     InkWell(
-                      onTap: () async {
+                      onTap: () {
                         Navigator.of(context).pop();
                       },
                       child: Container(
                           width: 100.0,
-                          height: 25.0,
+                          height: 20.0,
                           child: Text(
                             LocaleKeys.no.tr(),
                             textAlign: TextAlign.center,
@@ -88,10 +94,10 @@ Future<void> showOnBoardAlert(BuildContext context) async {
                                 fontSize: textSize18),
                           )),
                     ),
-                  ]
-                )
-              ),
-
+                  ])),
+              SizedBox(
+                height: 10.0,
+              )
             ],
           ))
         ],

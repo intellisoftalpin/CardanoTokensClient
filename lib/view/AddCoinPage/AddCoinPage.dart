@@ -185,7 +185,9 @@ class AddCoinPageState extends State<AddCoinPage> {
                                             delegate:
                                                 SliverChildBuilderDelegate(
                                               (context, i) {
-                                                return getListCardano(context, i,
+                                                return getListCardano(
+                                                    context,
+                                                    i,
                                                     state); // HERE goes your list item
                                               },
                                               childCount:
@@ -235,110 +237,128 @@ class AddCoinPageState extends State<AddCoinPage> {
     String cardanoPriceAda;
     var priceAda = state.listCoin![index].adaPrice;
     (state.listCoin![index].adaPrice) != null
-        ? cardanoPriceAda = '${Decimal.convertPriceRoundToString(priceAda ?? 0.0)}'
+        ? cardanoPriceAda =
+            '${Decimal.convertPriceRoundToString(priceAda ?? 0.0)}'
         : cardanoPriceAda = "0.0";
-    return Card(
+    return Container(
       margin: EdgeInsets.only(left: 15, right: 15, top: 8, bottom: 8),
-      child: ListTile(
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 2, right: 4, top: 4, bottom: 4),
-                child: Text(
-                  state.listCoin![index].name,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: textSize20,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  // style: Theme
-                  //     .of(context)
-                  //     .textTheme
-                  //     .headline6!
-                  //     .copyWith(fontSize: LargeTextSize),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 2, right: 4, top: 4, bottom: 4),
-                child: Text(
-                  '\$: $cardanoPrice',
-                  style: GoogleFonts.inter(fontSize: textSize15),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  // style: Theme
-                  //     .of(context)
-                  //     .textTheme
-                  //     .headline6!
-                  //     .copyWith(fontSize: MediumBodyTextSize),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 2, right: 4, top: 4, bottom: 4),
-                child: Text(
-                  '₳: $cardanoPriceAda',
-                  style: GoogleFonts.inter(fontSize: textSize15),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  // style: Theme
-                  //     .of(context)
-                  //     .textTheme
-                  //     .headline6!
-                  //     .copyWith(fontSize: MediumBodyTextSize),
-                ),
-              ),
-            ],
-          ),
-          leading: Container(
-            width: (MediaQuery.of(context).size.width - 30) / 5,
-            child: Column(
+      width: MediaQuery.of(context).size.width - 30,
+      height: 105.0,
+      child: InkWell(
+          child: Card(
+            margin: EdgeInsets.zero,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 2, right: 2, top: 0, bottom: 4),
-                  child: CircleAvatar(
-                    radius: 15.0,
-                    backgroundColor: Colors.transparent,
-                    child: CachedNetworkImage(
-                      placeholder: (context, url) =>
-                          CircularProgressIndicator(),
-                      imageUrl: '${state.listCoin![index].image}',
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) => FutureBuilder(
-                        future: checkContainImage(
-                            'assets/image/${state.listCoin![index].name.toLowerCase()}.png'),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<Widget> snapshot) {
-                          if (snapshot.connectionState == ConnectionState.done)
-                            return snapshot.data!;
-                          else
-                            return Image.asset('assets/image/place_holder.png');
-                        },
+                Container(
+                  width: (MediaQuery.of(context).size.width - 30) / 5,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 2, right: 2, top: 0, bottom: 4),
+                        child: CircleAvatar(
+                          radius: 15.0,
+                          backgroundColor: Colors.transparent,
+                          child: CachedNetworkImage(
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            imageUrl: '${state.listCoin![index].image}',
+                            fit: BoxFit.cover,
+                            errorWidget: (context, url, error) => FutureBuilder(
+                              future: checkContainImage(
+                                  'assets/image/${state.listCoin![index].name.toLowerCase()}.png'),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<Widget> snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done)
+                                  return snapshot.data!;
+                                else
+                                  return Image.asset(
+                                      'assets/image/place_holder.png');
+                              },
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Text(
+                            state.listCoin![index].symbol,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: textSize8,
+                            ),
+                            // style: Theme
+                            //     .of(context)
+                            //     .textTheme
+                            //     .headline6!
+                            //     .copyWith(fontSize: LargeTextSize),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Text(
-                      state.listCoin![index].symbol,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: textSize8,
-                      ),
-                      // style: Theme
-                      //     .of(context)
-                      //     .textTheme
-                      //     .headline6!
-                      //     .copyWith(fontSize: LargeTextSize),
-                    ),
-                  ),
+                SizedBox(
+                  width: 10.0,
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 2, right: 4, top: 4, bottom: 4),
+                      child: Text(
+                        state.listCoin![index].name,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: textSize20,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        // style: Theme
+                        //     .of(context)
+                        //     .textTheme
+                        //     .headline6!
+                        //     .copyWith(fontSize: LargeTextSize),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 2, right: 4, top: 4, bottom: 4),
+                      child: Text(
+                        '\$: $cardanoPrice',
+                        style: GoogleFonts.inter(fontSize: textSize15),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        // style: Theme
+                        //     .of(context)
+                        //     .textTheme
+                        //     .headline6!
+                        //     .copyWith(fontSize: MediumBodyTextSize),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 2, right: 4, top: 4, bottom: 4),
+                      child: Text(
+                        '₳: $cardanoPriceAda',
+                        style: GoogleFonts.inter(fontSize: textSize15),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        // style: Theme
+                        //     .of(context)
+                        //     .textTheme
+                        //     .headline6!
+                        //     .copyWith(fontSize: MediumBodyTextSize),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -364,7 +384,8 @@ class AddCoinPageState extends State<AddCoinPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (_) => DetailsPage(coinEntity, cardanoPrice, cardanoPriceAda)));
+                    builder: (_) => DetailsPage(
+                        coinEntity, cardanoPrice, cardanoPriceAda)));
             //saveCoinDialog(context, coinEntity);
           }),
     );
@@ -451,77 +472,77 @@ class _SearchLineState extends State<SearchLine>
 
   @override
   Widget build(BuildContext context) {
-      _animationController.reset();
+    _animationController.reset();
     return Container(
-        width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.all(5.0),
-        padding: EdgeInsets.all(10.0),
-        child: TextField(
-          onSubmitted: (value) {
-            _animationController.repeat(reverse: true);
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.all(5.0),
+      padding: EdgeInsets.all(10.0),
+      child: TextField(
+        onSubmitted: (value) {
+          _animationController.repeat(reverse: true);
+          enterButtonSearch();
+          print("${_textEditingController.text}");
+          searchPressed = true;
+        },
+        textInputAction: TextInputAction.done,
+        key: searchLine,
+        obscureText: obs,
+        controller: _textEditingController,
+        // focusNode: _focusNode,
+        autofocus: true,
+        keyboardType: TextInputType.text,
+        textAlign: TextAlign.start,
+        onChanged: (value) => setState(() {
+          obs = false;
+          if (value == '') {
             enterButtonSearch();
-            print("${_textEditingController.text}");
-            searchPressed = true;
-          },
-          textInputAction: TextInputAction.done,
-          key: searchLine,
-          obscureText: obs,
-          controller: _textEditingController,
-          // focusNode: _focusNode,
-          autofocus: true,
-          keyboardType: TextInputType.text,
-          textAlign: TextAlign.start,
-          onChanged: (value) => setState(() {
-            obs = false;
-            if (value == '') {
-              enterButtonSearch();
-            }
-          }),
-          enabled: true,
-          decoration: kTextFieldSearchDecoration(context).copyWith(
-            contentPadding: widget.inputFieldPadding,
-            hintText: LocaleKeys.enter_coin.tr(),
-            suffixIcon: Container(
-                width: 60.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10.0),
-                      bottomRight: Radius.circular(10.0)),
-                  color: Theme.of(context).secondaryHeaderColor,
+          }
+        }),
+        enabled: true,
+        decoration: kTextFieldSearchDecoration(context).copyWith(
+          contentPadding: widget.inputFieldPadding,
+          hintText: LocaleKeys.enter_coin.tr(),
+          suffixIcon: Container(
+              width: 60.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(10.0),
+                    bottomRight: Radius.circular(10.0)),
+                color: Theme.of(context).secondaryHeaderColor,
+              ),
+              child: Center(
+                child: InkWell(
+                  onTap: () {
+                    _animationController.repeat(reverse: true);
+                    enterButtonSearch();
+                    print("${_textEditingController.text}");
+                    searchPressed = true;
+                  },
+                  child: AnimatedIcon(
+                      color: Theme.of(context)
+                          .iconTheme
+                          .copyWith(color: Theme.of(context).shadowColor)
+                          .color,
+                      progress: _animationController,
+                      icon: AnimatedIcons.search_ellipsis,
+                      size: Theme.of(context)
+                          .iconTheme
+                          .copyWith(size: MediumIcon)
+                          .size),
                 ),
-                child: Center(
-                  child: InkWell(
-                    onTap: () {
-                      _animationController.repeat(reverse: true);
-                      enterButtonSearch();
-                      print("${_textEditingController.text}");
-                      searchPressed = true;
-                    },
-                    child: AnimatedIcon(
-                        color: Theme.of(context)
-                            .iconTheme
-                            .copyWith(color: Theme.of(context).shadowColor)
-                            .color,
-                        progress: _animationController,
-                        icon: AnimatedIcons.search_ellipsis,
-                        size: Theme.of(context)
-                            .iconTheme
-                            .copyWith(size: MediumIcon)
-                            .size),
-                  ),
-                )),
-          ),
-          style: TextStyle(
-            color: Theme.of(context).disabledColor,
-          ),
-          //onChanged: (string) {
-          //  BlocProvider.of<AddCoinBloc>(context)
-          //      .add(CreateAddCoin(coin: string));
-          //  //context.read<AddCoinBloc>().CreateAddCoin(coin: string);
-          //  print("$string");
-          //  //  },);
-          //},
+              )),
         ),
+        style: TextStyle(
+          color: Theme.of(context).disabledColor,
+        ),
+        //onChanged: (string) {
+        //  BlocProvider.of<AddCoinBloc>(context)
+        //      .add(CreateAddCoin(coin: string));
+        //  //context.read<AddCoinBloc>().CreateAddCoin(coin: string);
+        //  print("$string");
+        //  //  },);
+        //},
+      ),
     );
   }
 
