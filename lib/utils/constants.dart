@@ -9,6 +9,7 @@ Color transactionHeaderTextColor = Color(0xFF7B96B8);
 Color transactionHeaderColor = Color(0xFFFBFF4D);
 Color transactionInColor = Color(0xFF51A954);
 Color transactionOutColor = Color(0xFFE9493F);
+Color editAlertTextFieldColor = Color(0xFF9C9C9C);
 
 //=====DARK Theme Colors:=====
 Color kPrimaryColor = Color(0xFF282B30);
@@ -206,16 +207,15 @@ InputDecoration kFieldNameCreateProfileDecoration(BuildContext context) {
 InputDecoration kTextFieldEditAlert(BuildContext context) {
   InputDecoration kTextFieldInputDecoration = InputDecoration(
     filled: true,
-    fillColor: Theme.of(context).secondaryHeaderColor,
+    fillColor: Colors.transparent,
     contentPadding: EdgeInsets.only(bottom: 10.0, left: 10.0),
     hintStyle: TextStyle(
-      color: Theme.of(context).brightness == Brightness.dark
-          ? kSettingsPageBackground
-          : lSettingsPageBackground,
+      color: Theme.of(context).secondaryHeaderColor,
     ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-      borderSide: BorderSide.none,
+      borderSide: BorderSide(
+          width: 2, color: editAlertTextFieldColor),
     ),
   );
   return kTextFieldInputDecoration;

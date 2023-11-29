@@ -94,21 +94,9 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
   @override
   void initState() {
     print("initState = ");
-    if (Platform.isAndroid) {
-      ReceiveSharingIntent.getInitialMedia()
-          .then((List<SharedMediaFile> value) {
-        print("Shared:" + (_sharedFiles.map((f) => f.path).join(",")));
-        _sharedFiles = value;
-        recoveryPath = (_sharedFiles.map((f) => f.path).join(","));
-        print('PATH::: $recoveryPath');
-      });
-    }
-    if (Platform.isIOS) {
-      _channelIOS.setMethodCallHandler(_importZipFile);
-    }
     WidgetsBinding.instance.addObserver(this);
     if (dismissLifecycle == false) {
-      _customAppNavigation();
+      _customAppNavigation(true);
     }
 
     ///if (Platform.isAndroid) {
@@ -159,7 +147,39 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
     }
   }
 
-  void _customAppNavigation() {
+  Future<void> getSharedPathInit() async {
+    if (Platform.isAndroid) {
+      await ReceiveSharingIntent.getInitialMedia()
+          .then((List<SharedMediaFile> value) {
+        print("Shared:" + (_sharedFiles.map((f) => f.path).join(",")));
+        _sharedFiles = value;
+        recoveryPath = (_sharedFiles.map((f) => f.path).join(","));
+        print('PATH::: $recoveryPath');
+      });
+    }
+    if (Platform.isIOS) {
+      _channelIOS.setMethodCallHandler(_importZipFile);
+    }
+  }
+
+  Future<void> getSharedPath() async {
+    if (Platform.isAndroid) {
+      ReceiveSharingIntent.getMediaStream().listen(
+          (List<SharedMediaFile> value) {
+        print("Shared:" + (_sharedFilesLifeCycle.map((f) => f.path).join(",")));
+        _sharedFilesLifeCycle = value;
+        print('_sharedFilesLifeCycle: $_sharedFilesLifeCycle');
+        recoveryPath = (_sharedFilesLifeCycle.map((f) => f.path).join(","));
+      }, onError: (err) {
+        print("getIntentDataStream error: $err");
+      });
+    }
+    if (Platform.isIOS) {
+      _channelIOS.setMethodCallHandler(_importZipFile);
+    }
+  }
+
+  void _customAppNavigation(bool appStart) async {
     var name = ProfileModel(
         nameProfile: globals.nameProfile,
         id: global.idProfile,
@@ -171,6 +191,15 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
         ' InputPasswordPageState.isAuthenticate = ${InputPasswordPageState.isAuthenticate} '
         'ProfilePageState.isCreateNewPortfolio = ${ProfilePageState.isCreateNewPortfolio}'
         ' name = ${globals.nameProfile}, nameId = ${global.idProfile} pass = ${globals.pass}');
+    if (appStart == true) {
+      await getSharedPathInit();
+      print('appStart_true');
+      print('pathForRecovery: $recoveryPath');
+    } else {
+      await getSharedPath();
+      print('appStart_false');
+      print('pathForRecovery: $recoveryPath');
+    }
     if (recoveryPath != null && recoveryPath != '') {
       if (Platform.isIOS) {
         print('USE IOS BIOMETRIC');
@@ -252,17 +281,6 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
     }
     print(
         'GLOBALS NAME:::::::::::${globals.nameProfile}, GLOBALS IDNAME:::::::::::${global.idProfile}');
-    if (Platform.isAndroid) {
-      ReceiveSharingIntent.getMediaStream().listen(
-          (List<SharedMediaFile> value) {
-        print("Shared:" + (_sharedFilesLifeCycle.map((f) => f.path).join(",")));
-        _sharedFilesLifeCycle = value;
-        String path = (_sharedFilesLifeCycle.map((f) => f.path).join(","));
-        recoveryPath = path;
-      }, onError: (err) {
-        print("getIntentDataStream error: $err");
-      });
-    }
     return Sizer(builder: (context, orientation, deviceType) {
       return LayoutBuilder(builder: (context, constraints) {
         return ChangeNotifierProvider(
@@ -288,73 +306,67 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
                   navigatorKey: _navigatorKey,
                   builder: (context, child) {
                     return BlocListener<AuthProfileBloc, AuthProfileState>(
-                          listener: (context, state) {
-                            int? onBoard = box.read('onBoard');
-                            print('RECOVERY_PATH::: $recoveryPath');
-                            if (recoveryPath != null && recoveryPath != '') {
+                      listener: (context, state) {
+                        int? onBoard = box.read('onBoard');
+                        print('RECOVERY_PATH::: $recoveryPath');
+                        if (recoveryPath != null && recoveryPath != '') {
+                          _navigator.pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => FirstRestoreScreen()),
+                              (Route<dynamic> route) => false);
+                        } else {
+                          print('else');
+                          if (state.state == AuthProfileStatus.exist) {
+                            print('AuthProfileStatus.exist');
+                            context.read<AuthProfileBloc>().add(LoggedIn());
+                            profileExist = state.profileExist;
+                            print('prof = $profileExist');
+                            globals.passChosen = false;
+                            List<ProfileModel> profiles = globals.profiles;
+                            if (profiles.isNotEmpty) {
+                              profileExist = profiles;
+                            }
+                            print(
+                                'profileExist.length = ${profileExist.length}');
+                            if (profileExist.length == 1 &&
+                                globals.passPrefer == 3) {
+                              globals.pass = hashPass(hashPassword).toString();
+                              _navigatorKey.currentState?.pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                return ProfilePage();
+                              }));
+                            } else {
+                              _navigator.pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => InputPasswordPage(
+                                          globals.nameProfile,
+                                          global.idProfile,
+                                          '',
+                                          '',
+                                          profileExist)),
+                                  (Route<dynamic> route) => false);
+                            }
+                          } else if (state.state == AuthProfileStatus.noexist) {
+                            print('AuthProfileStatus.noexist');
+                            if (onBoard == null) {
                               _navigator.pushAndRemoveUntil(
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          FirstRestoreScreen()),
+                                          FirstOnBoardScreen()),
                                   (Route<dynamic> route) => false);
-                            } else {
-                              print('else');
-                              if (state.state == AuthProfileStatus.exist) {
-                                print('AuthProfileStatus.exist');
-                                context.read<AuthProfileBloc>().add(LoggedIn());
-                                profileExist = state.profileExist;
-                                print('prof = $profileExist');
-                                globals.passChosen = false;
-                                List<ProfileModel> profiles = globals.profiles;
-                                if (profiles.isNotEmpty) {
-                                  profileExist = profiles;
-                                }
-                                print(
-                                    'profileExist.length = ${profileExist.length}');
-                                if (profileExist.length == 1 &&
-                                    globals.passPrefer == 3) {
-                                  globals.pass =
-                                      hashPass(hashPassword).toString();
-                                  _navigatorKey.currentState?.pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) {
-                                    return ProfilePage();
-                                  }));
-                                } else {
-                                  _navigator.pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              InputPasswordPage(
-                                                  globals.nameProfile,
-                                                  global.idProfile,
-                                                  '',
-                                                  '',
-                                                  profileExist)),
-                                      (Route<dynamic> route) => false);
-                                }
-                              } else if (state.state ==
-                                  AuthProfileStatus.noexist) {
-                                print('AuthProfileStatus.noexist');
-                                if (onBoard == null) {
-                                  _navigator.pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              FirstOnBoardScreen()),
-                                      (Route<dynamic> route) => false);
-                                } else if (onBoard == 1) {
-                                  _navigator.pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              SecondOnBoardScreen(
-                                                  appBarBackArrow:
-                                                      SizedBox.shrink())),
-                                      (Route<dynamic> route) => false);
-                                }
-                              }
+                            } else if (onBoard == 1) {
+                              _navigator.pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => SecondOnBoardScreen(
+                                          appBarBackArrow: SizedBox.shrink())),
+                                  (Route<dynamic> route) => false);
                             }
-                          },
-                          child: child,
-                        );
+                          }
+                        }
+                      },
+                      child: child,
+                    );
                   },
                   onGenerateRoute: (_) => SplashPage.route(),
                 ));
@@ -425,20 +437,7 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
               context.setLocale(Locale('en'));
             }
           }
-          if (Platform.isAndroid) {
-            ReceiveSharingIntent.getMediaStream().listen(
-                (List<SharedMediaFile> value) {
-              print("Shared:" +
-                  (_sharedFilesLifeCycle.map((f) => f.path).join(",")));
-              _sharedFilesLifeCycle = value;
-              String path =
-                  (_sharedFilesLifeCycle.map((f) => f.path).join(","));
-              recoveryPath = path;
-            }, onError: (err) {
-              print("getIntentDataStream error: $err");
-            });
-          }
-          _customAppNavigation();
+          _customAppNavigation(false);
         }
         break;
       case AppLifecycleState.detached:

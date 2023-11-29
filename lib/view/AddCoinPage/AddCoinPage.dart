@@ -251,8 +251,11 @@ class AddCoinPageState extends State<AddCoinPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                SizedBox(
+                  width: 10.0,
+                ),
                 Container(
-                  width: (MediaQuery.of(context).size.width - 30) / 5,
+                  width: (MediaQuery.of(context).size.width - 30) / 4.5,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
