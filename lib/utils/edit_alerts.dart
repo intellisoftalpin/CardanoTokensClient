@@ -50,7 +50,7 @@ Future<void> showAlertChangeName(BuildContext context, int pref) async {
                   hintText: LocaleKeys.edit_alert_change_name_new.tr(),
                   hintStyle: TextStyle(
                       fontSize: textSize15,
-                      color: Theme.of(context).shadowColor),
+                      color: Theme.of(context).secondaryHeaderColor),
                   errorStyle: TextStyle(color: lErrorColorLight)),
               style: TextStyle(
                   color: Theme.of(context).shadowColor,
@@ -64,64 +64,68 @@ Future<void> showAlertChangeName(BuildContext context, int pref) async {
             ),
             actions: <Widget>[
               Container(
-                height: 35.0,
-                width: 65.0,
-                child: Material(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      side: BorderSide(
-                          color: Theme.of(context).secondaryHeaderColor)),
-                  color: Theme.of(context).secondaryHeaderColor,
-                  child: MaterialButton(
-                    minWidth: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
-                    onPressed: () async {
-                      if (nameController.text.isEmpty ||
-                          nameController.text == '') {
-                        setState(() {
-                          error = true;
-                        });
-                        return;
-                      } else {
-                        //await copyDB(
-                        //    globals.nameProfile, nameController.text.trim());
-                        // await deleteDB(globals.nameProfile);
-                        BlocListener<ChangeNameProfileBloc,
-                                ChangeNameProfileState>(
-                            bloc: ChangeNameProfileBloc(
-                              DatabaseProvider(),
-                              HivePrefProfileRepositoryImpl(),
-                              globals.nameProfile,
-                              nameController.text.trim(),
-                            ),
-                            listener: (context, state) {
-                              if (state.state ==
-                                  ChangeNameProfileStatus.start) {
-                                BlocProvider.of<ChangeNameProfileBloc>(context)
-                                    .add(ChangeNameProfile(
-                                        profile: globals.nameProfile,
-                                        newProfile:
-                                            nameController.text.trim()));
-                              }
-                            });
-                        globals.nameProfile = nameController.text;
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => ProfilePage()),
-                            (Route<dynamic> route) => false);
-                      }
-                    },
-                    child: Text(
-                      LocaleKeys.yes.tr(),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Theme.of(context).shadowColor,
-                          fontFamily: 'MyriadPro',
-                          fontSize: textSize14),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                    SizedBox(
+                      width: 100.0,
+                      height: 20.0,
                     ),
-                  ),
-                ),
-              ),
+                    SizedBox(
+                      width: 25.0,
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        if (nameController.text.isEmpty ||
+                            nameController.text == '') {
+                          setState(() {
+                            error = true;
+                          });
+                          return;
+                        } else {
+                          //await copyDB(
+                          //    globals.nameProfile, nameController.text.trim());
+                          // await deleteDB(globals.nameProfile);
+                          BlocListener<ChangeNameProfileBloc,
+                                  ChangeNameProfileState>(
+                              bloc: ChangeNameProfileBloc(
+                                DatabaseProvider(),
+                                HivePrefProfileRepositoryImpl(),
+                                globals.nameProfile,
+                                nameController.text.trim(),
+                              ),
+                              listener: (context, state) {
+                                if (state.state ==
+                                    ChangeNameProfileStatus.start) {
+                                  BlocProvider.of<ChangeNameProfileBloc>(
+                                          context)
+                                      .add(ChangeNameProfile(
+                                          profile: globals.nameProfile,
+                                          newProfile:
+                                              nameController.text.trim()));
+                                }
+                              });
+                          globals.nameProfile = nameController.text;
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => ProfilePage()),
+                              (Route<dynamic> route) => false);
+                        }
+                      },
+                      child: Container(
+                          width: 100.0,
+                          height: 20.0,
+                          child: Text(
+                            LocaleKeys.yes.tr(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: kInIconColor,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'MyriadPro',
+                                fontSize: textSize18),
+                          )),
+                    ),
+                  ])),
             ],
           );
         },
@@ -154,7 +158,7 @@ Future<void> showAlertChangePass(BuildContext context) async {
                   hintText: LocaleKeys.edit_alert_change_pass_old.tr(),
                   hintStyle: TextStyle(
                       fontSize: textSize15,
-                      color: Theme.of(context).shadowColor),
+                      color: Theme.of(context).secondaryHeaderColor),
                   errorStyle: TextStyle(color: lErrorColorLight)),
               style: TextStyle(
                   color: Theme.of(context).shadowColor,
@@ -168,45 +172,49 @@ Future<void> showAlertChangePass(BuildContext context) async {
             ),
             actions: <Widget>[
               Container(
-                height: 35.0,
-                width: 65.0,
-                child: Material(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      side: BorderSide(
-                          color: Theme.of(context).secondaryHeaderColor)),
-                  color: Theme.of(context).secondaryHeaderColor,
-                  child: MaterialButton(
-                    minWidth: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
-                    onPressed: () {
-                      if (passController.text == globals.pass) {
-                        Navigator.of(context).pop(false);
-                        showAlertPassConfirm(context);
-                      } else if (passController.text.isNotEmpty &&
-                          passController.text != globals.pass) {
-                        setState(() {
-                          error = LocaleKeys.incorrect_password_try_again.tr();
-                        });
-                        return;
-                      } else {
-                        setState(() {
-                          error = LocaleKeys.enter_password.tr();
-                        });
-                        return;
-                      }
-                    },
-                    child: Text(
-                      LocaleKeys.yes.tr(),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Theme.of(context).shadowColor,
-                          fontFamily: 'MyriadPro',
-                          fontSize: textSize14),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                    SizedBox(
+                      width: 100.0,
+                      height: 20.0,
                     ),
-                  ),
-                ),
-              ),
+                    SizedBox(
+                      width: 25.0,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        if (passController.text == globals.pass) {
+                          Navigator.of(context).pop(false);
+                          showAlertPassConfirm(context);
+                        } else if (passController.text.isNotEmpty &&
+                            passController.text != globals.pass) {
+                          setState(() {
+                            error =
+                                LocaleKeys.incorrect_password_try_again.tr();
+                          });
+                          return;
+                        } else {
+                          setState(() {
+                            error = LocaleKeys.enter_password.tr();
+                          });
+                          return;
+                        }
+                      },
+                      child: Container(
+                          width: 100.0,
+                          height: 20.0,
+                          child: Text(
+                            LocaleKeys.yes.tr(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: kInIconColor,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'MyriadPro',
+                                fontSize: textSize18),
+                          )),
+                    ),
+                  ]))
             ],
           );
         },
@@ -252,7 +260,7 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
                         hintText: LocaleKeys.edit_alert_change_pass_new.tr(),
                         hintStyle: TextStyle(
                             fontSize: textSize15,
-                            color: Theme.of(context).shadowColor),
+                            color: Theme.of(context).secondaryHeaderColor),
                         errorStyle: TextStyle(color: lErrorColorLight)),
                     style: TextStyle(
                         color: Theme.of(context).shadowColor,
@@ -277,7 +285,7 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
                             LocaleKeys.edit_alert_change_pass_new_confirm.tr(),
                         hintStyle: TextStyle(
                             fontSize: textSize15,
-                            color: Theme.of(context).shadowColor),
+                            color: Theme.of(context).secondaryHeaderColor),
                         errorStyle: TextStyle(color: lErrorColorLight)),
                     style: TextStyle(
                         color: Theme.of(context).shadowColor,
@@ -294,100 +302,105 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
             ),
             actions: <Widget>[
               Container(
-                height: 35.0,
-                width: 65.0,
-                child: Material(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      side: BorderSide(
-                          color: Theme.of(context).secondaryHeaderColor)),
-                  color: Theme.of(context).secondaryHeaderColor,
-                  child: MaterialButton(
-                    minWidth: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
-                    onPressed: () async {
-                      if (passController.text == passControllerConfirm.text &&
-                          passController.text != '' &&
-                          passController.text.isNotEmpty &&
-                          passControllerConfirm.text != '' &&
-                          passControllerConfirm.text.isNotEmpty) {
-                        String newPort = globals.nameProfile;
-                        String oldPort = globals.nameProfile;
-                        String newIdPort = RandomString.getRandomString(10);
-                        String oldIdPort = global.idProfile;
-                        pref = globals.passPrefer;
-                        await createBloc(oldPort, oldIdPort, newIdPort,
-                            passControllerConfirm.text, pref);
-                        await changePassBloc(oldIdPort, oldPort, newIdPort,
-                            newPort, passControllerConfirm.text);
-                        HivePrefProfileRepository _hiveProfileRepository =
-                            HivePrefProfileRepositoryImpl();
-                        globals.pass = passControllerConfirm.text;
-                        await _prefProfileRepository.saveProfile(
-                            'lastProf', newPort);
-                        globals.nameProfile = newPort;
-                        global.idProfile = newIdPort;
-                        globals.passChosen = false;
-                        List<ProfileModel> prof =
-                            await _hiveProfileRepository.showProfile();
-                        print('prof_in_alert: $prof');
-                        Fluttertoast.showToast(
-                            msg: LocaleKeys.success_change_pass.tr());
-                        input.deleteProf = true;
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => InputPasswordPage(
-                                    newPort, newIdPort, '', '', prof)),
-                            (Route<dynamic> route) => false);
-                      } else if (passController.text.isEmpty &&
-                          passControllerConfirm.text.isEmpty) {
-                        setState(() {
-                          errorTextFirst = LocaleKeys.invalid_alert_pass.tr();
-                          errorTextSecond = LocaleKeys.invalid_alert_pass.tr();
-                          errorFirst = true;
-                          errorSecond = true;
-                        });
-                        return;
-                      } else if (passController.text.isEmpty &&
-                          passControllerConfirm.text.isNotEmpty) {
-                        setState(() {
-                          errorTextFirst = LocaleKeys.invalid_alert_pass.tr();
-                          errorTextSecond = '';
-                          errorFirst = true;
-                          errorSecond = false;
-                        });
-                        return;
-                      } else if (passController.text.isNotEmpty &&
-                          passControllerConfirm.text.isEmpty) {
-                        setState(() {
-                          errorTextFirst = '';
-                          errorTextSecond = LocaleKeys.invalid_alert_pass.tr();
-                          errorFirst = false;
-                          errorSecond = true;
-                        });
-                        return;
-                      } else if (passController.text !=
-                          passControllerConfirm.text) {
-                        setState(() {
-                          errorTextSecond =
-                              LocaleKeys.invalid_alert_pass_not_equals.tr();
-                          errorFirst = false;
-                          errorSecond = true;
-                        });
-                        return;
-                      }
-                    },
-                    child: Text(
-                      LocaleKeys.yes.tr(),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Theme.of(context).shadowColor,
-                          fontFamily: 'MyriadPro',
-                          fontSize: textSize14),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                    SizedBox(
+                      width: 100.0,
+                      height: 20.0,
                     ),
-                  ),
-                ),
-              ),
+                    SizedBox(
+                      width: 25.0,
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        if (passController.text == passControllerConfirm.text &&
+                            passController.text != '' &&
+                            passController.text.isNotEmpty &&
+                            passControllerConfirm.text != '' &&
+                            passControllerConfirm.text.isNotEmpty) {
+                          String newPort = globals.nameProfile;
+                          String oldPort = globals.nameProfile;
+                          String newIdPort = RandomString.getRandomString(10);
+                          String oldIdPort = global.idProfile;
+                          pref = globals.passPrefer;
+                          await createBloc(oldPort, oldIdPort, newIdPort,
+                              passControllerConfirm.text, pref);
+                          await changePassBloc(oldIdPort, oldPort, newIdPort,
+                              newPort, passControllerConfirm.text);
+                          HivePrefProfileRepository _hiveProfileRepository =
+                              HivePrefProfileRepositoryImpl();
+                          globals.pass = passControllerConfirm.text;
+                          await _prefProfileRepository.saveProfile(
+                              'lastProf', newPort);
+                          globals.nameProfile = newPort;
+                          global.idProfile = newIdPort;
+                          globals.passChosen = false;
+                          List<ProfileModel> prof =
+                              await _hiveProfileRepository.showProfile();
+                          print('prof_in_alert: $prof');
+                          Fluttertoast.showToast(
+                              msg: LocaleKeys.success_change_pass.tr());
+                          input.deleteProf = true;
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => InputPasswordPage(
+                                      newPort, newIdPort, '', '', prof)),
+                              (Route<dynamic> route) => false);
+                        } else if (passController.text.isEmpty &&
+                            passControllerConfirm.text.isEmpty) {
+                          setState(() {
+                            errorTextFirst = LocaleKeys.invalid_alert_pass.tr();
+                            errorTextSecond =
+                                LocaleKeys.invalid_alert_pass.tr();
+                            errorFirst = true;
+                            errorSecond = true;
+                          });
+                          return;
+                        } else if (passController.text.isEmpty &&
+                            passControllerConfirm.text.isNotEmpty) {
+                          setState(() {
+                            errorTextFirst = LocaleKeys.invalid_alert_pass.tr();
+                            errorTextSecond = '';
+                            errorFirst = true;
+                            errorSecond = false;
+                          });
+                          return;
+                        } else if (passController.text.isNotEmpty &&
+                            passControllerConfirm.text.isEmpty) {
+                          setState(() {
+                            errorTextFirst = '';
+                            errorTextSecond =
+                                LocaleKeys.invalid_alert_pass.tr();
+                            errorFirst = false;
+                            errorSecond = true;
+                          });
+                          return;
+                        } else if (passController.text !=
+                            passControllerConfirm.text) {
+                          setState(() {
+                            errorTextSecond =
+                                LocaleKeys.invalid_alert_pass_not_equals.tr();
+                            errorFirst = false;
+                            errorSecond = true;
+                          });
+                          return;
+                        }
+                      },
+                      child: Container(
+                          width: 100.0,
+                          height: 20.0,
+                          child: Text(
+                            LocaleKeys.yes.tr(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: kInIconColor,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'MyriadPro',
+                                fontSize: textSize18),
+                          )),
+                    ),
+                  ]))
             ],
           );
         },
@@ -414,7 +427,6 @@ Future<void> showAlertDelete(BuildContext context) async {
         LocaleKeys.edit_alert_delete.tr(),
         textAlign: TextAlign.center,
         style: TextStyle(
-            color: Theme.of(context).hoverColor,
             fontFamily: 'MyriadPro',
             fontSize: textSize14),
       ),
