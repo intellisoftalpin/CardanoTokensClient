@@ -53,7 +53,7 @@ Future<void> showAlertChangeName(BuildContext context, int pref) async {
                       color: Theme.of(context).secondaryHeaderColor),
                   errorStyle: TextStyle(color: lErrorColorLight)),
               style: TextStyle(
-                  color: Theme.of(context).shadowColor,
+                  color: Theme.of(context).focusColor,
                   fontFamily: 'MyriadPro',
                   fontSize: textSize20),
               onChanged: (value) {
@@ -161,7 +161,7 @@ Future<void> showAlertChangePass(BuildContext context) async {
                       color: Theme.of(context).secondaryHeaderColor),
                   errorStyle: TextStyle(color: lErrorColorLight)),
               style: TextStyle(
-                  color: Theme.of(context).shadowColor,
+                  color: Theme.of(context).focusColor,
                   fontFamily: 'MyriadPro',
                   fontSize: textSize20),
               onChanged: (value) {
@@ -263,7 +263,7 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
                             color: Theme.of(context).secondaryHeaderColor),
                         errorStyle: TextStyle(color: lErrorColorLight)),
                     style: TextStyle(
-                        color: Theme.of(context).shadowColor,
+                        color: Theme.of(context).focusColor,
                         fontFamily: 'MyriadPro',
                         fontSize: textSize20),
                     onChanged: (value) {
@@ -288,7 +288,7 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
                             color: Theme.of(context).secondaryHeaderColor),
                         errorStyle: TextStyle(color: lErrorColorLight)),
                     style: TextStyle(
-                        color: Theme.of(context).shadowColor,
+                        color: Theme.of(context).focusColor,
                         fontFamily: 'MyriadPro',
                         fontSize: textSize20),
                     onChanged: (value) {
@@ -336,17 +336,22 @@ Future<void> showAlertPassConfirm(BuildContext context) async {
                           globals.nameProfile = newPort;
                           global.idProfile = newIdPort;
                           globals.passChosen = false;
-                          List<ProfileModel> prof =
-                              await _hiveProfileRepository.showProfile();
-                          print('prof_in_alert: $prof');
                           Fluttertoast.showToast(
                               msg: LocaleKeys.success_change_pass.tr());
                           input.deleteProf = true;
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => InputPasswordPage(
-                                      newPort, newIdPort, '', '', prof)),
-                              (Route<dynamic> route) => false);
+                          await Future.delayed(
+                              Duration(milliseconds: 300), () {});
+                          List<ProfileModel> prof =
+                              await _hiveProfileRepository.showProfile();
+                          print('prof_in_alert: $prof');
+                          bool mounted = true;
+                          if (mounted) {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => InputPasswordPage(
+                                        newPort, newIdPort, '', '', prof)),
+                                (Route<dynamic> route) => false);
+                          }
                         } else if (passController.text.isEmpty &&
                             passControllerConfirm.text.isEmpty) {
                           setState(() {
@@ -426,9 +431,7 @@ Future<void> showAlertDelete(BuildContext context) async {
       content: Text(
         LocaleKeys.edit_alert_delete.tr(),
         textAlign: TextAlign.center,
-        style: TextStyle(
-            fontFamily: 'MyriadPro',
-            fontSize: textSize14),
+        style: TextStyle(fontFamily: 'MyriadPro', fontSize: textSize14),
       ),
       actions: <Widget>[
         Center(

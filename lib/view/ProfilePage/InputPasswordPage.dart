@@ -435,6 +435,7 @@ class InputPasswordPageState extends State<InputPasswordPage> {
         for (var data in profileExist) {
           print('data.id in list: ${data.id}');
           if (data.id == _nameId) {
+            print('data.nameProfile: ${data.nameProfile}');
             print('data.id: ${data.id}');
             print('data.pref: ${data.pref}');
             setState(() {

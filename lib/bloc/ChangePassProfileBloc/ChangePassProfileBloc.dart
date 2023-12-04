@@ -79,40 +79,44 @@ class ChangePassProfileBloc
 
         //final zipFiles = "/zipFile/$profile";
         final zipFiles = "/zipFile/$newProfilePath";
-        List<FileSystemEntity> listFiles =
-            await BackupRestore.getFilesFromDir(zipFiles);
-        SharedPreferencesRepository _preferences =
-            SharedPreferencesRepository();
-        int backUp = await _preferences.getBackUp(profile);
-        _preferences.setBackUp(newProfilePath, backUp);
-        if (listFiles.isNotEmpty) {
-          for (var file in listFiles) {
-            final directory = await getApplicationDocumentsDirectory();
-            String fileName = file.path;
-            var list1 = fileName.split("/").last;
-            var fileDate = list1.split(".").elementAt(1);
+        try {
+          List<FileSystemEntity> listFiles =
+              await BackupRestore.getFilesFromDir(zipFiles);
+          SharedPreferencesRepository _preferences =
+              SharedPreferencesRepository();
+          int backUp = await _preferences.getBackUp(profile);
+          _preferences.setBackUp(newProfilePath, backUp);
+          if (listFiles.isNotEmpty) {
+            for (var file in listFiles) {
+              final directory = await getApplicationDocumentsDirectory();
+              String fileName = file.path;
+              var list1 = fileName.split("/").last;
+              var fileDate = list1.split(".").elementAt(1);
 
-            var pathFile = directory.path + "/unzipFile";
-            var unzipFile = await BackupRestore.unzipFile(
-                zipFile: (file as File), extractToPath: pathFile);
-            var newFileName = await BackupRestore.changeFileNameOnly(
-                unzipFile, newProfilePath + '.db');
-            print(
-                " unzipFile = $unzipFile, fileDate = $fileDate, newFileName = $newFileName");
-            final dir = Directory(fileName);
-            dir.deleteSync(recursive: true); //deleting old file
-            final zipFileName = newProfilePath + '.' + fileDate;
-            final zipFiles = "/zipFile/$newProfilePath";
-            final String zippedFilePath = BackupRestore.zipFile(
-              zipFileSavePath: directory.path + zipFiles,
-              zipFileName: '/$zipFileName.zip',
-              fileToZips: [File(newFileName.path)],
-            );
-            final dirUnzip = Directory(pathFile);
-            dirUnzip.deleteSync(
-                recursive: true); //deleting temp file in unzip storage
-            print("zippedFilePath = $zippedFilePath");
+              var pathFile = directory.path + "/unzipFile";
+              var unzipFile = await BackupRestore.unzipFile(
+                  zipFile: (file as File), extractToPath: pathFile);
+              var newFileName = await BackupRestore.changeFileNameOnly(
+                  unzipFile, newProfilePath + '.db');
+              print(
+                  " unzipFile = $unzipFile, fileDate = $fileDate, newFileName = $newFileName");
+              final dir = Directory(fileName);
+              dir.deleteSync(recursive: true);
+              final zipFileName = newProfilePath + '.' + fileDate;
+              final zipFiles = "/zipFile/$newProfilePath";
+              final String zippedFilePath = BackupRestore.zipFile(
+                zipFileSavePath: directory.path + zipFiles,
+                zipFileName: '/$zipFileName.zip',
+                fileToZips: [File(newFileName.path)],
+              );
+              final dirUnzip = Directory(pathFile);
+              dirUnzip.deleteSync(recursive: true);
+              print("zippedFilePath = $zippedFilePath");
+            }
           }
+        } catch (e, s) {
+          print(e);
+          print(s);
         }
         yield state.copyWith(ChangePassProfileStatus.start);
       }
