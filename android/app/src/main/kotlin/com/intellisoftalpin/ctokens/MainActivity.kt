@@ -1,4 +1,4 @@
-package com.example.crypto_offline
+package com.intellisoftalpin.ctokens
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.plugins.GeneratedPluginRegistrant
