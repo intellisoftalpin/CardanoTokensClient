@@ -87,12 +87,13 @@ class _InputPassChangeProfPageState extends State<InputPassChangeProfPage> {
     } else {
       hintTxt = LocaleKeys.password.tr();
     }
-    return RawKeyboardListener(
+    return KeyboardListener(
       focusNode: _focusNode,
       autofocus: false,
-      onKey: (event) {
+      onKeyEvent: (event) {
         print("event = $event");
-        if (event.isKeyPressed(LogicalKeyboardKey.enter)) {
+        if (HardwareKeyboard.instance
+            .isLogicalKeyPressed(LogicalKeyboardKey.enter)) {
           _pressEnterButton();
         }
       },
