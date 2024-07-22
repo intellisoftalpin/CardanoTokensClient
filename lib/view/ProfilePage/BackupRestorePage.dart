@@ -179,7 +179,7 @@ class BackupRestorePageState extends State<BackupRestorePage> {
                                                         BorderRadius.circular(
                                                             5.0),
                                                   ),
-                                                  side: MaterialStateBorderSide
+                                                  side: WidgetStateBorderSide
                                                       .resolveWith(
                                                     (states) => BorderSide(
                                                         width: 1.5,

@@ -79,7 +79,7 @@ class _FirstRestoreScreenState extends State<FirstRestoreScreen> {
                         padding: EdgeInsets.fromLTRB(50.0, 8.0, 50.0, 8.0),
                         onPressed: () {
                           recovery.recoveryPath = null;
-                          ReceiveSharingIntent.reset();
+                          ReceiveSharingIntent.instance.reset();
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(builder: (context) => App()),
                               (Route<dynamic> route) => false);
@@ -207,7 +207,7 @@ class _FirstRestoreScreenState extends State<FirstRestoreScreen> {
                   padding: EdgeInsets.fromLTRB(50.0, 8.0, 50.0, 8.0),
                   onPressed: () {
                     recovery.recoveryPath = null;
-                    ReceiveSharingIntent.reset();
+                    ReceiveSharingIntent.instance.reset();
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(builder: (context) => App()),
                         (Route<dynamic> route) => false);
@@ -324,7 +324,7 @@ class _FirstRestoreScreenState extends State<FirstRestoreScreen> {
             return;
           }
           recovery.recoveryPath = null;
-          ReceiveSharingIntent.reset();
+          ReceiveSharingIntent.instance.reset();
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => App()),
               (Route<dynamic> route) => false);
