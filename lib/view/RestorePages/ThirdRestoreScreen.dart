@@ -89,7 +89,7 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
         }
         app.recoveryPath = null;
         global.idProfile = recovery.lastProfileId!;
-        ReceiveSharingIntent.reset();
+        ReceiveSharingIntent.instance.reset();
         BlocProvider.of<CloseDbBloc>(this.context)
           ..add(UpdateProfile(idProfile: recovery.dbRecoveryName!));
         Navigator.of(context).pushAndRemoveUntil(
@@ -176,7 +176,7 @@ class ThirdRestoreScreenState extends State<ThirdRestoreScreen> {
         'ID_PROF_THIRD_SCREEN:::: ${global.idProfile} NAME_PROF_THIRD_SCREEN:::: ${globals.nameProfile}');
     if (_formKey.currentState!.validate()) {
       app.recoveryPath = null;
-      ReceiveSharingIntent.reset();
+      ReceiveSharingIntent.instance.reset();
       BlocListener<CreateProfileBloc, CreateProfileState>(
           bloc: CreateProfileBloc(
               DatabaseProvider(),

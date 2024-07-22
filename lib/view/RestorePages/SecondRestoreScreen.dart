@@ -56,7 +56,7 @@ class _SecondRestoreScreenState extends State<SecondRestoreScreen> {
           }
           recovery.recoveryPath = null;
           global.idProfile = lastProfile.lastProfileId!;
-          ReceiveSharingIntent.reset();
+          ReceiveSharingIntent.instance.reset();
           BlocProvider.of<CloseDbBloc>(this.context)
             ..add(UpdateProfile(idProfile: lastProfile.dbRecoveryName!));
           Navigator.of(context).pushAndRemoveUntil(

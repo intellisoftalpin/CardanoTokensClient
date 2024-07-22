@@ -57,7 +57,7 @@ class TransactionsDetailsPage extends StatefulWidget {
         builder: (_) => TransactionsDetailsPage(
               id: '',
               symbol: '',
-          image: '',
+              image: '',
               name: '',
               isRelevant: 1,
               transactionId: 0,
@@ -127,7 +127,7 @@ class _TransactionsDetailsPageState extends State<TransactionsDetailsPage> {
                       id: widget.id,
                       name: widget.name,
                       symbol: widget.symbol,
-                  image: widget.image,
+                      image: widget.image,
                       isRelevant: widget.isRelevant,
                     )));
       },
@@ -182,7 +182,7 @@ class _TransactionsDetailsPageState extends State<TransactionsDetailsPage> {
                                     id: widget.id,
                                     name: widget.name,
                                     symbol: widget.symbol,
-                                image: widget.image,
+                                    image: widget.image,
                                     isRelevant: widget.isRelevant,
                                   )));
                     }),
@@ -217,11 +217,12 @@ class _TransactionsDetailsPageState extends State<TransactionsDetailsPage> {
                               ListTile(
                                 leading: SvgPicture.asset(
                                     'assets/icons/img_1.svg',
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.light
-                                        ? Colors.black
-                                        : Theme.of(context)
-                                            .secondaryHeaderColor),
+                                    colorFilter: ColorFilter.mode(
+                                        Theme.of(context).brightness ==
+                                                Brightness.light
+                                            ? Colors.black
+                                            : Theme.of(context)
+                                                .secondaryHeaderColor, BlendMode.srcIn)),
                                 title: Text(
                                     '${state.transactionDetails?.details == 'Buy' ? LocaleKeys.buy_tr.tr() : state.transactionDetails?.details == 'Transfer' ? LocaleKeys.transfer.tr() : state.transactionDetails?.details == 'Exchange' ? LocaleKeys.exchange.tr() : state.transactionDetails?.details == 'Mining' ? LocaleKeys.mining.tr() : state.transactionDetails?.details == 'Staking' ? LocaleKeys.staking.tr() : state.transactionDetails?.details == 'Sell' ? LocaleKeys.sell.tr() : LocaleKeys.buy_tr.tr()}',
                                     style: TextStyle(fontFamily: 'Myriad Pro')),
@@ -233,11 +234,12 @@ class _TransactionsDetailsPageState extends State<TransactionsDetailsPage> {
                               ListTile(
                                 leading: SvgPicture.asset(
                                     'assets/icons/img_2.svg',
-                                    color: Theme.of(context).brightness ==
+                                    colorFilter: ColorFilter.mode(
+                                        Theme.of(context).brightness ==
                                             Brightness.light
-                                        ? Colors.black
-                                        : Theme.of(context)
-                                            .secondaryHeaderColor),
+                                            ? Colors.black
+                                            : Theme.of(context)
+                                            .secondaryHeaderColor, BlendMode.srcIn)),
                                 title: state.transactionDetails != null
                                     ? Text(
                                         '${state.transactionDetails?.type == 'Out' && state.transactionDetails!.qty > 0.0 ? '-' : ''}${state.transactionDetails!.qty > 1.0 ? Decimal.dividePrice(Decimal.convertPriceRoundToDouble(state.transactionDetails!.qty).toString()) : Decimal.convertPriceRoundToDouble(state.transactionDetails!.qty).toString()}',
@@ -257,11 +259,12 @@ class _TransactionsDetailsPageState extends State<TransactionsDetailsPage> {
                               ListTile(
                                 leading: SvgPicture.asset(
                                     'assets/icons/img_3.svg',
-                                    color: Theme.of(context).brightness ==
+                                    colorFilter: ColorFilter.mode(
+                                        Theme.of(context).brightness ==
                                             Brightness.light
-                                        ? Colors.black
-                                        : Theme.of(context)
-                                            .secondaryHeaderColor),
+                                            ? Colors.black
+                                            : Theme.of(context)
+                                            .secondaryHeaderColor, BlendMode.srcIn)),
                                 title: state.transactionDetails != null
                                     ? Text(
                                         '${state.transactionDetails!.usdPrice! > 1.0 ? Decimal.dividePrice(Decimal.convertPriceRoundToDouble(state.transactionDetails!.usdPrice!).toString()) : Decimal.convertPriceRoundToDouble(state.transactionDetails!.usdPrice!).toString()}',
@@ -282,11 +285,12 @@ class _TransactionsDetailsPageState extends State<TransactionsDetailsPage> {
                                     padding: EdgeInsets.only(left: 1.0),
                                     child: SvgPicture.asset(
                                         'assets/icons/img_6.svg',
-                                        color: Theme.of(context).brightness ==
+                                        colorFilter: ColorFilter.mode(
+                                            Theme.of(context).brightness ==
                                                 Brightness.light
-                                            ? Colors.black
-                                            : Theme.of(context)
-                                                .secondaryHeaderColor)),
+                                                ? Colors.black
+                                                : Theme.of(context)
+                                                .secondaryHeaderColor, BlendMode.srcIn))),
                                 title: state.transactionDetails != null
                                     ? Text(
                                         '${state.transactionDetails!.adaPrice! > 1.0 ? Decimal.dividePrice(Decimal.convertPriceRoundToDouble(state.transactionDetails!.adaPrice!).toString()) : Decimal.convertPriceRoundToDouble(state.transactionDetails!.adaPrice!).toString()}',
@@ -305,11 +309,12 @@ class _TransactionsDetailsPageState extends State<TransactionsDetailsPage> {
                               ListTile(
                                 leading: SvgPicture.asset(
                                     'assets/icons/img_4.svg',
-                                    color: Theme.of(context).brightness ==
+                                    colorFilter: ColorFilter.mode(
+                                        Theme.of(context).brightness ==
                                             Brightness.light
-                                        ? Colors.black
-                                        : Theme.of(context)
-                                            .secondaryHeaderColor),
+                                            ? Colors.black
+                                            : Theme.of(context)
+                                            .secondaryHeaderColor, BlendMode.srcIn)),
                                 title: Text(
                                     '${state.transactionDetails?.timestamp}',
                                     style: TextStyle(fontFamily: 'Myriad Pro')),
@@ -325,11 +330,12 @@ class _TransactionsDetailsPageState extends State<TransactionsDetailsPage> {
                                   ? ListTile(
                                       leading: SvgPicture.asset(
                                           'assets/icons/img_5.svg',
-                                          color: Theme.of(context).brightness ==
+                                          colorFilter: ColorFilter.mode(
+                                              Theme.of(context).brightness ==
                                                   Brightness.light
-                                              ? Colors.black
-                                              : Theme.of(context)
-                                                  .secondaryHeaderColor),
+                                                  ? Colors.black
+                                                  : Theme.of(context)
+                                                  .secondaryHeaderColor, BlendMode.srcIn)),
                                       title: Text(
                                           '${state.transactionDetails?.walletAddress}',
                                           style: TextStyle(
@@ -395,10 +401,9 @@ class _TransactionsDetailsPageState extends State<TransactionsDetailsPage> {
                                       LocaleKeys.delete.tr(),
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                              color:
-                                                  Theme.of(context).shadowColor,
-                                              fontFamily: 'MyriadPro',
-                                              fontSize: textSize18),
+                                          color: Theme.of(context).shadowColor,
+                                          fontFamily: 'MyriadPro',
+                                          fontSize: textSize18),
                                     ),
                                   ),
                                 ),
@@ -442,10 +447,9 @@ class _TransactionsDetailsPageState extends State<TransactionsDetailsPage> {
                                       LocaleKeys.edit.tr(),
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                              color:
-                                                  Theme.of(context).shadowColor,
-                                              fontFamily: 'MyriadPro',
-                                              fontSize: textSize18),
+                                          color: Theme.of(context).shadowColor,
+                                          fontFamily: 'MyriadPro',
+                                          fontSize: textSize18),
                                     ),
                                   ),
                                 ),

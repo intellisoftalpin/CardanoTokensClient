@@ -204,7 +204,7 @@ Future<void> authRestoreAlertReplace(
                             }
                           }
                           app.recoveryPath = null;
-                          ReceiveSharingIntent.reset();
+                          ReceiveSharingIntent.instance.reset();
                           globals.nameProfile = name;
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(

@@ -149,7 +149,7 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
 
   Future<void> getSharedPathInit() async {
     if (Platform.isAndroid) {
-      await ReceiveSharingIntent.getInitialMedia()
+      await ReceiveSharingIntent.instance.getInitialMedia()
           .then((List<SharedMediaFile> value) {
         print("Shared:" + (_sharedFiles.map((f) => f.path).join(",")));
         _sharedFiles = value;
@@ -164,7 +164,7 @@ class AppViewState extends State<AppView> with WidgetsBindingObserver {
 
   Future<void> getSharedPath() async {
     if (Platform.isAndroid) {
-      ReceiveSharingIntent.getMediaStream().listen(
+      ReceiveSharingIntent.instance.getMediaStream().listen(
           (List<SharedMediaFile> value) {
         print("Shared:" + (_sharedFilesLifeCycle.map((f) => f.path).join(",")));
         _sharedFilesLifeCycle = value;
