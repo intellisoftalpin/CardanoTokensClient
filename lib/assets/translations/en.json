@@ -1,0 +1,11 @@
+{
+  "forgot_password": "Forgot password?",
+  "sign_up": "Sign up",
+  "username": "Username",
+  "invalid_username": "Invalid username",
+  "password": "Password",
+  "invalid_password": "Invalid password",
+
+  "login": "Login"
+
+}
